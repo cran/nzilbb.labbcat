@@ -4,27 +4,40 @@
 \alias{labbcat.getSoundFragment}
 \title{Gets a sound fragment from 'LaBB-CAT'.}
 \usage{
-labbcat.getSoundFragment(labbcat, id, start, end, sampleRate = NULL)
+labbcat.getSoundFragment(labbcat, id, start, end, sampleRate = NULL,
+  no.progress = FALSE)
 }
 \arguments{
-\item{labbcat}{A LaBB-CAT instance object previously created by a call to labbcat.instance}
+\item{labbcat}{A LaBB-CAT instance object previously created by a
+call to labbcat.instance}
 
-\item{id}{The graph ID (transcript name) of the sound recording}
+\item{id}{The graph ID (transcript name) of the sound recording, or
+a vector of graph IDs.}
 
-\item{start}{The start time in seconds}
+\item{start}{The start time in seconds, or a vector of start times.}
 
-\item{end}{The end time in seconds}
+\item{end}{The end time in seconds, or a vector of end times.}
 
-\item{sampleRate}{Optional sample rate in Hz - if a positive integer, then the
-result is a mono file with the given sample rate}
+\item{sampleRate}{Optional sample rate in Hz - if a positive
+integer, then the result is a mono file with the given sample rate.}
+
+\item{no.progress}{Optionally suppress the progress bar when
+multiple fragments are  specified - TRUE for no progress bar.}
 }
 \value{
-The name of the file, which is saved in the current directory
+The name of the file, which is saved in the current
+    directory, or a list of names of files, if multiple
+    id's/start's/end's were specified 
+
+If a list of files is returned, they are in the order that they
+    were returned by the server, which *should* be the order that
+    they were specified in the id/start/end lists.
 }
 \description{
 Extracts part of a WAV file.
 }
 \examples{
+\dontrun{
 ## Connect to LaBB-CAT
 labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
 
@@ -34,6 +47,17 @@ wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0)
 ## Get the 5 seconds starting from 10s as a mono 22kHz file
 wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
 
+## Get a list of fragments
+results <- data.frame(
+             id=c("AP2505_Nelson.eaf", "AP2512_MattBlack.eaf", "AP2512_MattBlack.eaf"),
+             start=c(10.0, 20.0, 30.0),
+             end=c(15.0, 25.0, 35.0))
+wav.files <- labbcat.getSoundFragment(labbcat, results$id, results$start, results$end)
+
+## Get a list of fragments with no prgress bar
+wav.file <- labbcat.getSoundFragment(
+              labbcat, results$id, results$start, results$end, no.progress=TRUE)
+}
 }
 \keyword{fragment}
 \keyword{sample}

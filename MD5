@@ -1,7 +1,7 @@
-442589b092a40cacc9634e6c9f497347 *DESCRIPTION
-29471d15615793f1b3051e960891afeb *NAMESPACE
-3a13a2f2d19c4eb4f2562996d5b7aef1 *R/nzilbb.labbcat.R
-e480645823dbbeca2d7604a22e273191 *build/partial.rdb
+7f357a6dbf67958248935934a2cdf78a *DESCRIPTION
+e19279e72ea46037485aafe0b33129d2 *NAMESPACE
+0dd3905aab684748a6f572cb6655797a *R/nzilbb.labbcat.R
+f155e91ea3f33f6c8326384d7419f8a7 *build/partial.rdb
 498cbdc64a89594891ba3bda23e328ea *man/labbcat.countAnnotations.Rd
 b327ec716d1e4287a8447884f21b7cfb *man/labbcat.getAnchors.Rd
 0cfb76ccbbb76fb240069a495e609d94 *man/labbcat.getAnnotations.Rd
@@ -18,6 +18,6 @@ fd9f690200010083dc6a7e57fcd741b7 *man/labbcat.getLayers.Rd
 047f2f0501aa1aec2f4cf11d85ae4507 *man/labbcat.getMedia.Rd
 9e9c87ca5082706176c9d9e2267353b6 *man/labbcat.getMediaTracks.Rd
 7012640433ca9ecfdccf1aaec0fc796f *man/labbcat.getParticipantIds.Rd
-c8ff6ec7a611385683f16efd797f2e6d *man/labbcat.getSoundFragment.Rd
+0b4b0da9b8040e139a81bfaed9b295ba *man/labbcat.getSoundFragment.Rd
 af456bd18932846280a19e4013c2f9fa *man/labbcat.instance.Rd
 71b7fb951fcda8f076d7b9a5ac038ce4 *man/nzilbb.labbcat.Rd

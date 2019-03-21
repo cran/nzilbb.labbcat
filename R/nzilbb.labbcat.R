@@ -712,15 +712,26 @@ labbcat.getMedia <- function(labbcat, id, trackSuffix = "", mimeType = "audio/wa
 #'
 #' Extracts part of a WAV file.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
-#' @param id The graph ID (transcript name) of the sound recording
-#' @param start The start time in seconds
-#' @param end The end time in seconds
-#' @param sampleRate Optional sample rate in Hz - if a positive integer, then the
-#'    result is a mono file with the given sample rate 
-#' @return The name of the file, which is saved in the current directory
+#' @param labbcat A LaBB-CAT instance object previously created by a
+#'     call to labbcat.instance 
+#' @param id The graph ID (transcript name) of the sound recording, or
+#'     a vector of graph IDs. 
+#' @param start The start time in seconds, or a vector of start times.
+#' @param end The end time in seconds, or a vector of end times.
+#' @param sampleRate Optional sample rate in Hz - if a positive
+#'     integer, then the result is a mono file with the given sample rate.
+#' @param no.progress Optionally suppress the progress bar when
+#'     multiple fragments are  specified - TRUE for no progress bar.
+#' @return The name of the file, which is saved in the current
+#'     directory, or a list of names of files, if multiple
+#'     id's/start's/end's were specified 
+#'
+#' If a list of files is returned, they are in the order that they
+#'     were returned by the server, which *should* be the order that
+#'     they were specified in the id/start/end lists.
 #' 
-#' @examples 
+#' @examples
+#' \dontrun{
 #' ## Connect to LaBB-CAT
 #' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
 #' 
@@ -730,35 +741,90 @@ labbcat.getMedia <- function(labbcat, id, trackSuffix = "", mimeType = "audio/wa
 #' ## Get the 5 seconds starting from 10s as a mono 22kHz file
 #' wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
 #' 
+#' ## Get a list of fragments
+#' results <- data.frame(
+#'              id=c("AP2505_Nelson.eaf", "AP2512_MattBlack.eaf", "AP2512_MattBlack.eaf"),
+#'              start=c(10.0, 20.0, 30.0),
+#'              end=c(15.0, 25.0, 35.0))
+#' wav.files <- labbcat.getSoundFragment(labbcat, results$id, results$start, results$end)
+#' 
+#' ## Get a list of fragments with no prgress bar
+#' wav.file <- labbcat.getSoundFragment(
+#'               labbcat, results$id, results$start, results$end, no.progress=TRUE)
+#' }
 #' @keywords sample sound fragment wav
 #' 
-labbcat.getSoundFragment <- function(labbcat, id, start, end, sampleRate = NULL) {
-    url <- paste(labbcat$baseUrl, "soundfragment", sep="")
-    parameters <- list(id=id, start=start, end=end)
-    if (!is.null(sampleRate)) parameters <- list(id=id, start=start, end=end, sampleRate=sampleRate)
-    filename <- paste(stringr::str_replace(id, "\\.[^.]+$",""), "__", start, "-", end, ".wav", sep="")
-    tryCatch({
-        resp <- httr::POST(url, labbcat$authorization, httr::write_disk(filename, overwrite=TRUE), httr::timeout(labbcat$timeout), body = parameters, encode = "form")
-        if (httr::status_code(resp) != 200) { # 200 = OK
-            print(paste("ERROR: ", httr::http_status(resp)$message))
-            if (httr::status_code(resp) != 404) { # 404 means the audio wasn't on the server
-                ## some other error occurred so print what we got from the server
-                print(readLines(filename))
+labbcat.getSoundFragment <- function(labbcat, id, start, end, sampleRate = NULL, no.progress=FALSE) {
+    if (length(id) == 1) { ## one fragment
+        dir <- ""
+    } else { ## multiple fragments
+        ## save fragments into their own directory
+        dir <- "fragments"
+        if (file.exists(dir)) {
+            ## ensure it's a new directory by adding a number
+            n <- 1
+            new.dir = paste(dir,"(",n,")", sep="")
+            while (file.exists(new.dir)) {
+                n <- n + 1
+                new.dir = paste(dir,"(",n,")", sep="")
+            } # next try
+            dir <- new.dir
+        }
+        dir.create(dir)
+        ## add trailing slash
+        dir <- paste(dir, .Platform$file.sep, sep="")
+    }
+
+    pb <- NULL
+    if (!no.progress && length(id) > 1) {
+        pb <- txtProgressBar(min = 0, max = length(id), style = 3)        
+    }
+
+    ## loop throug each triple, getting fragments individually
+    ## (we could actually pass the lot to LaBB-CAT in one go and get a ZIP file back
+    ##  but then we can't be sure the results contain a row for every fragment specified
+    ##  and we can't display a progress bar)
+    file.names = c()
+    r <- 1
+    for (graph.id in id) {
+        url <- paste(labbcat$baseUrl, "soundfragment", sep="")
+        parameters <- list(id=graph.id, start=start[r], end=end[r])
+        if (!is.null(sampleRate)) parameters <- list(id=graph.id, start=start[r], end=end[r], sampleRate=sampleRate)
+        file.name <- paste(dir, stringr::str_replace(graph.id, "\\.[^.]+$",""), "__", start[r], "-", end[r], ".wav", sep="")
+
+        tryCatch({
+            resp <- httr::POST(url, labbcat$authorization,
+                               httr::write_disk(file.name, overwrite=TRUE),
+                               httr::timeout(labbcat$timeout),
+                               body = parameters, encode = "form")
+            if (httr::status_code(resp) != 200) { # 200 = OK
+                print(paste("ERROR: ", httr::http_status(resp)$message))
+                if (httr::status_code(resp) != 404) { # 404 means the audio wasn't on the server
+                    ## some other error occurred so print what we got from the server
+                    print(readLines(file.name))
+                }
+                file.remove(file.name)
+                file.name <<- NULL
+            } else {
+                content.disposition <- as.character(httr::headers(resp)["content-disposition"])
+                content.disposition.parts <- strsplit(content.disposition, "=")
+                if (length(content.disposition.parts[[1]]) > 1
+                    && file.name != content.disposition.parts[[1]][2]) {
+                    ## file name is specified, so use it
+                    final.file.name <- paste(dir, content.disposition.parts[[1]][2], sep="")
+                    file.rename(file.name, final.file.name)
+                    file.name <- final.file.name
+                }
             }
-            file.remove(filename)
-            return(NULL)
-        }
-        content.disposition <- as.character(httr::headers(resp)["content-disposition"])
-        content.disposition.parts <- strsplit(content.disposition, "=")
-        if (length(content.disposition.parts[[1]]) > 1
-            && filename != content.disposition.parts[[1]][2]) {
-            ## file name is specified, so use it
-            file.rename(filename, content.disposition.parts[[1]][2])
-            filename <- content.disposition.parts[[1]][2]
-        }
-    }, error = function(e) {
-        print(paste("ERROR:", e))
-        filename <<- NULL
-    })
-    return(filename)
+        }, error = function(e) {
+            print(paste("ERROR:", e))
+            file.name <<- NULL
+        })
+        file.names <- append(file.names, file.name)
+        
+        if (!is.null(pb)) setTxtProgressBar(pb, r)
+        r <- r+1
+    } ## next row
+    if (!is.null(pb)) close(pb)
+    return(file.names)   
 }
