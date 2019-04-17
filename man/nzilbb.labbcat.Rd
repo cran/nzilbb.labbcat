@@ -14,19 +14,21 @@
 
 'LaBB-CAT' is a web-based language corpus management system and this
 package provides access to data stored in a 'LaBB-CAT' instance.
-
-As 'LaBB-CAT' instances are usually password-protected, the function
-\code{labbcat.instance} must be used first of all to create an object
-that provides access to a specific instance of 'LaBB-CAT' with specific
-credentials.  This object is then used as the first argument for all
-other function calls.
+You must have at least version 20190412.1154 of 'LaBB-CAT' to use
+this package.
 }
 \examples{
-## connect to LaBB-CAT
-labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+\dontrun{
+## define the LaBB-CAT URL
+labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+
+## optionally specify the username/password in the script
+## (if this is not done, we will be prompted for the username/password)
+labbcatCredentials(labbcat.url, "demo", "demo")
 
 ## Get the 5 seconds starting from 10s as a mono 22kHz file
-wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+}
 
 }
 \references{

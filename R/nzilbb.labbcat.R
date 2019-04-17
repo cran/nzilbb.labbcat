@@ -7,12 +7,8 @@
 #' 
 #' 'LaBB-CAT' is a web-based language corpus management system and this
 #' package provides access to data stored in a 'LaBB-CAT' instance.
-#' 
-#' As 'LaBB-CAT' instances are usually password-protected, the function
-#' \code{labbcat.instance} must be used first of all to create an object
-#' that provides access to a specific instance of 'LaBB-CAT' with specific
-#' credentials.  This object is then used as the first argument for all
-#' other function calls.
+#' You must have at least version 20190412.1154 of 'LaBB-CAT' to use
+#' this package.
 #' 
 #' @docType package
 #' @keywords package
@@ -22,18 +18,38 @@
 #' \cite{Robert Fromont and Jennifer Hay, "{ONZE Miner}: the development of a browser-based research tool", 2008}
 #' \cite{Robert Fromont, "Toward a format-neutral annotation store", 2017}
 #' @examples
-#' ## connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## optionally specify the username/password in the script
+#' ## (if this is not done, we will be prompted for the username/password)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get the 5 seconds starting from 10s as a mono 22kHz file
-#' wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+#' wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+#' }
 #' 
 NULL
 
 ### Internal variables:
 
 ## minimum version of LaBB-CAT required:
-.min.labbcat.version <- "20190312.1838"
+.min.labbcat.version <- "20190412.1154"
+
+## HTTP request timeout
+.request.timeout <- 10
+
+## prompt for password in RStudio, falling back to terminal if we're not in RStudio
+get.hidden.input <- function(prompt) {
+    return(tryCatch({
+        ## try using the RStudio API for hidden input
+        rstudioapi::askForPassword(prompt)
+    }, error = function(e) {
+        ## fall back to 
+        readline(paste("WARNING: Input will be visible -", prompt))
+    }))
+}
 
 ## encode a parameter value for inclusion in the URL
 enc <- function(value) {
@@ -41,8 +57,9 @@ enc <- function(value) {
 }
 
 ## build a store call URL 
-buildUrl <- function(labbcat, call, parameters = NULL) {
-    url <- paste(labbcat$storeUrl, call, sep="")
+buildUrl <- function(labbcat.url, call, parameters = NULL) {
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
+    url <- paste(labbcat.url, "store?call=", call, sep="")
     if (!is.null(parameters)) {
         for (name in names(parameters)) {
             url <- paste(url, "&", name, "=", parameters[name], sep="")
@@ -52,95 +69,178 @@ buildUrl <- function(labbcat, call, parameters = NULL) {
     return(url)
 }
 
+## make an HTTP GET request, asking for credentials if required
+store.get <- function(labbcat.url, call, parameters = NULL) {
+    ## ensure labbcat base URL has a trailing slash
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
+
+    ## build request URL
+    url <- paste(labbcat.url, "store?call=", call, sep="")
+    if (!is.null(parameters)) {
+        for (name in names(parameters)) {
+            url <- paste(url, "&", name, "=", parameters[name], sep="")
+        } # next parameter
+    } # there are parameters
+    url <- enc(url)
+    
+    ## attempt the request
+    resp <- httr::GET(url, httr::timeout(.request.timeout))
+    ## check we don't need credentials
+    if (httr::status_code(resp) == 401) {
+        ## ask for username and password
+        instance.name <- httr::headers(resp)['www-authenticate']
+        if (!is.null(instance.name)) {
+            ## something like 'Basic realm="Demo LaBB-CAT"'
+            instance.name <- stringr::str_replace(instance.name, "^Basic realm=\"", "")
+            instance.name <- stringr::str_replace(instance.name, "\"$", "")
+        } else {
+            instance.name <- "LaBB-CAT"
+        }
+
+        ## loop trying until success, or they cancel out
+        repeat {
+            instance.ok <- labbcatCredentials(
+                labbcat.url,
+                get.hidden.input(paste(instance.name, "Username:", "")),
+                get.hidden.input(paste(instance.name, "Password:", "")))
+            ## NULL means success, but wrong LaBB-CAT version
+            if (is.null(instance.ok)) return(NULL)
+            ## TRUE means everything OK
+            if (instance.ok) break
+        } ## next try
+        
+        ## and try again
+        return(store.get(labbcat.url, call, parameters))
+    } else {
+        return(resp)
+    }
+}
+
+## make an HTTP POST request, asking for credentials if required
+http.post <- function(labbcat.url, path, parameters, file.name) {
+    ## ensure labbcat base URL has a trailing slash
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
+
+    ## build request URL
+    url <- paste(labbcat.url, path, sep="")
+    
+    ## attempt the request
+    resp <- httr::POST(url,
+                       httr::write_disk(file.name, overwrite=TRUE),
+                       httr::timeout(.request.timeout),
+                       body = parameters, encode = "form")
+    ## check we don't need credentials
+    if (httr::status_code(resp) == 401) {
+        ## ask for username and password
+        instance.name <- httr::headers(resp)['www-authenticate']
+        if (!is.null(instance.name)) {
+            ## something like 'Basic realm="Demo LaBB-CAT"'
+            instance.name <- stringr::str_replace(instance.name, "^Basic realm=\"", "")
+            instance.name <- stringr::str_replace(instance.name, "\"$", "")
+        } else {
+            instance.name <- "LaBB-CAT"
+        }
+
+        ## loop trying until success, or they cancel out
+        repeat {
+            instance.ok <- labbcatCredentials(
+                labbcat.url,
+                get.hidden.input(paste(instance.name, "Username:", "")),
+                get.hidden.input(paste(instance.name, "Password:", "")))
+            ## NULL means success, but wrong LaBB-CAT version
+            if (is.null(instance.ok)) return(NULL)
+            ## TRUE means everything OK
+            if (instance.ok) break
+        } ## next try
+        
+        ## and try again
+        return(http.post(labbcat.url, path, parameters, file.name))
+    } else {
+        return(resp)
+    }
+}
+
 ## Export functions:
 
-#' Connects to the given 'LaBB-CAT' instance, and returns and object that
-#' must be used for all other functions.
+#' Sets the username and password that the package should use for connecting
+#' to a given LaBB-CAT server in future function calls.
 #'
-#' If a username and password are not passed, and the 'LaBB-CAT' instance
-#' is password-protected (and the function is called in interactive
-#' mode), then the user will be prompted for the username and
-#' password. This is the recommended method for accessing
-#' password-protected 'LaBB-CAT' instances, in order to avoid saving
-#' passwords in script files. The username and password parameters are
-#' provided for cases where the script is not run in interactive mode.
-#' 
-#' @param url URL to the LaBB-CAT instance
+#' This step is optional, as all functions will prompt the user for the username
+#' and password if required.  If the script is running in RStudio, then the
+#' RStudio password input dialog is used, hiding the credentials from view.
+#' Otherwise, the console is used, and credentials are visible.
+#'
+#' The recommended approach is to *not* use labbcatCredentials, to avoid saving
+#' user credentials in script files that may eventually become visible to other.
+#' Use labbcatCredentials *only* in cases where the script execution is unsupervised.
+#'
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param username The LaBB-CAT username, if it is password-protected
 #' @param password The LaBB-CAT password, if it is password-protected
-#' @param timeout Maximum time for any LaBB-CAT request
-#' @return An object that can be passed as the labbcat parameter for
-#'     other functions in this package 
+#' @return FALSE if the username/password are incorrect,
+#' NULL if they username/password are correct but the version of LaBB-CAT
+#' is incompatible with the package, and TRUE otherwise.
 #' @examples
-#' ## connect to an open or password-protected instance of LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/")
-#'
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
 #' ## connect to a password-protected instance of LaBB-CAT with explicit credentials
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/",
-#'      username="demo", password="demo")
+#' labbcatCredentials(labbcat.url, "demo", "demo")
+#' }
 #'
 #' @keywords connect username password timeout
 #' 
-labbcat.instance <- function(url, username = NULL, password = NULL, timeout = 10) {
-    baseUrl <- url
-    ## ensure baseUrl has a trailing slash
-    if (!grepl("/$", url)) baseUrl <- paste(url, "/", sep="")
+labbcatCredentials <- function(labbcat.url, username, password) {
+    ## ensure labbcat base URL has a trailing slash
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
     
-    storeUrl <- paste(baseUrl, "store?call=", sep="")
-    
-    if (is.null(username)) {
-        authorization <- NULL
-        resp <- httr::GET(storeUrl, httr::timeout(timeout))
-    } else {  
-        authorization <- httr::authenticate(username, password)
-        resp <- httr::GET(storeUrl, authorization, httr::timeout(timeout))
-    }
+    version.check.url <- paste(labbcat.url, "store?call=", sep="")
+    authorization <- httr::authenticate(username, password)
+    resp <- httr::GET(version.check.url, authorization, httr::timeout(.request.timeout))
+
     if (httr::status_code(resp) != 200) { # 200 = OK
-        if (httr::status_code(resp) == 401 && is.null(username) && is.null(password)) {
-            ## it's password-protected, but they haven't provided credentials
-            ## so ask them for the username and password
-            return(labbcat.instance(
-                url, readline("LaBB-CAT Username: "), readline("LaBB-CAT Password: ")))
+        if (httr::status_code(resp) == 401) {
+            return(FALSE)
         } else {
             print(paste("ERROR: ", httr::http_status(resp)$message))
-            return(NULL)
+            return(FALSE)
         }
-    } else { ## respons was OK
-        ## check the LaBB-CAT version
-        resp.content <- httr::content(resp, as="text", encoding="UTF-8")
-        resp.json <- jsonlite::fromJSON(resp.content)
-        version <- resp.json$model$version
-        if (is.null(version) || version < .min.labbcat.version) {
-            print(paste("ERROR:", baseUrl, "is version", version, "but the minimum version is", .min.labbcat.version))
-            return(NULL)
-        } else { ## everything OK
-            return (list(
-                baseUrl = baseUrl,
-                version = version,
-                storeUrl = storeUrl,
-                timeout = timeout,
-                authorization = authorization
-            ))
-        }
-    }
+    } ## not 200 OK
+    
+    ## check the LaBB-CAT version
+    resp.content <- httr::content(resp, as="text", encoding="UTF-8")
+    resp.json <- jsonlite::fromJSON(resp.content)
+    version <- resp.json$model$version
+    if (is.null(version) || version < .min.labbcat.version) {
+        print(paste("ERROR:", labbcat.url, "is version", version, "but the minimum version is", .min.labbcat.version))
+        return(NULL)
+    }        
+    return(TRUE)    
 }
 
 #' Gets the store's ID.
 #' 
 #' The store's ID - i.e. the ID of the 'LaBB-CAT' instance.
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return The annotation store's ID
 #' @examples
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get ID of LaBB-CAT instance
-#' instance.id <- labbcat.getId(labbcat)
+#' instance.id <- getId(labbcat.url)
+#' }
 #'
-labbcat.getId <- function(labbcat) {
-    url <- buildUrl(labbcat, "getId")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getId <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getId")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -155,21 +255,24 @@ labbcat.getId <- function(labbcat) {
 #'
 #' Layer IDs are annotation 'types'.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of layer IDs
 #' 
 #' @examples
+#' \dontrun{
 #' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get names of all layers
-#' layer.ids <- labbcat.getLayerIds(labbcat)
+#' layer.ids <- getLayerIds(labbcat.url)
+#' }
 #' 
 #' @keywords layer
 #' 
-labbcat.getLayerIds <- function(labbcat) {
-    url <- buildUrl(labbcat, "getLayerIds")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getLayerIds <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getLayerIds")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -182,7 +285,7 @@ labbcat.getLayerIds <- function(labbcat) {
 
 #' Gets a list of layer definitions.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of layer definitions, with members:
 #' \enumerate{
 #'  \item{id The layer's unique ID}
@@ -198,19 +301,25 @@ labbcat.getLayerIds <- function(labbcat) {
 #'  \item{validLabels List of valid label values for this layer}
 #' }
 #' 
-#' @seealso \code{\link{labbcat.getLayerIds}}
+#' @seealso \code{\link{getLayerIds}}
 #' @examples
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get definitions of all layers
-#' layers <- labbcat.getLayerIds(labbcat)
+#' layers <- getLayers(labbcat.url)
+#' }
 #' 
 #' @keywords layer
 #' 
-labbcat.getLayers <- function(labbcat) {
-    url <- buildUrl(labbcat, "getLayers")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getLayers <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getLayers")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -223,7 +332,7 @@ labbcat.getLayers <- function(labbcat) {
 
 #' Gets a layer definition.
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id ID of the layer to get the definition for
 #' @return The definition of the given layer, with members:
 #' \enumerate{
@@ -240,20 +349,26 @@ labbcat.getLayers <- function(labbcat) {
 #'  \item{validLabels List of valid label values for this layer}
 #' }
 #' 
-#' @seealso \code{\link{labbcat.getLayerIds}}
-#' \code{\link{labbcat.getLayers}}
+#' @seealso \code{\link{getLayerIds}}
+#' \code{\link{getLayers}}
 #' @examples
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get the definition of the orthography layer
-#' orthography.layer <- labbcat.getLayer(labbcat, "orthography")
+#' orthography.layer <- getLayer(labbcat.url, "orthography")
+#' }
 #'
 #' @keywords layer
 #' 
-labbcat.getLayer <- function(labbcat, id) {
-    url <- buildUrl(labbcat, "getLayer", list(id=id))
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getLayer <- function(labbcat.url, id) {
+    resp <- store.get(labbcat.url, "getLayer", list(id=id))
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -268,21 +383,27 @@ labbcat.getLayer <- function(labbcat, id) {
 #' 
 #' Returns a list of corpora in the given 'LaBB-CAT' instance.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of corpus IDs
 #' 
 #' @examples
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List corpora
-#' corpora <- labbcat.getCorpusIds(labbcat)
+#' corpora <- getCorpusIds(labbcat.url)
+#' }
 #' 
 #' @keywords corpora
 #' 
-labbcat.getCorpusIds <- function(labbcat) {
-    url <- buildUrl(labbcat, "getCorpusIds")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getCorpusIds <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getCorpusIds")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -295,20 +416,26 @@ labbcat.getCorpusIds <- function(labbcat) {
 
 #' List the predefined media tracks available for transcripts.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of media track definitions.
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get the media tracks configured in LaBB-CAT
-#' tracks <- labbcat.getMediaTracks(labbcat)
+#' tracks <- getMediaTracks(labbcat.url)
+#' }
 #' 
 #' @keywords media sound
 #' 
-labbcat.getMediaTracks <- function(labbcat) {
-    url <- buildUrl(labbcat, "getMediaTracks")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getMediaTracks <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getMediaTracks")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -322,21 +449,27 @@ labbcat.getMediaTracks <- function(labbcat) {
 #' Gets a list of participant IDs.
 #'
 #' Returns a list of participant IDs.
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of participant IDs
 #' 
 #' @examples
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List all speakers
-#' speakers <- labbcat.getParticipantIds(labbcat)
+#' speakers <- getParticipantIds(labbcat.url)
+#' }
 #' 
 #' @keywords speaker participant
 #' 
-labbcat.getParticipantIds <- function(labbcat) {
-    url <- buildUrl(labbcat, "getParticipantIds")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getParticipantIds <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getParticipantIds")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -351,21 +484,27 @@ labbcat.getParticipantIds <- function(labbcat) {
 #'
 #' Returns a list of graph IDs (i.e. transcript names).
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of graph IDs
 #' 
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List all transcripts
-#' transcripts <- labbcat.getGraphIds(labbcat)
+#' transcripts <- getGraphIds(labbcat.url)
+#' }
 #' 
 #' @keywords graph transcript
 #' 
-labbcat.getGraphIds <- function(labbcat) {
-    url <- buildUrl(labbcat, "getGraphIds")
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getGraphIds <- function(labbcat.url) {
+    resp <- store.get(labbcat.url, "getGraphIds")
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -380,22 +519,28 @@ labbcat.getGraphIds <- function(labbcat) {
 #'
 #' Returns a list of corpora in the given 'LaBB-CAT' instance.
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id The ID (name) of the corpus
 #' @return A list of corpus IDs
 #' 
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List corpora
-#' corpora <- labbcat.getCorpusIds(labbcat)
+#' corpora <- getGraphIdsInCorpus(labbcat.url, "QB")
+#' }
 #' 
 #' @keywords corpora corpus
 #' 
-labbcat.getGraphIdsInCorpus <- function(labbcat, id) {
-    url <- buildUrl(labbcat, "getGraphIdsInCorpus", list(id=id))
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getGraphIdsInCorpus <- function(labbcat.url, id) {
+    resp <- store.get(labbcat.url, "getGraphIdsInCorpus", list(id=id))
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -411,23 +556,29 @@ labbcat.getGraphIdsInCorpus <- function(labbcat, id) {
 #' Returns a list of IDs of graphs (i.e. transcript names) that include
 #' the given participant.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A participant ID
 #' @return A list of graph IDs
 #' 
-#' @seealso \code{\link{labbcat.getParticipantIds}}
+#' @seealso \code{\link{getParticipantIds}}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List transcripts in which UC427_ViktoriaPapp_A_ENG speaks
-#' transcripts <- labbcat.getGraphIdsWithParticipant(labbcat, "UC427_ViktoriaPapp_A_ENG")
+#' transcripts <- getGraphIdsWithParticipant(labbcat.url, "UC427_ViktoriaPapp_A_ENG")
+#' }
 #' 
 #' @keywords graph transcript
 #' 
-labbcat.getGraphIdsWithParticipant <- function(labbcat, id) {
-    url <- buildUrl(labbcat, "getGraphIdsWithParticipant", list(id=id))
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+getGraphIdsWithParticipant <- function(labbcat.url, id) {
+    resp <- store.get(labbcat.url, "getGraphIdsWithParticipant", list(id=id))
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -453,7 +604,7 @@ labbcat.getGraphIdsWithParticipant <- function(labbcat, id) {
 #' The expression language is currently not well defined, but
 #' expressions such as those in the examples can be used.
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param expression An expression that determines which graphs match
 #' @param pageLength The maximum number of IDs to return, or null to return all
 #' @param pageNumber The zero-based page number to return, or null to return the first page
@@ -462,35 +613,41 @@ labbcat.getGraphIdsWithParticipant <- function(labbcat, id) {
 #' @return A list of graph IDs (i.e. transcript names)
 #' 
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get all transcripts whose names start with "BR"
-#' transcripts <- labbcat.getMatchingGraphIdsPage(labbcat, "id MATCHES 'BR.+'")
+#' transcripts <- getMatchingGraphIds(labbcat.url, "id MATCHES 'BR.+'")
 #' 
 #' ## Get the first twenty transcripts in the "QB" corpus
-#' transcripts <- labbcat.getMatchingGraphIdsPage(
-#'         labbcat, "my('corpus').label = 'QB'", 20, 0)
+#' transcripts <- getMatchingGraphIds(
+#'         labbcat.url, "my('corpus').label = 'QB'", 20, 0)
 #' 
 #' ## Get the second transcript that has "QB247_Jacqui" as a speaker
-#' transcripts <- labbcat.getMatchingGraphIdsPage(
-#'         labbcat, "'QB247_Jacqui' IN labels('who')", 1, 1)
+#' transcripts <- getMatchingGraphIds(
+#'         labbcat.url, "'QB247_Jacqui' IN labels('who')", 1, 1)
 #' 
 #' ## Get all transcripts whose names start with "BR" and have "QB247_Jacqui" as a speaker,
 #' ## in word-count order 
-#' transcripts <- labbcat.getMatchingGraphIdsPage(
-#'         labbcat, "my('corpus').label = 'QB' AND 'QB247_Jacqui' IN labels('who')", 1, 1,
+#' transcripts <- getMatchingGraphIds(
+#'         labbcat.url, "my('corpus').label = 'QB' AND 'QB247_Jacqui' IN labels('who')", 1, 1,
 #'         "my('transcript_word_count').label")
+#' }
 #' 
 #' @keywords graph transcript expression
 #' 
-labbcat.getMatchingGraphIdsPage <- function(labbcat, expression, pageLength = NULL, pageNumber = NULL, order = NULL) {
+getMatchingGraphIds <- function(labbcat.url, expression, pageLength = NULL, pageNumber = NULL, order = NULL) {
     parameters <- list(expression=expression)
     if (!is.null(pageLength)) parameters <- append(parameters, list(pageLength=pageLength))
     if (!is.null(pageNumber)) parameters <- append(parameters, list(pageNumber=pageNumber))
     if (!is.null(order)) parameters <- append(parameters, list(order=order))
-    url <- buildUrl(labbcat, "getMatchingGraphIdsPage", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "getMatchingGraphIdsPage", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -506,28 +663,34 @@ labbcat.getMatchingGraphIdsPage <- function(labbcat, expression, pageLength = NU
 #' Returns the number of annotations on the given layer of the given
 #' graph (transcript).
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A graph ID (i.e. transcript name)
 #' @param layerId A layer name
 #' @return The number of annotations on that layer
 #' 
 #' @seealso
-#' \code{\link{labbcat.getGraphIds}}
-#' \code{\link{labbcat.getGraphIdsInCorpus}}
-#' \code{\link{labbcat.getGraphIdsWithParticipant}}
+#' \code{\link{getGraphIds}}
+#' \code{\link{getGraphIdsInCorpus}}
+#' \code{\link{getGraphIdsWithParticipant}}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Count the number of words in UC427_ViktoriaPapp_A_ENG.eaf
-#' token.count <- labbcat.countAnnotations(labbcat, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
+#' token.count <- countAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
+#' }
 #' 
 #' @keywords graph transcript
 #' 
-labbcat.countAnnotations <- function(labbcat, id, layerId) {
+countAnnotations <- function(labbcat.url, id, layerId) {
     parameters <- list(id=id, layerId=layerId)
-    url <- buildUrl(labbcat, "countAnnotations", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "countAnnotations", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -543,7 +706,7 @@ labbcat.countAnnotations <- function(labbcat, id, layerId) {
 #' Returns the annotations on the given layer of the given graph
 #' (transcript).
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A graph ID (i.e. transcript name)
 #' @param layerId A layer name
 #' @param pageLength The maximum number of annotations to return, or null to return all
@@ -562,28 +725,34 @@ labbcat.countAnnotations <- function(labbcat, id, layerId) {
 #' }
 #' 
 #' @seealso 
-#'   \code{\link{labbcat.getGraphIds}}
-#'   \code{\link{labbcat.getGraphIdsInCorpus}}
-#'   \code{\link{labbcat.getGraphIdsWithParticipant}}
-#'   \code{\link{labbcat.countAnnotations}}
+#'   \code{\link{getGraphIds}}
+#'   \code{\link{getGraphIdsInCorpus}}
+#'   \code{\link{getGraphIdsWithParticipant}}
+#'   \code{\link{countAnnotations}}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get all the orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
-#' orthography <- labbcat.getAnnotations(labbcat, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
+#' orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 #' 
 #' ## Get the first 20 orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
-#' orthography <- labbcat.getAnnotations(labbcat, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
+#' orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
+#' }
 #'
 #' @keywords graph transcript
 #' 
-labbcat.getAnnotations <- function(labbcat, id, layerId, pageLength = NULL, pageNumber = NULL) {
+getAnnotations <- function(labbcat.url, id, layerId, pageLength = NULL, pageNumber = NULL) {
     parameters <- list(id=id, layerId=layerId)
     if (!is.null(pageLength)) parameters <- append(parameters, list(pageLength=pageLength))
     if (!is.null(pageNumber)) parameters <- append(parameters, list(pageNumber=pageNumber))
-    url <- buildUrl(labbcat, "getAnnotations", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "getAnnotations", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -598,7 +767,7 @@ labbcat.getAnnotations <- function(labbcat, id, layerId, pageLength = NULL, page
 #'
 #' Lists the given anchors in the given graph (transcript).
 #' 
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A graph ID (i.e. transcript name)
 #' @param anchorId A vector of anchor IDs (or a string representing one anchor ID)
 #' @return  A named list of anchors, with members:
@@ -610,24 +779,30 @@ labbcat.getAnnotations <- function(labbcat, id, layerId, pageLength = NULL, page
 #'   e.g. 10: default value, 50: force-aligned, 100: manually aligned}
 #' }
 #' 
-#' @seealso \link{labbcat.getAnnotations}
+#' @seealso \link{getAnnotations}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get the first 20 orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
-#' orthography <- labbcat.getAnnotations(labbcat, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
+#' orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
 #' 
 #' ## Get the start anchors the above tokens
-#' word.starts <- labbcat.getAnchors(labbcat, "UC427_ViktoriaPapp_A_ENG.eaf", orthography$startId)
+#' word.starts <- getAnchors(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", orthography$startId)
+#' }
 #' 
 #' @keywords anchor
 #' 
-labbcat.getAnchors <- function(labbcat, id, anchorId) {
+getAnchors <- function(labbcat.url, id, anchorId) {
     parameters <- list(id=id)
     for (id in anchorId) parameters <- append(parameters, list(anchorId=id))
-    url <- buildUrl(labbcat, "getAnchors", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "getAnchors", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -640,7 +815,7 @@ labbcat.getAnchors <- function(labbcat, id, anchorId) {
 
 #' List the media available for the given graph.
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A graph ID (i.e. transcript name)
 #' @return A named list of media files available for the given graph, with members:
 #' \enumerate{
@@ -650,20 +825,26 @@ labbcat.getAnchors <- function(labbcat, id, anchorId) {
 #'  \item{name Name of the file}
 #' }
 #' 
-#' @seealso \link{labbcat.getGraphIds}
+#' @seealso \link{getGraphIds}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## List the media files available for BR2044_OllyOhlson.eaf
-#' media <- labbcat.getAvailableMedia(labbcat, "BR2044_OllyOhlson.eaf")
+#' media <- getAvailableMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
+#' }
 #' 
 #' @keywords media audio
 #' 
-labbcat.getAvailableMedia <- function(labbcat, id) {
+getAvailableMedia <- function(labbcat.url, id) {
     parameters <- list(id=id)
-    url <- buildUrl(labbcat, "getAvailableMedia", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "getAvailableMedia", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -676,28 +857,34 @@ labbcat.getAvailableMedia <- function(labbcat, id) {
 
 #' Gets a given media track for a given graph.
 #'
-#' @param labbcat A LaBB-CAT instance object previously created by a call to labbcat.instance
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A graph ID (i.e. transcript name)
 #' @param trackSuffix The track suffix of the media
 #' @param mimeType The MIME type of the media
 #' @return A URL to the given media for the given graph
-#' @seealso \link{labbcat.getGraphIds}
+#' @seealso \link{getGraphIds}
 #' @examples 
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get URL for the WAV file for BR2044_OllyOhlson.eaf
-#' media <- labbcat.getMedia(labbcat, "BR2044_OllyOhlson.eaf")
+#' media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 #' 
 #' ## Get URL for the 'QuakeFace' video file for BR2044_OllyOhlson.eaf
-#' media <- labbcat.getMedia(labbcat, "BR2044_OllyOhlson.eaf", "_face", "video/mp4")
+#' media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "video/mp4")
+#' }
 #' 
 #' @keywords media audio
 #' 
-labbcat.getMedia <- function(labbcat, id, trackSuffix = "", mimeType = "audio/wav") {
+getMedia <- function(labbcat.url, id, trackSuffix = "", mimeType = "audio/wav") {
     parameters <- list(id=id, trackSuffix=trackSuffix, mimeType=mimeType)
-    url <- buildUrl(labbcat, "getMedia", parameters)
-    resp <- httr::GET(url, labbcat$authorization, httr::timeout(labbcat$timeout))
+    resp <- store.get(labbcat.url, "getMedia", parameters)
+    if (is.null(resp)) return()
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
     if (httr::status_code(resp) != 200) { # 200 = OK
         print(paste("ERROR: ", httr::http_status(resp)$message))
@@ -710,10 +897,7 @@ labbcat.getMedia <- function(labbcat, id, trackSuffix = "", mimeType = "audio/wa
 
 #' Gets a sound fragment from 'LaBB-CAT'.
 #'
-#' Extracts part of a WAV file.
-#' 
-#' @param labbcat A LaBB-CAT instance object previously created by a
-#'     call to labbcat.instance 
+#' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id The graph ID (transcript name) of the sound recording, or
 #'     a vector of graph IDs. 
 #' @param start The start time in seconds, or a vector of start times.
@@ -732,29 +916,37 @@ labbcat.getMedia <- function(labbcat, id, trackSuffix = "", mimeType = "audio/wa
 #' 
 #' @examples
 #' \dontrun{
-#' ## Connect to LaBB-CAT
-#' labbcat <- labbcat.instance("https://labbcat.canterbury.ac.nz/demo/", "demo", "demo")
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
 #' 
 #' ## Get the 5 seconds starting from 10s after the beginning of a recording
-#' wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0)
+#' wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0)
 #' 
 #' ## Get the 5 seconds starting from 10s as a mono 22kHz file
-#' wav.file <- labbcat.getSoundFragment(labbcat, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+#' wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
 #' 
-#' ## Get a list of fragments
+#' ## Load some search results, normally something like:
+#' ##  results <- read.csv("results.csv", header=T)
+#' ## ...but for demonstration purposes:
 #' results <- data.frame(
 #'              id=c("AP2505_Nelson.eaf", "AP2512_MattBlack.eaf", "AP2512_MattBlack.eaf"),
 #'              start=c(10.0, 20.0, 30.0),
 #'              end=c(15.0, 25.0, 35.0))
-#' wav.files <- labbcat.getSoundFragment(labbcat, results$id, results$start, results$end)
+#' 
+#' ## Get a list of fragments
+#' wav.files <- getSoundFragment(labbcat.url, results$id, results$start, results$end)
 #' 
 #' ## Get a list of fragments with no prgress bar
-#' wav.file <- labbcat.getSoundFragment(
+#' wav.file <- getSoundFragment(
 #'               labbcat, results$id, results$start, results$end, no.progress=TRUE)
 #' }
 #' @keywords sample sound fragment wav
 #' 
-labbcat.getSoundFragment <- function(labbcat, id, start, end, sampleRate = NULL, no.progress=FALSE) {
+getSoundFragment <- function(labbcat.url, id, start, end, sampleRate = NULL, no.progress=FALSE) {
     if (length(id) == 1) { ## one fragment
         dir <- ""
     } else { ## multiple fragments
@@ -787,16 +979,12 @@ labbcat.getSoundFragment <- function(labbcat, id, start, end, sampleRate = NULL,
     file.names = c()
     r <- 1
     for (graph.id in id) {
-        url <- paste(labbcat$baseUrl, "soundfragment", sep="")
         parameters <- list(id=graph.id, start=start[r], end=end[r])
         if (!is.null(sampleRate)) parameters <- list(id=graph.id, start=start[r], end=end[r], sampleRate=sampleRate)
         file.name <- paste(dir, stringr::str_replace(graph.id, "\\.[^.]+$",""), "__", start[r], "-", end[r], ".wav", sep="")
 
         tryCatch({
-            resp <- httr::POST(url, labbcat$authorization,
-                               httr::write_disk(file.name, overwrite=TRUE),
-                               httr::timeout(labbcat$timeout),
-                               body = parameters, encode = "form")
+            resp <- http.post(labbcat.url, "soundfragment", parameters, file.name)
             if (httr::status_code(resp) != 200) { # 200 = OK
                 print(paste("ERROR: ", httr::http_status(resp)$message))
                 if (httr::status_code(resp) != 404) { # 404 means the audio wasn't on the server
@@ -827,4 +1015,99 @@ labbcat.getSoundFragment <- function(labbcat, id, start, end, sampleRate = NULL,
     } ## next row
     if (!is.null(pb)) close(pb)
     return(file.names)   
+}
+
+#' Gets labels of annotations on a given layer, identified by given annotation IDs.
+#'
+#' @param labbcat.url URL to the LaBB-CAT instance
+#' @param id A vector of annotation IDs. 
+#' @param layerId A layer name.
+#' @param count The number of annotations on the given layer to retrieve.
+#' @param no.progress Optionally suppress the progress bar when
+#'     multiple fragments are  specified - TRUE for no progress bar.
+#' @return A data frame of labels.
+#' 
+#' @examples
+#' \dontrun{
+#' ## define the LaBB-CAT URL
+#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+#' 
+#' ## specify the username/password in the script
+#' ## (only use labbcatCredentials for scripts that must execute unsupervised!)
+#' labbcatCredentials(labbcat.url, "demo", "demo")
+#' 
+#' ## Load some serach results, normally something like:
+#' ##  results <- read.csv("results.csv", header=T)
+#' ## ...but for demonstration purposes:
+#' results <- data.frame(
+#'              id=c("AP513_Steve.eaf", "AP513_Steve.eaf", "AP513_Steve.eaf"),
+#'              MatchId=c("g_6;em_12_419;n_9243-n_9245;p_14;#=ew_0_7260;[0]=ew_0_7260",
+#'                        "g_6;em_12_429;n_9263-n_9265;p_14;#=ew_0_7487;[0]=ew_0_7487",
+#'                        "g_6;em_12_440;n_9285-n_9287;p_14;#=ew_0_7704;[0]=ew_0_7704"))
+#'
+#' ## Get the topic annotations for the matches
+#' topics <- getAnnotationLabels(labbcat.url, results$MatchId, "topic")
+#' }
+#' 
+#' @keywords layer annotation label
+#' 
+getAnnotationLabels <- function(labbcat.url, id, layerId, count=1, no.progress=FALSE) {
+
+    pb <- NULL
+    if (!no.progress && length(id) > 1) {
+        pb <- txtProgressBar(min = 0, max = length(id), style = 3)        
+    }
+
+    ## we need a vector of size 'count' to store vectors of labels
+    labels = c()
+    for (col in 1:count) labels <- append(labels, c())
+    
+    ## loop through each id, getting fragments individually
+    r <- 1
+    for (annotation.id in id) {
+        ## if the ID is actually a URL or MatchId, pick out the ew_0_n+ part
+        annotation.id <- stringr::str_match(annotation.id, "ew_0_[0-9]+")
+        ## TODO can't necessarily assume that annotation.id is on the transcript layer
+        expression = paste("my('transcript').id = '", annotation.id, "' AND layer.id = '",layerId,"'", sep="")
+        parameters <- list(expression=expression, pageLength=count, pageNumber=0)
+        resp <- store.get(labbcat.url, "getMatchingAnnotations", parameters)
+        if (is.null(resp)) return()
+        
+        ## create default row
+        row <- c()
+        ## fill it with NA
+        for (col in 1:count) row <- append(row, NA)
+
+        resp.content <- httr::content(resp, as="text", encoding="UTF-8")
+        if (httr::status_code(resp) != 200) { # 200 = OK
+            print(paste("ERROR: ", httr::http_status(resp)$message))
+        } else {
+            resp.json <- jsonlite::fromJSON(resp.content)
+            if (length(resp.json$model$result) > 0) {
+                ## populate the row
+                for (col in 1:count) {
+                    row[col] <- resp.json$model$result$label[col]
+                }
+            }
+        }
+        labels <- append(labels, row)
+        
+        if (!is.null(pb)) setTxtProgressBar(pb, r)
+        r <- r+1
+    } ## next row
+    if (!is.null(pb)) close(pb)
+    cols <- c()
+    for (col in 1:count) {
+        if (count == 1) {
+            col.name <- layerId
+        } else {
+            col.name <- paste(layerId,".",col,sep="")
+        }
+        cols <- append(cols, col.name)
+    }
+    labels.matrix <- matrix(labels, ncol=count, byrow=TRUE)
+    colnames(labels.matrix) <- cols
+    labels.df <- as.data.frame(labels.matrix, col.names=cols)
+
+    return(labels.df)
 }

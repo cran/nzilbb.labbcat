@@ -1,2 +1,21 @@
-exportPattern("labbcat.+")
+export(labbcatCredentials,
+       getId,
+       getLayerIds,
+       getLayers,
+       getLayer,
+       getCorpusIds,
+       getMediaTracks,
+       getParticipantIds,
+       getGraphIds,
+       getGraphIdsInCorpus,
+       getGraphIdsWithParticipant,
+       getMatchingGraphIds,
+       countAnnotations,
+       getAnnotations,
+       getAnchors,
+       getAvailableMedia,
+       getMedia,
+       getSoundFragment,
+       getAnnotationLabels)
 importFrom("utils", "URLencode", "setTxtProgressBar", "txtProgressBar")
+importFrom("rstudioapi", "askForPassword")
