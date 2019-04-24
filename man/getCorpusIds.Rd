@@ -17,15 +17,8 @@ Returns a list of corpora in the given 'LaBB-CAT' instance.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## List corpora
-corpora <- getCorpusIds(labbcat.url)
+corpora <- getCorpusIds("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

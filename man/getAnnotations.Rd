@@ -41,10 +41,6 @@ Returns the annotations on the given layer of the given graph
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get all the orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
 orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 

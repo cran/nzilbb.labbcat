@@ -42,10 +42,6 @@ expressions such as those in the examples can be used.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get all transcripts whose names start with "BR"
 transcripts <- getMatchingGraphIds(labbcat.url, "id MATCHES 'BR.+'")
 

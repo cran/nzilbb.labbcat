@@ -23,10 +23,6 @@ the given participant.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## List transcripts in which UC427_ViktoriaPapp_A_ENG speaks
 transcripts <- getGraphIdsWithParticipant(labbcat.url, "UC427_ViktoriaPapp_A_ENG")
 }

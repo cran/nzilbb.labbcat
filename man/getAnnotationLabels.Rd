@@ -30,18 +30,8 @@ Gets labels of annotations on a given layer, identified by given annotation IDs.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
-## Load some serach results, normally something like:
-##  results <- read.csv("results.csv", header=T)
-## ...but for demonstration purposes:
-results <- data.frame(
-             id=c("AP513_Steve.eaf", "AP513_Steve.eaf", "AP513_Steve.eaf"),
-             MatchId=c("g_6;em_12_419;n_9243-n_9245;p_14;#=ew_0_7260;[0]=ew_0_7260",
-                       "g_6;em_12_429;n_9263-n_9265;p_14;#=ew_0_7487;[0]=ew_0_7487",
-                       "g_6;em_12_440;n_9285-n_9287;p_14;#=ew_0_7704;[0]=ew_0_7704"))
+## Load some search results previously exported from LaBB-CAT
+results <- read.csv("results.csv", header=T)
 
 ## Get the topic annotations for the matches
 topics <- getAnnotationLabels(labbcat.url, results$MatchId, "topic")

@@ -40,30 +40,21 @@ Gets a sound fragment from 'LaBB-CAT'.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get the 5 seconds starting from 10s after the beginning of a recording
 wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0)
 
 ## Get the 5 seconds starting from 10s as a mono 22kHz file
 wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
 
-## Load some search results, normally something like:
-##  results <- read.csv("results.csv", header=T)
-## ...but for demonstration purposes:
-results <- data.frame(
-             id=c("AP2505_Nelson.eaf", "AP2512_MattBlack.eaf", "AP2512_MattBlack.eaf"),
-             start=c(10.0, 20.0, 30.0),
-             end=c(15.0, 25.0, 35.0))
+## Load some search results previously exported from LaBB-CAT
+results <- read.csv("results.csv", header=T)
 
 ## Get a list of fragments
-wav.files <- getSoundFragment(labbcat.url, results$id, results$start, results$end)
+wav.files <- getSoundFragment(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 
 ## Get a list of fragments with no prgress bar
 wav.file <- getSoundFragment(
-              labbcat, results$id, results$start, results$end, no.progress=TRUE)
+              labbcat, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
 }
 }
 \keyword{fragment}

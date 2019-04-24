@@ -30,15 +30,8 @@ Gets a list of layer definitions.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get definitions of all layers
-layers <- getLayers(labbcat.url)
+layers <- getLayers("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

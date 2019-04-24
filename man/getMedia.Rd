@@ -26,10 +26,6 @@ Gets a given media track for a given graph.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get URL for the WAV file for BR2044_OllyOhlson.eaf
 media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 

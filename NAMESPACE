@@ -16,6 +16,8 @@ export(labbcatCredentials,
        getAvailableMedia,
        getMedia,
        getSoundFragment,
-       getAnnotationLabels)
-importFrom("utils", "URLencode", "setTxtProgressBar", "txtProgressBar")
+       getAnnotationLabels,
+       getDictionaries,
+       getDictionaryEntries)
+importFrom("utils", "URLencode", "setTxtProgressBar", "txtProgressBar", "head", "read.csv", "write.table")
 importFrom("rstudioapi", "askForPassword")

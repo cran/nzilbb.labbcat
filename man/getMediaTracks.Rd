@@ -17,15 +17,8 @@ List the predefined media tracks available for transcripts.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get the media tracks configured in LaBB-CAT
-tracks <- getMediaTracks(labbcat.url)
+tracks <- getMediaTracks("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

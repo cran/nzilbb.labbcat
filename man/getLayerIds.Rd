@@ -17,12 +17,8 @@ Layer IDs are annotation 'types'.
 }
 \examples{
 \dontrun{
-## Connect to LaBB-CAT
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get names of all layers
-layer.ids <- getLayerIds(labbcat.url)
+layer.ids <- getLayerIds("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

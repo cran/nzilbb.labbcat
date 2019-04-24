@@ -28,10 +28,6 @@ List the media available for the given graph.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## List the media files available for BR2044_OllyOhlson.eaf
 media <- getAvailableMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 }

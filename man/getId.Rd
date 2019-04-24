@@ -17,15 +17,8 @@ The store's ID - i.e. the ID of the 'LaBB-CAT' instance.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## Get ID of LaBB-CAT instance
-instance.id <- getId(labbcat.url)
+instance.id <- getId("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

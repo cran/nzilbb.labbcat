@@ -17,15 +17,8 @@ Returns a list of graph IDs (i.e. transcript names).
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
-
 ## List all transcripts
-transcripts <- getGraphIds(labbcat.url)
+transcripts <- getGraphIds("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }

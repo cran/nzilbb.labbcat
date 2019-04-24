@@ -14,7 +14,7 @@
 
 'LaBB-CAT' is a web-based language corpus management system and this
 package provides access to data stored in a 'LaBB-CAT' instance.
-You must have at least version 20190412.1154 of 'LaBB-CAT' to use
+You must have at least version 20190424.1154 of 'LaBB-CAT' to use
 this package.
 }
 \examples{
@@ -22,12 +22,14 @@ this package.
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## optionally specify the username/password in the script
-## (if this is not done, we will be prompted for the username/password)
-labbcatCredentials(labbcat.url, "demo", "demo")
+## Load some search results previously exported from LaBB-CAT
+results <- read.csv("results.csv", header=T)
 
-## Get the 5 seconds starting from 10s as a mono 22kHz file
-wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+## Get the phonemic transcriptions for the matches
+phonemes <- getAnnotationLabels(labbcat.url, results$MatchId, "phonemes")
+
+## Get sound fragments for the matches
+wav.files <- getSoundFragment(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 }
 
 }

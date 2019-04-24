@@ -35,7 +35,8 @@ Use labbcatCredentials *only* in cases where the script execution is unsupervise
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## connect to a password-protected instance of LaBB-CAT with explicit credentials
+## specify the username/password in the script
+## (only use labbcatCredentials for scripts that must execute unsupervised!)
 labbcatCredentials(labbcat.url, "demo", "demo")
 }
 
