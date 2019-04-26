@@ -7,7 +7,7 @@
 #' 
 #' 'LaBB-CAT' is a web-based language corpus management system and this
 #' package provides access to data stored in a 'LaBB-CAT' instance.
-#' You must have at least version 20190424.1154 of 'LaBB-CAT' to use
+#' You must have at least version 20190425.1121 of 'LaBB-CAT' to use
 #' this package.
 #' 
 #' @docType package
@@ -29,7 +29,7 @@
 #' phonemes <- getAnnotationLabels(labbcat.url, results$MatchId, "phonemes")
 #'
 #' ## Get sound fragments for the matches
-#' wav.files <- getSoundFragment(labbcat.url, results$Transcript, results$Line, results$LineEnd)
+#' wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 #' }
 #' 
 NULL
@@ -79,16 +79,16 @@ store.get <- function(labbcat.url, call, parameters = NULL) {
     ## build request URL
     url <- paste(labbcat.url, "store?call=", call, sep="")
     if (!is.null(parameters)) {
-        for (name in names(parameters)) {
-            url <- paste(url, "&", name, "=", parameters[name], sep="")
-        } # next parameter
+        mapply(function(name, value) {
+            url <<- paste(url, "&", name, "=", value, sep="")
+        }, names(parameters), parameters)
     } # there are parameters
     url <- enc(url)
     
     ## attempt the request
     resp <- httr::GET(url, httr::timeout(.request.timeout))
     ## check we don't need credentials
-    if (httr::status_code(resp) == 401) {
+    if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
         instance.name <- httr::headers(resp)['www-authenticate']
         if (!is.null(instance.name)) {
@@ -134,7 +134,7 @@ http.get <- function(labbcat.url, path, parameters = NULL, content.type = "appli
     ## attempt the request
     resp <- httr::GET(url, httr::timeout(.request.timeout), httr::add_headers("Accepts" = content.type))
     ## check we don't need credentials
-    if (httr::status_code(resp) == 401) {
+    if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
         instance.name <- httr::headers(resp)['www-authenticate']
         if (!is.null(instance.name)) {
@@ -171,7 +171,6 @@ http.post <- function(labbcat.url, path, parameters, file.name) {
 
     ## build request URL
     url <- paste(labbcat.url, path, sep="")
-    print(url)
     
     ## attempt the request
     resp <- httr::POST(url,
@@ -179,7 +178,7 @@ http.post <- function(labbcat.url, path, parameters, file.name) {
                        httr::timeout(.request.timeout),
                        body = parameters, encode = "form")
     ## check we don't need credentials
-    if (httr::status_code(resp) == 401) {
+    if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
         instance.name <- httr::headers(resp)['www-authenticate']
         if (!is.null(instance.name)) {
@@ -216,7 +215,6 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name) {
 
     ## build request URL
     url <- paste(labbcat.url, path, sep="")
-    print(url)
     
     ## attempt the request
     resp <- httr::POST(url,
@@ -224,7 +222,7 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name) {
                        httr::timeout(.request.timeout),
                        body = parameters, encode = "multipart")
     ## check we don't need credentials
-    if (httr::status_code(resp) == 401) {
+    if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
         instance.name <- httr::headers(resp)['www-authenticate']
         if (!is.null(instance.name)) {
@@ -302,6 +300,10 @@ labbcatCredentials <- function(labbcat.url, username, password) {
             return(FALSE)
         }
     } ## not 200 OK
+
+    ## do a second request
+    ## - this seems to be required for credentials to 'take' in non-interactive mode
+    resp <- httr::GET(version.check.url, authorization, httr::timeout(.request.timeout))
     
     ## check the LaBB-CAT version
     resp.content <- httr::content(resp, as="text", encoding="UTF-8")
@@ -336,6 +338,7 @@ getId <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -364,6 +367,7 @@ getLayerIds <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -404,6 +408,7 @@ getLayers <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -446,6 +451,7 @@ getLayer <- function(labbcat.url, id) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -474,6 +480,7 @@ getCorpusIds <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -499,6 +506,7 @@ getMediaTracks <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -526,6 +534,7 @@ getParticipantIds <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -554,6 +563,7 @@ getGraphIds <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -583,6 +593,7 @@ getGraphIdsInCorpus <- function(labbcat.url, id) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -617,6 +628,7 @@ getGraphIdsWithParticipant <- function(labbcat.url, id) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -682,6 +694,7 @@ getMatchingGraphIds <- function(labbcat.url, expression, pageLength = NULL, page
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -721,6 +734,7 @@ countAnnotations <- function(labbcat.url, id, layerId) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -779,6 +793,7 @@ getAnnotations <- function(labbcat.url, id, layerId, pageLength = NULL, pageNumb
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -825,6 +840,7 @@ getAnchors <- function(labbcat.url, id, anchorId) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -863,6 +879,7 @@ getAvailableMedia <- function(labbcat.url, id) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
@@ -899,10 +916,11 @@ getMedia <- function(labbcat.url, id, trackSuffix = "", mimeType = "audio/wav") 
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model$result)
 }
 
-#' Gets a sound fragment from 'LaBB-CAT'.
+#' Gets sound fragments from 'LaBB-CAT'.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id The graph ID (transcript name) of the sound recording, or
@@ -927,24 +945,24 @@ getMedia <- function(labbcat.url, id, trackSuffix = "", mimeType = "audio/wav") 
 #' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 #' 
 #' ## Get the 5 seconds starting from 10s after the beginning of a recording
-#' wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0)
+#' wav.file <- getSoundFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0)
 #' 
 #' ## Get the 5 seconds starting from 10s as a mono 22kHz file
-#' wav.file <- getSoundFragment(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
+#' wav.file <- getSoundFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, 22050)
 #' 
 #' ## Load some search results previously exported from LaBB-CAT
 #' results <- read.csv("results.csv", header=T)
 #' 
 #' ## Get a list of fragments
-#' wav.files <- getSoundFragment(labbcat.url, results$Transcript, results$Line, results$LineEnd)
+#' wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 #' 
 #' ## Get a list of fragments with no prgress bar
-#' wav.file <- getSoundFragment(
-#'               labbcat, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
+#' wav.file <- getSoundFragments(
+#'               labbcat.url, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
 #' }
 #' @keywords sample sound fragment wav
 #' 
-getSoundFragment <- function(labbcat.url, id, start, end, sampleRate = NULL, no.progress=FALSE) {
+getSoundFragments <- function(labbcat.url, id, start, end, sampleRate = NULL, no.progress=FALSE) {
     if (length(id) == 1) { ## one fragment
         dir <- ""
     } else { ## multiple fragments
@@ -1071,6 +1089,7 @@ getAnnotationLabels <- function(labbcat.url, id, layerId, count=1, no.progress=F
             print(paste("ERROR: ", httr::http_status(resp)$message))
         } else {
             resp.json <- jsonlite::fromJSON(resp.content)
+            for (error in resp.json$errors) print(error)
             if (length(resp.json$model$result) > 0) {
                 ## populate the row
                 for (col in 1:count) {
@@ -1103,7 +1122,7 @@ getAnnotationLabels <- function(labbcat.url, id, layerId, count=1, no.progress=F
 #' List the dictionaries available.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
-#' @return A named list of layer manager IDs, each of which containing a named list of
+#' @return A named list of layer manager IDs, each of which containing a list of
 #' dictionaries that the layer manager makes available.
 #' 
 #' @seealso \link{getDictionaryEntries}
@@ -1125,6 +1144,7 @@ getDictionaries <- function(labbcat.url) {
         return()
     }
     resp.json <- jsonlite::fromJSON(resp.content)
+    for (error in resp.json$errors) print(error)
     return(resp.json$model)
 }
 

@@ -10,7 +10,7 @@ getDictionaries(labbcat.url)
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 }
 \value{
-A named list of layer manager IDs, each of which containing a named list of
+A named list of layer manager IDs, each of which containing a list of
 dictionaries that the layer manager makes available.
 }
 \description{
