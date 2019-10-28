@@ -49,12 +49,13 @@ getMatchingGraphIds(labbcat.url, "'QB247_Jacqui' IN labels('who')", 1, 0)
 ## Get all transcripts whose names start with "BR" and have "QB247_Jacqui" as a speaker,
 ## in word-count order 
 getMatchingGraphIds(labbcat.url, "my('corpus').label = 'QB' AND 'QB247_Jacqui' IN labels('who')",
-                    1, 0, "my('transcript_word count').label")
+                    1, 0, "my('transcript_word count').label ASC")
 
 ## Count the number of words in UC427_ViktoriaPapp_A_ENG.eaf
 countAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 
 ## Get all the orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
+labbcatTimeout(60)
 getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 
 ## Get the first 20 orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
@@ -90,10 +91,10 @@ results <- data.frame(
     LineEnd=c(15.0, 25.0, 35.0))
  
 ## Get a list of fragments
-wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
+wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd, path="test")
 wav.files
 file.remove(wav.files)
-file.remove("fragments")
+file.remove("test")
 
 ## Get a list of fragments with no progress bar
 wav.files <- getSoundFragments(
@@ -101,6 +102,13 @@ wav.files <- getSoundFragments(
 wav.files
 file.remove(wav.files)
 file.remove("fragments")
+
+## Get a list of fragment textgrids
+textgrid.files <- getFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd,
+                               c("transcript", "phonemes"), path="test") 
+textgrid.files
+file.remove(textgrid.files)
+file.remove("test")
 
 ## simulate some results
 results <- data.frame(

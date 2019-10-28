@@ -14,7 +14,7 @@
 
 'LaBB-CAT' is a web-based language corpus management system and this
 package provides access to data stored in a 'LaBB-CAT' instance.
-You must have at least version 20190425.1121 of 'LaBB-CAT' to use
+You must have at least version 20191022.1827 of 'LaBB-CAT' to use
 this package.
 }
 \examples{
