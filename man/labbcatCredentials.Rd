@@ -15,9 +15,10 @@ labbcatCredentials(labbcat.url, username, password)
 \item{password}{The LaBB-CAT password, if it is password-protected}
 }
 \value{
-FALSE if the username/password are incorrect,
-NULL if they username/password are correct but the version of LaBB-CAT
-is incompatible with the package, and TRUE otherwise.
+NULL if the username/password are correct, and a string describing the problem
+    if a problem occurred, e.g. "Credentials rejected" if the username/password are
+    incorrect, or a string starting "Version mismatch" if the server's version of
+    LaBB-CAT is lower than the minimum required.
 }
 \description{
 This step is optional, as all functions will prompt the user for the username
