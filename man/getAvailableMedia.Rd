@@ -2,17 +2,17 @@
 % Please edit documentation in R/getAvailableMedia.R
 \name{getAvailableMedia}
 \alias{getAvailableMedia}
-\title{List the media available for the given graph.}
+\title{List the media available for the given transcript.}
 \usage{
 getAvailableMedia(labbcat.url, id)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{A graph ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name)}
 }
 \value{
-A named list of media files available for the given graph, with members:
+A named list of media files available for the given transcript, with members:
 \itemize{
  \item{\emph{trackSuffix} The track suffix of the media}
  \item{\emph{mimeType} The MIME type of the file}
@@ -21,7 +21,7 @@ A named list of media files available for the given graph, with members:
 }
 }
 \description{
-List the media available for the given graph.
+List the media available for the given transcript.
 }
 \examples{
 \dontrun{
@@ -34,7 +34,7 @@ media <- getAvailableMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 
 }
 \seealso{
-\link{getGraphIds}
+\link{getTranscriptIds}
 }
 \keyword{audio}
 \keyword{media}

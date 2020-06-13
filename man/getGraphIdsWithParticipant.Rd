@@ -2,7 +2,7 @@
 % Please edit documentation in R/getGraphIdsWithParticipant.R
 \name{getGraphIdsWithParticipant}
 \alias{getGraphIdsWithParticipant}
-\title{Gets a list of IDs of graphs that include the given participant.}
+\title{Deprecated synonym for getTranscriptIdsWithParticipant.}
 \usage{
 getGraphIdsWithParticipant(labbcat.url, id)
 }
@@ -29,7 +29,7 @@ transcripts <- getGraphIdsWithParticipant(labbcat.url, "UC427_ViktoriaPapp_A_ENG
 
 }
 \seealso{
-\code{\link{getParticipantIds}}
+\code{\link{getTranscriptIdsWithParticipant}}
 }
 \keyword{graph}
 \keyword{transcript}

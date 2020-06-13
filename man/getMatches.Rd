@@ -7,9 +7,13 @@
 getMatches(
   labbcat.url,
   pattern,
-  participantId = NULL,
+  participant.ids = NULL,
+  transcript.types = NULL,
   main.participant = TRUE,
+  aligned = FALSE,
+  matches.per.transcript = NULL,
   words.context = 0,
+  max.matches = NULL,
   no.progress = FALSE
 )
 }
@@ -76,14 +80,25 @@ pattern <- list(
          frequency = list(max = "2")))
 }}
 
-\item{participantId}{An optional list of participant IDs to search the utterances of. If
+\item{participant.ids}{An optional list of participant IDs to search the utterances of. If
 not supplied, all utterances in the corpus will be searched.}
+
+\item{transcript.types}{An optional list of transcript types to limit the results
+to. If null, all transcript types will be searched.}
 
 \item{main.participant}{TRUE to search only main-participant utterances, FALSE to
 search all utterances.}
 
+\item{aligned}{true to include only words that are aligned (i.e. have anchor
+confidence &ge; 50, false to search include un-aligned words as well.}
+
+\item{matches.per.transcript}{Optional maximum number of matches per transcript to
+return. NULL means all matches.}
+
 \item{words.context}{Number of words context to include in the `Before.Match' and
 `After.Match' columns in the results.}
+
+\item{max.matches}{The maximum number of matches to return, or null to return all.}
 
 \item{no.progress}{Optionally suppress the progress bar when
 multiple fragments are  specified - TRUE for no progress bar.}

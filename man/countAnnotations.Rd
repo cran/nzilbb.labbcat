@@ -2,23 +2,23 @@
 % Please edit documentation in R/countAnnotations.R
 \name{countAnnotations}
 \alias{countAnnotations}
-\title{Gets the number of annotations on the given layer of the given graph.}
+\title{Gets the number of annotations on the given layer of the given transcript.}
 \usage{
 countAnnotations(labbcat.url, id, layerId)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{A graph ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name)}
 
-\item{layerId}{A layer name}
+\item{layerId}{A layer ID}
 }
 \value{
 The number of annotations on that layer
 }
 \description{
 Returns the number of annotations on the given layer of the given
-graph (transcript).
+transcript.
 }
 \examples{
 \dontrun{
@@ -31,9 +31,8 @@ token.count <- countAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "or
 
 }
 \seealso{
-\code{\link{getGraphIds}}
-\code{\link{getGraphIdsInCorpus}}
-\code{\link{getGraphIdsWithParticipant}}
+\code{\link{getTranscriptIds}}
+\code{\link{getTranscriptIdsInCorpus}}
+\code{\link{getTranscriptIdsWithParticipant}}
 }
-\keyword{graph}
 \keyword{transcript}

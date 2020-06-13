@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMatchingGraphIds.R
 \name{getMatchingGraphIds}
 \alias{getMatchingGraphIds}
-\title{Gets a list of IDs of graphs that match a particular pattern.}
+\title{Deprecated synonym for getMatchingTranscriptIds.}
 \usage{
 getMatchingGraphIds(
   labbcat.url,
@@ -57,12 +57,12 @@ transcripts <- getMatchingGraphIds(
 
 ## Get the second transcript that has "QB247_Jacqui" as a speaker
 transcripts <- getMatchingGraphIds(
-        labbcat.url, "'QB247_Jacqui' IN labels('who')", 1, 1)
+        labbcat.url, "'QB247_Jacqui' IN labels('participant')", 1, 1)
 
 ## Get all transcripts whose names start with "BR" and have "QB247_Jacqui" as a speaker,
 ## in word-count order 
 transcripts <- getMatchingGraphIds(
-        labbcat.url, "my('corpus').label = 'QB' AND 'QB247_Jacqui' IN labels('who')", 1, 1,
+        labbcat.url, "my('corpus').label = 'QB' AND 'QB247_Jacqui' IN labels('participant')", 1, 1,
         "my('transcript_word_count').label ASC")
 }
 

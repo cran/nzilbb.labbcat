@@ -2,14 +2,14 @@
 % Please edit documentation in R/getAnchors.R
 \name{getAnchors}
 \alias{getAnchors}
-\title{Gets the given anchors in the given graph.}
+\title{Gets the given anchors in the given transcript.}
 \usage{
 getAnchors(labbcat.url, id, anchorId)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{A graph ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name)}
 
 \item{anchorId}{A vector of anchor IDs (or a string representing one anchor ID)}
 }
@@ -24,7 +24,7 @@ A named list of anchors, with members:
 }
 }
 \description{
-Lists the given anchors in the given graph (transcript).
+Lists the given anchors in the given transcript.
 }
 \examples{
 \dontrun{

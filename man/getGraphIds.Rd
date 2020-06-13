@@ -2,7 +2,7 @@
 % Please edit documentation in R/getGraphIds.R
 \name{getGraphIds}
 \alias{getGraphIds}
-\title{Gets a list of graph IDs.}
+\title{Deprecated synonym for getTranscriptIds.}
 \usage{
 getGraphIds(labbcat.url)
 }
@@ -22,5 +22,7 @@ transcripts <- getGraphIds("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }
-\keyword{graph}
+\seealso{
+\code{\link{getTranscriptIds}}
+}
 \keyword{transcript}

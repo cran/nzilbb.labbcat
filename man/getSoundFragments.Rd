@@ -6,9 +6,9 @@
 \usage{
 getSoundFragments(
   labbcat.url,
-  id,
-  start,
-  end,
+  ids,
+  startOffsets,
+  endOffsets,
   sampleRate = NULL,
   no.progress = FALSE,
   path = ""
@@ -17,12 +17,12 @@ getSoundFragments(
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{The graph ID (transcript name) of the sound recording, or
-a vector of graph IDs.}
+\item{ids}{The transcript ID (transcript name) of the sound recording, or
+a vector of transcript IDs.}
 
-\item{start}{The start time in seconds, or a vector of start times.}
+\item{startOffsets}{The start time in seconds, or a vector of start times.}
 
-\item{end}{The end time in seconds, or a vector of end times.}
+\item{endOffsets}{The end time in seconds, or a vector of end times.}
 
 \item{sampleRate}{Optional sample rate in Hz - if a positive
 integer, then the result is a mono file with the given sample rate.}
@@ -30,7 +30,7 @@ integer, then the result is a mono file with the given sample rate.}
 \item{no.progress}{Optionally suppress the progress bar when
 multiple fragments are  specified - TRUE for no progress bar.}
 
-\item{path}{Optional path to directory where tge files should be saved.}
+\item{path}{Optional path to directory where the files should be saved.}
 }
 \value{
 The name of the file, which is saved in the current

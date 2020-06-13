@@ -2,16 +2,16 @@
 % Please edit documentation in R/getAnnotations.R
 \name{getAnnotations}
 \alias{getAnnotations}
-\title{Gets the annotations on the given layer of the given graph.}
+\title{Gets the annotations on the given layer of the given transcript.}
 \usage{
 getAnnotations(labbcat.url, id, layerId, pageLength = NULL, pageNumber = NULL)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{A graph ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name)}
 
-\item{layerId}{A layer name}
+\item{layerId}{A layer ID}
 
 \item{pageLength}{The maximum number of annotations to return, or null to return all}
 
@@ -32,8 +32,7 @@ A named list of annotations, with members:
 }
 }
 \description{
-Returns the annotations on the given layer of the given graph
-(transcript).
+Returns the annotations on the given layer of the given transcript.
 }
 \examples{
 \dontrun{
@@ -49,10 +48,9 @@ orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orth
 
 }
 \seealso{
-\code{\link{getGraphIds}}
-  \code{\link{getGraphIdsInCorpus}}
-  \code{\link{getGraphIdsWithParticipant}}
+\code{\link{getTranscriptIds}}
+  \code{\link{getTranscriptIdsInCorpus}}
+  \code{\link{getTranscriptIdsWithParticipant}}
   \code{\link{countAnnotations}}
 }
-\keyword{graph}
 \keyword{transcript}

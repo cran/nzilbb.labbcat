@@ -2,7 +2,7 @@
 % Please edit documentation in R/getFragments.R
 \name{getFragments}
 \alias{getFragments}
-\title{Gets fragments of annotation graphs (transcripts) from 'LaBB-CAT', 
+\title{Gets fragments of annotation transcript from 'LaBB-CAT', 
 converted to a given format (by default, Praat TextGrid)}
 \usage{
 getFragments(
@@ -10,7 +10,7 @@ getFragments(
   id,
   start,
   end,
-  layerId,
+  layerIds,
   mimeType = "text/praat-textgrid",
   no.progress = FALSE,
   path = ""
@@ -19,14 +19,14 @@ getFragments(
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{The graph ID (transcript name) of the sound recording, or
-a vector of graph IDs.}
+\item{id}{The transcript ID (transcript name) of the sound recording, or
+a vector of transcript IDs.}
 
 \item{start}{The start time in seconds, or a vector of start times.}
 
 \item{end}{The end time in seconds, or a vector of end times.}
 
-\item{layerId}{A vector of layer IDs.}
+\item{layerIds}{A vector of layer IDs.}
 
 \item{mimeType}{Optional content-type - currently only "text/praat-textgrid"
 is supported.}
@@ -34,7 +34,7 @@ is supported.}
 \item{no.progress}{Optionally suppress the progress bar when
 multiple fragments are  specified - TRUE for no progress bar.}
 
-\item{path}{Optional path to directory where tge files should be saved.}
+\item{path}{Optional path to directory where the files should be saved.}
 }
 \value{
 The name of the file, which is saved in the current
@@ -46,7 +46,7 @@ If a list of files is returned, they are in the order that they
     they were specified in the id/start/end lists.
 }
 \description{
-Gets fragments of annotation graphs (transcripts) from 'LaBB-CAT', 
+Gets fragments of annotation transcript from 'LaBB-CAT', 
 converted to a given format (by default, Praat TextGrid)
 }
 \examples{

@@ -2,24 +2,24 @@
 % Please edit documentation in R/getMedia.R
 \name{getMedia}
 \alias{getMedia}
-\title{Gets a given media track for a given graph.}
+\title{Gets a given media track for a given transcript.}
 \usage{
 getMedia(labbcat.url, id, trackSuffix = "", mimeType = "audio/wav")
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{id}{A graph ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name)}
 
 \item{trackSuffix}{The track suffix of the media}
 
 \item{mimeType}{The MIME type of the media}
 }
 \value{
-A URL to the given media for the given graph
+A URL to the given media for the given transcript
 }
 \description{
-Gets a given media track for a given graph.
+Gets a given media track for a given transcript.
 }
 \examples{
 \dontrun{
@@ -35,7 +35,7 @@ media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "video/mp4")
 
 }
 \seealso{
-\link{getGraphIds}
+\link{getTranscriptIds}
 }
 \keyword{audio}
 \keyword{media}

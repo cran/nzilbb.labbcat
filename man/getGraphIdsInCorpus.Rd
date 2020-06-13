@@ -2,7 +2,7 @@
 % Please edit documentation in R/getGraphIdsInCorpus.R
 \name{getGraphIdsInCorpus}
 \alias{getGraphIdsInCorpus}
-\title{Gets a list of corpus IDs.}
+\title{Deprecated synonym for getTranscriptIdsInCorpus.}
 \usage{
 getGraphIdsInCorpus(labbcat.url, id)
 }
@@ -23,6 +23,9 @@ Returns a list of corpora in the given 'LaBB-CAT' instance.
 transcripts <- getGraphIdsInCorpus("https://labbcat.canterbury.ac.nz/demo/", "QB")
 }
 
+}
+\seealso{
+\code{\link{getGraphIdsInCorpus}}
 }
 \keyword{corpora}
 \keyword{corpus}
