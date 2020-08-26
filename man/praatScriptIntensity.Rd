@@ -27,10 +27,10 @@ parameter of \link{processWithPraat}, in order to extract maximum intensity valu
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Perform a search
-results <- getMatches(labbcat.url, list(segments="I"))
+results <- getMatches(labbcat.url, list(segments="s"))
 
-## Get a list of fragments with no progress bar
-wav.file <- processWithPraat(
+## Get intensity for all matches
+intensity <- processWithPraat(
               labbcat.url,
               results$MatchId, results$Target.segments.start, results$Target.segments.end,
               praatScriptIntensity(),

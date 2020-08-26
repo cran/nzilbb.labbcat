@@ -28,8 +28,9 @@ a vector of transcript IDs.}
 
 \item{layerIds}{A vector of layer IDs.}
 
-\item{mimeType}{Optional content-type - currently only "text/praat-textgrid"
-is supported.}
+\item{mimeType}{Optional content-type - "text/praat-textgrid" is the default, but your
+LaBB-CAT installation may support other formats, which can be discovered using
+\link{getSerializerDescriptors}.}
 
 \item{no.progress}{Optionally suppress the progress bar when
 multiple fragments are  specified - TRUE for no progress bar.}
@@ -70,6 +71,9 @@ textgrid.files <- getFragments(
 textgrid.files <- getFragments(
     labbcat.url, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
 }
+}
+\seealso{
+\link{getSerializerDescriptors}
 }
 \keyword{fragment}
 \keyword{sample}

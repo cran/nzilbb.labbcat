@@ -48,9 +48,13 @@ labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 results <- getMatches(labbcat.url, list(orthography="quake"))
 
 ## Get the topic annotations for the matches
-topics <- getAnnotationLabels(labbcat.url, results$MatchId, "topic")
+topics <- getMatchLabels(labbcat.url, results$MatchId, "topic")
 }
 
+}
+\seealso{
+\code{\link{getMatches}}
+\code{\link{getMatchAlignments}}
 }
 \keyword{annotation}
 \keyword{label}

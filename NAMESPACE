@@ -23,12 +23,16 @@ export(labbcatCredentials,
        getSoundFragments,
        getFragments,
        getMatchLabels,
+       getMatchAlignments,
        getDictionaries,
        getDictionaryEntries,
        getMatches,
        processWithPraat,
        praatScriptFormants, praatScriptCentreOfGravity, praatScriptIntensity, praatScriptPitch,
        getTranscriptAttributes,
-       getParticipantAttributes)
+       getParticipantAttributes,
+       getSerializerDescriptors, getDeserializerDescriptors,
+       getUserInfo,
+       getSystemAttribute)
 importFrom("utils", "URLencode", "setTxtProgressBar", "txtProgressBar", "head", "read.csv", "write.table", "count.fields")
 importFrom("rstudioapi", "askForPassword")
