@@ -1,9 +1,9 @@
 Package: nzilbb.labbcat
-Version: 0.6-1
-Date: 2020-08-25
+Version: 0.6-2
+Date: 2020-11-13
 Title: Accessing Data Stored in 'LaBB-CAT' Instances
 Authors@R: c(person("Robert", "Fromont", role = c("aut", "cre"),
-                     email = "robert@fromont.net.nz"))
+                     email = "robert.fromont@canterbury.ac.nz"))
 Imports: jsonlite, httr, stringr, utils, rstudioapi
 Description: 'LaBB-CAT' is a web-based language corpus management
  system developed by the New Zealand Institute of Language, Brain
@@ -23,8 +23,8 @@ URL: https://github.com/nzilbb/labbcat-R,
 RoxygenNote: 7.1.1
 Suggests: testthat (>= 2.1.0)
 NeedsCompilation: no
-Packaged: 2020-08-26 16:46:35 UTC; robert
+Packaged: 2020-11-13 19:02:20 UTC; robert
 Author: Robert Fromont [aut, cre]
-Maintainer: Robert Fromont <robert@fromont.net.nz>
+Maintainer: Robert Fromont <robert.fromont@canterbury.ac.nz>
 Repository: CRAN
-Date/Publication: 2020-08-27 00:50:02 UTC
+Date/Publication: 2020-11-13 22:40:02 UTC

@@ -1,4 +1,4 @@
-4cd4ee9bc15ca1c4dff28a030f2026ea *DESCRIPTION
+28442476c7bebeea9c522415ba8485f9 *DESCRIPTION
 ccc4ac57a35545b947a597a3e29d9f1c *NAMESPACE
 773cf97108575d204fe33b05a8b548a3 *NEWS.md
 f6079d6aee14a0d5538a982c415d5447 *R/countAnnotations.R
@@ -34,7 +34,7 @@ ead4bd65be657f9f0c7d5de548e51b98 *R/getTranscriptAttributes.R
 95a94fefae0fddfcba0dadcb65cc5833 *R/getTranscriptIdsInCorpus.R
 991d605eee92dba73bea5f08c792ce3a *R/getTranscriptIdsWithParticipant.R
 a307492fd3e7b78d7e228a13fc33dba5 *R/getUserInfo.R
-ba01ef243e4f57918ef03a180e27f982 *R/labbcatCredentials.R
+581c39507bb154dcc887dd68110d4e95 *R/labbcatCredentials.R
 39cb2601c2c7f692fa54e878737a5cab *R/labbcatTimeout.R
 dd9f2389370e510f628d590febc4f49a *R/nzilbb.labbcat.R
 2bf5af9371797d57e972599ce8ad00f4 *R/praatScriptCentreOfGravity.R
@@ -42,7 +42,7 @@ dd9f2389370e510f628d590febc4f49a *R/nzilbb.labbcat.R
 36ce8ea557573281fea522d7602b0da8 *R/praatScriptIntensity.R
 263da94bc193e4f51b0748db701de677 *R/praatScriptPitch.R
 dc0f1b2500ce15c614104355e21dddb2 *R/processWithPraat.R
-526c5aac61a1f1a64b2b80c1e589c875 *build/partial.rdb
+fe5bf52bc3dd6016db3792a9d8a785d9 *build/partial.rdb
 c37c78e29952a2b2381f7037156adbbc *man/countAnnotations.Rd
 f08b87e0f3403da9ce0b8949be071606 *man/getAnchors.Rd
 c00799b3412a78bfb9ea42a3caca773a *man/getAnnotations.Rd
@@ -98,9 +98,9 @@ a5e946039aa29fec7ad3e32fbe03e895 *tests/testthat/test-getDictionaryEntries.R
 49299db438c517aebab5c62aa50893ea *tests/testthat/test-getLayer.R
 2b817a2db1381f183f01653866fa4568 *tests/testthat/test-getLayerIds.R
 f9854518fb771f1b9cf3b80f83b59329 *tests/testthat/test-getLayers.R
-ea5795dfc1ece6aa6aa3555ad6e306dd *tests/testthat/test-getMatchAlignments.R
-f1984e4c71f9a520bc0419e329a53582 *tests/testthat/test-getMatchLabels.R
-b8c7ca11a9563506c7a6699195482ab6 *tests/testthat/test-getMatches.R
+1d167064ba17cc12d66389c370367514 *tests/testthat/test-getMatchAlignments.R
+a8041649497ad0367a390b00d53f18ce *tests/testthat/test-getMatchLabels.R
+08dd43cb926439eaa1168be24d0d9e8b *tests/testthat/test-getMatches.R
 914721d2d3078f4786eea8f2237e0d59 *tests/testthat/test-getMatchingTrancriptIds.R
 8afa825fd08f1528712ec35e276434ee *tests/testthat/test-getMedia.R
 8c3bc08bcba15decbed46283eee5ccaf *tests/testthat/test-getMediaTracks.R
