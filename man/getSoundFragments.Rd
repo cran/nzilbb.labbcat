@@ -10,7 +10,6 @@ getSoundFragments(
   startOffsets,
   endOffsets,
   sampleRate = NULL,
-  no.progress = FALSE,
   path = ""
 )
 }
@@ -26,9 +25,6 @@ a vector of transcript IDs.}
 
 \item{sampleRate}{Optional sample rate in Hz - if a positive
 integer, then the result is a mono file with the given sample rate.}
-
-\item{no.progress}{Optionally suppress the progress bar when
-multiple fragments are  specified - TRUE for no progress bar.}
 
 \item{path}{Optional path to directory where the files should be saved.}
 }
@@ -61,9 +57,9 @@ results <- read.csv("results.csv", header=T)
 ## Get a list of fragments
 wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 
-## Get a list of fragments with no progress bar
+## Get a list of fragments
 wav.file <- getSoundFragments(
-              labbcat.url, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
+              labbcat.url, results$Transcript, results$Line, results$LineEnd)
 }
 }
 \keyword{fragment}

@@ -13,7 +13,7 @@ getTranscriptAttributes(labbcat.url, transcriptIds, layerIds)
 
 \item{layerIds}{A vector of layer IDs corresponding to transcript attributes. In
 general, these are layers whose ID is prefixed 'transcript_', however formally it's
-any layer where layer$parentId == 'graph' && layer$alignment == 0, which includes
+any layer where layer$parentId == 'transcript' && layer$alignment == 0, which includes
 'corpus' as well as transcript attribute layers.}
 }
 \value{

@@ -55,19 +55,23 @@ A script fragment which can be passed as the praat.script parameter of
 This function generates a Praat script fragment which can be passed as the praat.script
 parameter of \link{processWithPraat}, in order to extract selected formants.
 }
+\details{
+The \link{praatScriptFastTrack} function provides an alternative to this function which
+uses the FastTrack Praat plugin for formant analysis.
+}
 \examples{
 \dontrun{
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Get all tokens of the KIT vowel
-results <- getMatches(labbcat.url, list(segments="I"))
+results <- getMatches(labbcat.url, list(segment="I"))
 
 ## Get the first 3 formants at three points during the vowel
 formants <- processWithPraat(
               labbcat.url,
-              results$MatchId, results$Target.segments.start, results$Target.segments.end,
-              window.offset=0.5,
+              results$MatchId, results$Target.segment.start, results$Target.segment.end,
+              window.offset=0.025,
               praatScriptFormants(formants=c(1,2,3),
               sample.points=c(0.25,0.5,0.75)))
 }
@@ -80,5 +84,7 @@ formants <- processWithPraat(
 \link{praatScriptIntensity}
 
 \link{praatScriptPitch}
+
+\link{praatScriptFastTrack}
 }
 \keyword{praat}

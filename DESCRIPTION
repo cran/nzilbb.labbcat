@@ -1,15 +1,16 @@
 Package: nzilbb.labbcat
-Version: 0.6-3
-Date: 2020-12-04
+Version: 0.7-1
+Date: 2021-05-26
 Title: Accessing Data Stored in 'LaBB-CAT' Instances
 Authors@R: c(person("Robert", "Fromont", role = c("aut", "cre"),
-                     email = "robert.fromont@canterbury.ac.nz"))
+                     email = "robert.fromont@canterbury.ac.nz",
+                     comment = c(ORCID = "0000-0001-5271-5487")))
 Imports: jsonlite, httr, stringr, utils, rstudioapi
 Description: 'LaBB-CAT' is a web-based language corpus management
  system developed by the New Zealand Institute of Language, Brain
  and Behaviour (NZILBB) - see <https://labbcat.canterbury.ac.nz>.
  This package defines functions for accessing corpus data in a 'LaBB-CAT'
- instance. You must have at least version 20200812.1253 of 'LaBB-CAT'
+ instance. You must have at least version 20210525.2102 of 'LaBB-CAT'
  to use this package.
  For more information about 'LaBB-CAT', see
  Robert Fromont and Jennifer Hay (2008) <doi:10.3366/E1749503208000142>
@@ -18,13 +19,13 @@ Description: 'LaBB-CAT' is a web-based language corpus management
 License: GPL (>= 3)
 Copyright: New Zealand Institute of Language, Brain and Behaviour,
         University of Canterbury
-URL: https://github.com/nzilbb/labbcat-R,
+URL: https://nzilbb.github.io/labbcat-R/,
         https://labbcat.canterbury.ac.nz
 RoxygenNote: 7.1.1
 Suggests: testthat (>= 2.1.0)
 NeedsCompilation: no
-Packaged: 2020-12-04 13:11:13 UTC; robert
-Author: Robert Fromont [aut, cre]
+Packaged: 2021-05-27 20:40:36 UTC; robert
+Author: Robert Fromont [aut, cre] (<https://orcid.org/0000-0001-5271-5487>)
 Maintainer: Robert Fromont <robert.fromont@canterbury.ac.nz>
 Repository: CRAN
-Date/Publication: 2020-12-04 13:30:05 UTC
+Date/Publication: 2021-05-27 20:50:03 UTC

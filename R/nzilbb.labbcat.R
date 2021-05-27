@@ -7,7 +7,7 @@
 #' 
 #' 'LaBB-CAT' is a web-based language corpus management system and this
 #' package provides access to data stored in a 'LaBB-CAT' instance.
-#' You must have at least version 20200608.1507 of 'LaBB-CAT' to use
+#' You must have at least version 20210525.2102 'LaBB-CAT' to use
 #' this package.
 #' 
 #' @docType package
@@ -23,7 +23,7 @@
 #' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 #' 
 #' ## Perform a search
-#' results <- getMatches(labbcat.url, list(segments="I"))
+#' results <- getMatches(labbcat.url, list(segment="I"))
 #' 
 #' ## Get the phonemic transcriptions for the matches
 #' phonemes <- getMatchLabels(labbcat.url, results$MatchId, "phonemes")
@@ -37,7 +37,7 @@ NULL
 ### Internal variables:
 
 ## minimum version of LaBB-CAT required:
-.min.labbcat.version <- "20200812.1253"
+.min.labbcat.version <- "20210525.2102"
 .user.agent <- paste("labbcat-R", packageVersion("nzilbb.labbcat"), sep="/")
 
 ### Internal functions:
@@ -246,7 +246,7 @@ http.get <- function(labbcat.url, path, parameters = NULL, content.type = "appli
 }
 
 ## make an HTTP POST request, asking for credentials if required
-http.post <- function(labbcat.url, path, parameters, file.name) {
+http.post <- function(labbcat.url, path, parameters, file.name=NULL) {
     
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
@@ -254,11 +254,18 @@ http.post <- function(labbcat.url, path, parameters, file.name) {
     ## build request URL
     url <- paste(labbcat.url, path, sep="")
     ## attempt the request
-    resp <- httr::POST(url, 
-                       httr::write_disk(file.name, overwrite=TRUE),
-                       httr::add_headers("User-Agent" = .user.agent),
-                       httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
-                       body = parameters, encode = "form")
+    if (is.null(file.name)) {
+        resp <- httr::POST(url,
+                           httr::add_headers("User-Agent" = .user.agent),
+                           httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                           body = parameters, encode = "form")
+    } else {
+        resp <- httr::POST(url,
+                           httr::write_disk(file.name, overwrite=TRUE),
+                           httr::add_headers("User-Agent" = .user.agent),
+                           httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                           body = parameters, encode = "form")
+    }
     ## check we don't need credentials
     if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
@@ -294,7 +301,7 @@ http.post <- function(labbcat.url, path, parameters, file.name) {
 }
 
 ## make an HTTP POST request, asking for credentials if required
-http.post.multipart <- function(labbcat.url, path, parameters, file.name) {
+http.post.multipart <- function(labbcat.url, path, parameters, file.name=NULL) {
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
 
@@ -302,11 +309,18 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name) {
     url <- paste(labbcat.url, path, sep="")
     
     ## attempt the request
-    resp <- httr::POST(url,
-                       httr::write_disk(file.name, overwrite=TRUE),
-                       httr::add_headers("User-Agent" = .user.agent),
-                       httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
-                       body = parameters, encode = "multipart")
+    if (is.null(file.name)) {
+        resp <- httr::POST(url,
+                           httr::add_headers("User-Agent" = .user.agent),
+                           httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                           body = parameters, encode = "multipart")
+    } else {
+        resp <- httr::POST(url,
+                           httr::write_disk(file.name, overwrite=TRUE),
+                           httr::add_headers("User-Agent" = .user.agent),
+                           httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                           body = parameters, encode = "multipart")
+    }
     ## check we don't need credentials
     if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password

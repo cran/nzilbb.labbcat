@@ -28,14 +28,13 @@ of gravity (CoG) measurements.
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Perform a search
-results <- getMatches(labbcat.url, list(segments="I"))
+results <- getMatches(labbcat.url, list(segment="I"))
 
 ## Get centres of gravity for all matches
 cog <- processWithPraat(
               labbcat.url,
-              results$MatchId, results$Target.segments.start, results$Target.segments.end,
-              praatScriptCentreOfGravity(powers=c(1.0,2.0)),
-              no.progress=TRUE)
+              results$MatchId, results$Target.segment.start, results$Target.segment.end,
+              praatScriptCentreOfGravity(powers=c(1.0,2.0)))
 }
 }
 \seealso{
@@ -46,5 +45,7 @@ cog <- processWithPraat(
 \link{praatScriptIntensity}
 
 \link{praatScriptPitch}
+
+\link{praatScriptFastTrack}
 }
 \keyword{praat}

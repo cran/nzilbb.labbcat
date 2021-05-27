@@ -75,8 +75,8 @@
 #' @param words.context Number of words context to include in the `Before.Match' and
 #'     `After.Match' columns in the results.
 #' @param max.matches The maximum number of matches to return, or null to return all.
-#' @param no.progress Optionally suppress the progress bar when
-#'     multiple fragments are  specified - TRUE for no progress bar.
+#' @param overlap.threshold The percentage overlap with other utterances before
+#'     simultaneous speech is excluded, or null to include overlapping speech.
 #' @return A data frame identifying matches, containing the following columns:
 #' \itemize{
 #'  \item{\emph{SearchName} A name based on the pattern -- the same for all rows}
@@ -88,14 +88,14 @@
 #'  \item{\emph{Before.Match} Transcript text immediately before the match}
 #'  \item{\emph{Text} Transcript text of the match}
 #'  \item{\emph{Before.Match} Transcript text immediately after the match}
-#'  \item{\emph{Target.transcript} Text of the target word token}
-#'  \item{\emph{Target.transcript.start} Start offset of the target word token}
-#'  \item{\emph{Target.transcript.end} End offset of the target word token}
-#'  \item{\emph{Target.segments} Label of the target segment (only present if the segment
+#'  \item{\emph{Target.word} Text of the target word token}
+#'  \item{\emph{Target.word.start} Start offset of the target word token}
+#'  \item{\emph{Target.word.end} End offset of the target word token}
+#'  \item{\emph{Target.segment} Label of the target segment (only present if the segment
 #'     layer is included in the pattern)}
-#'  \item{\emph{Target.segments.start} Start offset of the target segment (only present if the
+#'  \item{\emph{Target.segment.start} Start offset of the target segment (only present if the
 #'     segment layer is included in the pattern)}
-#'  \item{\emph{Target.segments.end} End offset of the target segment (only present if the
+#'  \item{\emph{Target.segment.end} End offset of the target segment (only present if the
 #'     segment layer is included in the pattern)}
 #' }
 #' 
@@ -115,15 +115,15 @@
 #'            phonemes = list(not=TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\$@].*"),
 #'            frequency = list(max = "2")))))
 #' 
-#' ## get the tokens matching the pattern
-#' results <- getMatches(labbcat.url, pattern)
+#' ## get the tokens matching the pattern, excluding overlapping speech
+#' results <- getMatches(labbcat.url, pattern, overlap.threshold = 5)
 #'
 #' ## results$MatchId can be used to access results
 #' }
 #'
 #' @keywords search
 #' 
-getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.types=NULL, main.participant=TRUE, aligned=FALSE, matches.per.transcript=NULL, words.context=0, max.matches=NULL, no.progress=FALSE) { ## TODO transcriptTypes=NULL
+getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.types=NULL, main.participant=TRUE, aligned=FALSE, matches.per.transcript=NULL, words.context=0, max.matches=NULL, overlap.threshold=NULL) {
     
     ## first normalize the pattern...
 
@@ -145,7 +145,7 @@ getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.ty
     } # next column
 
     ## convert layer=string to layer=list(pattern=string)
-    segments.layer <- FALSE # (and check for searching the "segments" layer)
+    segment.layer <- FALSE # (and check for searching the "segment" layer)
     for (c in 1:length(pattern$columns)) { # for each column
         for (l in names(pattern$columns[[c]]$layers)) { # for each layer in the column
             # if the layer value isn't a list
@@ -153,7 +153,7 @@ getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.ty
                 # wrap a list(pattern=...) around it
                 pattern$columns[[c]]$layers[[l]] <- list(pattern = pattern$columns[[c]]$layers[[l]])
             } # value isn't a list
-            if (l == "segments") segments.layer <- TRUE
+            if (l == "segment") segment.layer <- TRUE
         } # next layer
     } # next column
 
@@ -176,6 +176,9 @@ getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.ty
     if (!is.null(transcript.types)) {
         parameters$transcript_type <- as.list(transcript.types)
     }
+    if (!is.null(overlap.threshold)) {
+        parameters$overlap_threshold <- overlap.threshold
+    }
     
     resp <- http.get(labbcat.url, "search", parameters)
     if (is.null(resp)) return()
@@ -192,7 +195,7 @@ getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.ty
     threadId <- resp.json$model$threadId
 
     pb <- NULL
-    if (!no.progress) {
+    if (interactive()) {
         pb <- txtProgressBar(min = 0, max = 100, style = 3)        
     }
 
@@ -227,9 +230,9 @@ getMatches <- function(labbcat.url, pattern, participant.ids=NULL, transcript.ty
     # columns:
     csv_option <- c("collection_name", "result_number", "transcript_name", "speaker_name", 
                     "line_time", "line_end_time", "match", "result_text", "word_url")
-    # layers - "transcript", and "segments" if mentioned in the pattern
+    # layers - "word", and "segment" if mentioned in the pattern
     csv_layer_option <- c("0")
-    if (segments.layer) csv_layer_option <- c("0","1")
+    if (segment.layer) csv_layer_option <- c("0","1")
     resp <- http.get(labbcat.url,
                      "resultsStream",
                      list(threadId=threadId, todo="csv", csvFieldDelimiter=",",

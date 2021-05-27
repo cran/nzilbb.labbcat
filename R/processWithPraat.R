@@ -73,8 +73,6 @@
 #'     gender of the speaker is, including the "participant_gender" attribute will make a
 #'     variable called participant_gender$ available to the praat script, whose value will
 #'     be the gender of the speaker for that segment.
-#' @param no.progress Optionally suppress the progress bar when
-#'     multiple fragments are  specified - TRUE for no progress bar.
 #' @return A data frame of acoustic measures, one row for each matchId.
 #' 
 #' @seealso \link{praatScriptFormants}
@@ -87,20 +85,19 @@
 #' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 #' 
 #' ## Perform a search
-#' results <- getMatches(labbcat.url, list(segments="I"))
+#' results <- getMatches(labbcat.url, list(segment="I"))
 #' 
 #' ## get F1 and F2 for the mid point of the vowel
 #' formants <- processWithPraat(
 #'        labbcat.url,
-#'        results$MatchId, results$Target.segments.start, results$Target.segments.end,
-#'        praatScriptFormants(),
-#'        no.progress=TRUE)
+#'        results$MatchId, results$Target.segment.start, results$Target.segment.end,
+#'        praatScriptFormants())
 #' 
 #' ## get first 3 formants at three points during the sample, the mean, min, and max
 #' ## pitch, the max intensity, and the CoG using powers 1 and 2 
 #' acoustic.measurements <- processWithPraat(
 #'        labbcat.url,
-#'        results$MatchId, results$Target.segments.start, results$Target.segments.end,
+#'        results$MatchId, results$Target.segment.start, results$Target.segment.end,
 #'        paste(
 #'            praatScriptFormants(c(1,2,3), c(0.25,0.5,0.75)),
 #'            praatScriptPitch(get.mean=TRUE, get.minimum=TRUE, get.maximum=TRUE),
@@ -111,15 +108,14 @@
 #' ## execute a custom script loaded form a file
 #' acoustic.measurements <- processWithPraat(
 #'        labbcat.url,
-#'        results$MatchId, results$Target.segments.start, results$Target.segments.end,
+#'        results$MatchId, results$Target.segment.start, result$Target.segment.end,
 #'        readLines("acousticMeasurements.praat"))
 #' }
 #' @keywords praat
 #' 
 processWithPraat <- function(labbcat.url, matchIds, startOffsets, endOffsets,
                              praat.script, window.offset=0.0,
-                             gender.attribute="participant_gender", attributes=NULL,
-                             no.progress=FALSE) {
+                             gender.attribute="participant_gender", attributes=NULL) {
 
     ## make the script a single string
     praat.script <- paste(praat.script, collapse="\n")
@@ -143,13 +139,12 @@ processWithPraat <- function(labbcat.url, matchIds, startOffsets, endOffsets,
 
     ## upload CSV
     parameters <- list(
-        todo="upload",
-        gender_attribute=gender.attribute, attribute=attributes,
-        transcript="0", speaker="1", starttime="2", endtime="3", # column indices
-        column_mapping=T, windowoffset=window.offset,
-        custom_script=praat.script, pass_through_data="false",
+        attributes=attributes,
+        transcriptColumn="0", participantColumn="1", startTimeColumn="2", endTimeColumn="3",
+        windowOffset=window.offset,
+        script=praat.script, passThroughData="false",
         csv=httr::upload_file(upload.file))
-    resp <- http.post.multipart(labbcat.url, "praat", parameters, download.file)
+    resp <- http.post.multipart(labbcat.url, "api/praat", parameters, download.file)
 
     ## tidily remove the uploaded file
     file.remove(upload.file)
@@ -168,7 +163,7 @@ processWithPraat <- function(labbcat.url, matchIds, startOffsets, endOffsets,
     ## wait until the task is finished
     threadId <- resp.json$model$threadId
     pb <- NULL
-    if (!no.progress) {
+    if (interactive()) {
         pb <- txtProgressBar(min = 0, max = 100, style = 3)        
     }
     thread <- thread.get(labbcat.url, threadId)

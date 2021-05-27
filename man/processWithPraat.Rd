@@ -12,8 +12,7 @@ processWithPraat(
   praat.script,
   window.offset = 0,
   gender.attribute = "participant_gender",
-  attributes = NULL,
-  no.progress = FALSE
+  attributes = NULL
 )
 }
 \arguments{
@@ -44,9 +43,6 @@ example, if you want to use different acoustic parameters depending on what the
 gender of the speaker is, including the "participant_gender" attribute will make a
 variable called participant_gender$ available to the praat script, whose value will
 be the gender of the speaker for that segment.}
-
-\item{no.progress}{Optionally suppress the progress bar when
-multiple fragments are  specified - TRUE for no progress bar.}
 }
 \value{
 A data frame of acoustic measures, one row for each matchId.
@@ -112,20 +108,19 @@ Variables that can be assumed to be already set in the context of the script are
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Perform a search
-results <- getMatches(labbcat.url, list(segments="I"))
+results <- getMatches(labbcat.url, list(segment="I"))
 
 ## get F1 and F2 for the mid point of the vowel
 formants <- processWithPraat(
        labbcat.url,
-       results$MatchId, results$Target.segments.start, results$Target.segments.end,
-       praatScriptFormants(),
-       no.progress=TRUE)
+       results$MatchId, results$Target.segment.start, results$Target.segment.end,
+       praatScriptFormants())
 
 ## get first 3 formants at three points during the sample, the mean, min, and max
 ## pitch, the max intensity, and the CoG using powers 1 and 2 
 acoustic.measurements <- processWithPraat(
        labbcat.url,
-       results$MatchId, results$Target.segments.start, results$Target.segments.end,
+       results$MatchId, results$Target.segment.start, results$Target.segment.end,
        paste(
            praatScriptFormants(c(1,2,3), c(0.25,0.5,0.75)),
            praatScriptPitch(get.mean=TRUE, get.minimum=TRUE, get.maximum=TRUE),
@@ -136,7 +131,7 @@ acoustic.measurements <- processWithPraat(
 ## execute a custom script loaded form a file
 acoustic.measurements <- processWithPraat(
        labbcat.url,
-       results$MatchId, results$Target.segments.start, results$Target.segments.end,
+       results$MatchId, results$Target.segment.start, result$Target.segment.end,
        readLines("acousticMeasurements.praat"))
 }
 }

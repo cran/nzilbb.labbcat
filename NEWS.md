@@ -1,3 +1,19 @@
+# nzilbb.labbcat 0.7-1
+
+Minimum LaBB-CAT version *20210210.2032*
+
+## Enhancements
+
+- remove no.progress parameter (progress bar will appear automatically only in interactive mode).
+- getMatches now supports *overlap.threshold* parameter.
+
+## New functions:
+
+- *newTranscript* : Upload a new transcript (with media) to the server.
+- *updateTranscript* : Upload a new version of an existing transcript to the server.
+- *deleteTranscript* : Delete a transcript (and its media) from the server.
+- *praatScriptFastTrack* : Adds support for using the FastTrack Praat plugin for formant analysis.
+
 # nzilbb.labbcat 0.6-1
 
 Minimum LaBB-CAT version *20200812.1253*

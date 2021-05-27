@@ -14,7 +14,7 @@ getMatches(
   matches.per.transcript = NULL,
   words.context = 0,
   max.matches = NULL,
-  no.progress = FALSE
+  overlap.threshold = NULL
 )
 }
 \arguments{
@@ -100,8 +100,8 @@ return. NULL means all matches.}
 
 \item{max.matches}{The maximum number of matches to return, or null to return all.}
 
-\item{no.progress}{Optionally suppress the progress bar when
-multiple fragments are  specified - TRUE for no progress bar.}
+\item{overlap.threshold}{The percentage overlap with other utterances before
+simultaneous speech is excluded, or null to include overlapping speech.}
 }
 \value{
 A data frame identifying matches, containing the following columns:
@@ -115,14 +115,14 @@ A data frame identifying matches, containing the following columns:
  \item{\emph{Before.Match} Transcript text immediately before the match}
  \item{\emph{Text} Transcript text of the match}
  \item{\emph{Before.Match} Transcript text immediately after the match}
- \item{\emph{Target.transcript} Text of the target word token}
- \item{\emph{Target.transcript.start} Start offset of the target word token}
- \item{\emph{Target.transcript.end} End offset of the target word token}
- \item{\emph{Target.segments} Label of the target segment (only present if the segment
+ \item{\emph{Target.word} Text of the target word token}
+ \item{\emph{Target.word.start} Start offset of the target word token}
+ \item{\emph{Target.word.end} End offset of the target word token}
+ \item{\emph{Target.segment} Label of the target segment (only present if the segment
     layer is included in the pattern)}
- \item{\emph{Target.segments.start} Start offset of the target segment (only present if the
+ \item{\emph{Target.segment.start} Start offset of the target segment (only present if the
     segment layer is included in the pattern)}
- \item{\emph{Target.segments.end} End offset of the target segment (only present if the
+ \item{\emph{Target.segment.end} End offset of the target segment (only present if the
     segment layer is included in the pattern)}
 }
 }
@@ -143,8 +143,8 @@ pattern <- list(columns = list(
            phonemes = list(not=TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\\\$@].*"),
            frequency = list(max = "2")))))
 
-## get the tokens matching the pattern
-results <- getMatches(labbcat.url, pattern)
+## get the tokens matching the pattern, excluding overlapping speech
+results <- getMatches(labbcat.url, pattern, overlap.threshold = 5)
 
 ## results$MatchId can be used to access results
 }

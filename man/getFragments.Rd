@@ -2,8 +2,7 @@
 % Please edit documentation in R/getFragments.R
 \name{getFragments}
 \alias{getFragments}
-\title{Gets fragments of annotation transcript from 'LaBB-CAT', 
-converted to a given format (by default, Praat TextGrid)}
+\title{Gets fragments transcript in a given format.}
 \usage{
 getFragments(
   labbcat.url,
@@ -12,7 +11,6 @@ getFragments(
   end,
   layerIds,
   mimeType = "text/praat-textgrid",
-  no.progress = FALSE,
   path = ""
 )
 }
@@ -32,9 +30,6 @@ a vector of transcript IDs.}
 LaBB-CAT installation may support other formats, which can be discovered using
 \link{getSerializerDescriptors}.}
 
-\item{no.progress}{Optionally suppress the progress bar when
-multiple fragments are  specified - TRUE for no progress bar.}
-
 \item{path}{Optional path to directory where the files should be saved.}
 }
 \value{
@@ -47,8 +42,13 @@ If a list of files is returned, they are in the order that they
     they were specified in the id/start/end lists.
 }
 \description{
-Gets fragments of annotation transcript from 'LaBB-CAT', 
-converted to a given format (by default, Praat TextGrid)
+This function gets fragments of transcripts from 'LaBB-CAT', 
+converted to a given format (by default, Praat TextGrid).
+}
+\details{
+\emph{NB} Although many formats will generate exactly one file for each interval
+     (e.g. mimeType=text/praat-textgrid), this is not guaranted; some formats generate
+     a single file or a fixed collection of files regardless of how many fragments there are.
 }
 \examples{
 \dontrun{
@@ -65,11 +65,11 @@ results <- read.csv("results.csv", header=T)
 ## Get a list of fragment TextGrids, including the utterances, transcript, and phonemes layers
 textgrid.files <- getFragments(
     labbcat.url, results$Transcript, results$Line, results$LineEnd,
-    c("utterances", "transcript", "phonemes"))
+    c("utterance", "word", "phonemes"))
 
-## Get a list of fragment TextGrids with no progress bar
+## Get a list of fragment TextGrids
 textgrid.files <- getFragments(
-    labbcat.url, results$Transcript, results$Line, results$LineEnd, no.progress=TRUE)
+    labbcat.url, results$Transcript, results$Line, results$LineEnd)
 }
 }
 \seealso{

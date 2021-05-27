@@ -13,7 +13,7 @@
 
 'LaBB-CAT' is a web-based language corpus management system and this
 package provides access to data stored in a 'LaBB-CAT' instance.
-You must have at least version 20200608.1507 of 'LaBB-CAT' to use
+You must have at least version 20210525.2102 'LaBB-CAT' to use
 this package.
 }
 \examples{
@@ -22,7 +22,7 @@ this package.
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Perform a search
-results <- getMatches(labbcat.url, list(segments="I"))
+results <- getMatches(labbcat.url, list(segment="I"))
 
 ## Get the phonemic transcriptions for the matches
 phonemes <- getMatchLabels(labbcat.url, results$MatchId, "phonemes")
