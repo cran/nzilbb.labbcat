@@ -4,14 +4,14 @@
 \alias{getParticipantAttributes}
 \title{Gets participant attribute values for given participant IDs.}
 \usage{
-getParticipantAttributes(labbcat.url, participantIds, layerIds)
+getParticipantAttributes(labbcat.url, participant.ids, layer.ids)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{participantIds}{A vector of participant IDs}
+\item{participant.ids}{A vector of participant IDs}
 
-\item{layerIds}{A vector of layer IDs corresponding to participant attributes. In
+\item{layer.ids}{A vector of layer IDs corresponding to participant attributes. In
 general, these are layers whose ID is prefixed 'participant_', however formally it's
 any layer where layer$parentId == 'participant' && layer$alignment == 0.}
 }

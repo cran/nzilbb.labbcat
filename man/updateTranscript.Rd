@@ -4,12 +4,15 @@
 \alias{updateTranscript}
 \title{Update an existing transcript.}
 \usage{
-updateTranscript(labbcat.url, transcript.path)
+updateTranscript(labbcat.url, transcript.path, no.progress = FALSE)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{transcript.path}{The path to the transcript to upload.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 The ID of the updated transcript in the corpus

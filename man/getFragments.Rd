@@ -9,8 +9,8 @@ getFragments(
   id,
   start,
   end,
-  layerIds,
-  mimeType = "text/praat-textgrid",
+  layer.ids,
+  mime.type = "text/praat-textgrid",
   path = ""
 )
 }
@@ -24,9 +24,9 @@ a vector of transcript IDs.}
 
 \item{end}{The end time in seconds, or a vector of end times.}
 
-\item{layerIds}{A vector of layer IDs.}
+\item{layer.ids}{A vector of layer IDs.}
 
-\item{mimeType}{Optional content-type - "text/praat-textgrid" is the default, but your
+\item{mime.type}{Optional content-type - "text/praat-textgrid" is the default, but your
 LaBB-CAT installation may support other formats, which can be discovered using
 \link{getSerializerDescriptors}.}
 
@@ -47,7 +47,7 @@ converted to a given format (by default, Praat TextGrid).
 }
 \details{
 \emph{NB} Although many formats will generate exactly one file for each interval
-     (e.g. mimeType=text/praat-textgrid), this is not guaranted; some formats generate
+     (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
      a single file or a fixed collection of files regardless of how many fragments there are.
 }
 \examples{

@@ -4,14 +4,14 @@
 \alias{getDictionaryEntries}
 \title{Lookup entries in a dictionary.}
 \usage{
-getDictionaryEntries(labbcat.url, managerId, dictionaryId, keys)
+getDictionaryEntries(labbcat.url, manager.id, dictionary.id, keys)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{managerId}{The layer manager ID of the dictionary, as returned by getDictionaries}
+\item{manager.id}{The layer manager ID of the dictionary, as returned by getDictionaries}
 
-\item{dictionaryId}{The ID of the dictionary, as returned by getDictionaries}
+\item{dictionary.id}{The ID of the dictionary, as returned by getDictionaries}
 
 \item{keys}{A list of entries to look up}
 }

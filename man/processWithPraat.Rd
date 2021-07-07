@@ -6,24 +6,25 @@
 \usage{
 processWithPraat(
   labbcat.url,
-  matchIds,
-  startOffsets,
-  endOffsets,
+  match.ids,
+  start.offsets,
+  end.offsets,
   praat.script,
   window.offset = 0,
   gender.attribute = "participant_gender",
-  attributes = NULL
+  attributes = NULL,
+  no.progress = FALSE
 )
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{matchIds}{A vector of annotation IDs, e.g. the MatchId column, or the URL column,
+\item{match.ids}{A vector of annotation IDs, e.g. the MatchId column, or the URL column,
 of a results set.}
 
-\item{startOffsets}{The start time in seconds, or a vector of start times.}
+\item{start.offsets}{The start time in seconds, or a vector of start times.}
 
-\item{endOffsets}{The end time in seconds, or a vector of end times.}
+\item{end.offsets}{The end time in seconds, or a vector of end times.}
 
 \item{praat.script}{Script to run on each match. This may be a single string or a
 character vector.}
@@ -43,6 +44,9 @@ example, if you want to use different acoustic parameters depending on what the
 gender of the speaker is, including the "participant_gender" attribute will make a
 variable called participant_gender$ available to the praat script, whose value will
 be the gender of the speaker for that segment.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 A data frame of acoustic measures, one row for each matchId.

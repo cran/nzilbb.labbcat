@@ -4,14 +4,19 @@
 \alias{getAnchors}
 \title{Gets the given anchors in the given transcript.}
 \usage{
-getAnchors(labbcat.url, id, anchorId)
+getAnchors(labbcat.url, id, anchor.id, page.length = 1000)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{id}{A transcript ID (i.e. transcript name)}
 
-\item{anchorId}{A vector of anchor IDs (or a string representing one anchor ID)}
+\item{anchor.id}{A vector of anchor IDs (or a string representing one anchor ID)}
+
+\item{page.length}{In order to prevent timeouts when there are a large number of
+matches or the network connection is slow, rather than retrieving anchors in one
+big request, they are retrieved using many smaller requests. This parameter
+controls the number of anchors retrieved per request.}
 }
 \value{
 A named list of anchors, with members:

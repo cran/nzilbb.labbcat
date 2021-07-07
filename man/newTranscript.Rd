@@ -10,7 +10,8 @@ newTranscript(
   media = NULL,
   transcript.type = NULL,
   corpus = NULL,
-  episode = NULL
+  episode = NULL,
+  no.progress = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ newTranscript(
 \item{corpus}{The corpus to add the transcript to.}
 
 \item{episode}{The transcript's episode.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 The ID of the new transcript in the corpus

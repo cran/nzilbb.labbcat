@@ -4,14 +4,14 @@
 \alias{countAnnotations}
 \title{Gets the number of annotations on the given layer of the given transcript.}
 \usage{
-countAnnotations(labbcat.url, id, layerId)
+countAnnotations(labbcat.url, id, layer.id)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{id}{A transcript ID (i.e. transcript name)}
 
-\item{layerId}{A layer ID}
+\item{layer.id}{A layer ID}
 }
 \value{
 The number of annotations on that layer

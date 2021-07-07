@@ -4,18 +4,24 @@
 \alias{getAnnotations}
 \title{Gets the annotations on the given layer of the given transcript.}
 \usage{
-getAnnotations(labbcat.url, id, layerId, pageLength = NULL, pageNumber = NULL)
+getAnnotations(
+  labbcat.url,
+  id,
+  layer.id,
+  page.length = NULL,
+  page.number = NULL
+)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{id}{A transcript ID (i.e. transcript name)}
 
-\item{layerId}{A layer ID}
+\item{layer.id}{A layer ID}
 
-\item{pageLength}{The maximum number of annotations to return, or null to return all}
+\item{page.length}{The maximum number of annotations to return, or null to return all}
 
-\item{pageNumber}{The zero-based page number to return, or null to return the first page}
+\item{page.number}{The zero-based page number to return, or null to return the first page}
 }
 \value{
 A named list of annotations, with members:

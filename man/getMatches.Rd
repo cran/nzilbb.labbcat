@@ -14,7 +14,9 @@ getMatches(
   matches.per.transcript = NULL,
   words.context = 0,
   max.matches = NULL,
-  overlap.threshold = NULL
+  overlap.threshold = NULL,
+  page.length = 1000,
+  no.progress = FALSE
 )
 }
 \arguments{
@@ -102,19 +104,30 @@ return. NULL means all matches.}
 
 \item{overlap.threshold}{The percentage overlap with other utterances before
 simultaneous speech is excluded, or null to include overlapping speech.}
+
+\item{page.length}{In order to prevent timeouts when there are a large number of
+matches or the network connection is slow, rather than retrieving matches in one
+big request, they are retrieved using many smaller requests. This parameter
+controls the number of results retrieved per request.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 A data frame identifying matches, containing the following columns:
 \itemize{
  \item{\emph{SearchName} A name based on the pattern -- the same for all rows}
- \item{\emph{Number} Row number}
+ \item{\emph{MatchId} A unique ID for the matching target token}
  \item{\emph{Transcript} Name of the transcript in which the match was found}
+ \item{\emph{Participant} Name of the speaker}
+ \item{\emph{Corpus} The corpus of the transcript}
  \item{\emph{Line} The start offset of the utterance/line}
  \item{\emph{LineEnd} The end offset of the utterance/line}
- \item{\emph{MatchId} A unique ID for the matching target token}
  \item{\emph{Before.Match} Transcript text immediately before the match}
  \item{\emph{Text} Transcript text of the match}
- \item{\emph{Before.Match} Transcript text immediately after the match}
+ \item{\emph{After.Match} Transcript text immediately after the match}
+ \item{\emph{Number} Row number}
+ \item{\emph{URL} URL of the first matching word token}
  \item{\emph{Target.word} Text of the target word token}
  \item{\emph{Target.word.start} Start offset of the target word token}
  \item{\emph{Target.word.end} End offset of the target word token}

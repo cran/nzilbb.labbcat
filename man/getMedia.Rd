@@ -4,16 +4,16 @@
 \alias{getMedia}
 \title{Gets a given media track for a given transcript.}
 \usage{
-getMedia(labbcat.url, id, trackSuffix = "", mimeType = "audio/wav")
+getMedia(labbcat.url, id, track.suffix = "", mime.type = "audio/wav")
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{id}{A transcript ID (i.e. transcript name)}
 
-\item{trackSuffix}{The track suffix of the media}
+\item{track.suffix}{The track suffix of the media}
 
-\item{mimeType}{The MIME type of the media}
+\item{mime.type}{The MIME type of the media}
 }
 \value{
 A URL to the given media for the given transcript

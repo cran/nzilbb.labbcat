@@ -1,3 +1,41 @@
+# nzilbb.labbcat 1.0-1
+
+Minimum LaBB-CAT version *20210601.1528*
+
+## Enhancements
+
+- All function parameters are now named with dot.case instead of camelCase, for internal
+  and external consistency.
+- Re-instate *no.progress* parameter for
+  + *getAllUtterances*
+  + *getMatchAlignments*
+  + *getMatchLabels*
+  + *getSoundFragments*
+  + *newTranscript*
+  + *updateTranscript*
+  + *processWithPraat*
+- Break some requests into chunks to avoid timeouts for very large result sets:
+  + *getMatches*
+  + *getMatchLabels*
+  + *getMatchAlignments*
+- Introduce *include.match.ids* parameter for manual matching of prior results if required for
+  + *getMatchLabels*
+  + *getMatchAlignments*
+- Introduce *page.length* parameter for tuning request sizes on some functions for
+  + *getAnchors*
+  + *getAnnotations*
+  + *getMatchingTranscriptIds*
+  + *getMatches*
+  + *getMatchLabels*
+  + *getMatchAlignments*
+- CSV-related bug fixes.
+- Improve progress bar handling.
+- Improve documentation of matching expression language.
+
+## New functions:
+
+- *getMatchingParticipantIds*: Gets a list of IDs of participants that match a particular pattern.
+
 # nzilbb.labbcat 0.7-1
 
 Minimum LaBB-CAT version *20210210.2032*
@@ -12,6 +50,7 @@ Minimum LaBB-CAT version *20210210.2032*
 - *newTranscript* : Upload a new transcript (with media) to the server.
 - *updateTranscript* : Upload a new version of an existing transcript to the server.
 - *deleteTranscript* : Delete a transcript (and its media) from the server.
+- *getAllUtterances* : Get all utterances of given participants.
 - *praatScriptFastTrack* : Adds support for using the FastTrack Praat plugin for formant analysis.
 
 # nzilbb.labbcat 0.6-1

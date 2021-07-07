@@ -7,10 +7,11 @@
 getSoundFragments(
   labbcat.url,
   ids,
-  startOffsets,
-  endOffsets,
-  sampleRate = NULL,
-  path = ""
+  start.offsets,
+  end.offsets,
+  sample.rate = NULL,
+  path = "",
+  no.progress = FALSE
 )
 }
 \arguments{
@@ -19,14 +20,17 @@ getSoundFragments(
 \item{ids}{The transcript ID (transcript name) of the sound recording, or
 a vector of transcript IDs.}
 
-\item{startOffsets}{The start time in seconds, or a vector of start times.}
+\item{start.offsets}{The start time in seconds, or a vector of start times.}
 
-\item{endOffsets}{The end time in seconds, or a vector of end times.}
+\item{end.offsets}{The end time in seconds, or a vector of end times.}
 
-\item{sampleRate}{Optional sample rate in Hz - if a positive
+\item{sample.rate}{Optional sample rate in Hz - if a positive
 integer, then the result is a mono file with the given sample rate.}
 
 \item{path}{Optional path to directory where the files should be saved.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 The name of the file, which is saved in the current

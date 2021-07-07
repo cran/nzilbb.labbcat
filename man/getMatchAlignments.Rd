@@ -6,29 +6,32 @@
 \usage{
 getMatchAlignments(
   labbcat.url,
-  matchIds,
-  layerIds,
-  targetOffset = 0,
-  annotationsPerLayer = 1,
-  anchor.confidence.min = 50
+  match.ids,
+  layer.ids,
+  target.offset = 0,
+  annotations.per.layer = 1,
+  anchor.confidence.min = 50,
+  include.match.ids = FALSE,
+  page.length = 1000,
+  no.progress = FALSE
 )
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{matchIds}{A vector of annotation IDs, e.g. the MatchId column, or the URL column,
+\item{match.ids}{A vector of annotation IDs, e.g. the MatchId column, or the URL column,
 of a results set.}
 
-\item{layerIds}{A vector of layer IDs.}
+\item{layer.ids}{A vector of layer IDs.}
 
-\item{targetOffset}{The distance from the original target of the match, e.g.
+\item{target.offset}{The distance from the original target of the match, e.g.
 \itemize{
  \item{\emph{0} -- find annotations of the match target itself},
  \item{\emph{1} -- find annotations of the token immediately \emph{after} match target}
  \item{\emph{-1} -- find annotations of the token immediately \emph{before} match target}
 }}
 
-\item{annotationsPerLayer}{The number of annotations on the given layer to
+\item{annotations.per.layer}{The number of annotations on the given layer to
 retrieve. In most cases, there's only one annotation available. However, tokens
 may, for example, be annotated with `all possible phonemic transcriptions', in which
 case using a value of greater than 1 for this parameter provides other phonemic
@@ -40,6 +43,17 @@ transcriptions, for tokens that have more than one.}
  \item{\emph{50} -- return only alignments that have been at least automatically aligned;}
  \item{\emph{100} -- return only manually-set alignments.}
 }}
+
+\item{include.match.ids}{Whether or not the data frame returned includes the original
+MatchId column or not.}
+
+\item{page.length}{In order to prevent timeouts when there are a large number of
+matches or the network connection is slow, rather than retrieving matches in one
+big request, they are retrieved using many smaller requests. This parameter
+controls the number of results retrieved per request.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 A data frame with label, start time, and end time, for each layer.
@@ -65,7 +79,7 @@ results <- getMatches(labbcat.url, list(segment="I"))
 
 ## Get the segment following the token, with alignment if it's been manually aligned
 following.segment <- getMatchAlignments(labbcat.url, results$MatchId, "segment",
-    targetOffset=1, anchor.confidence.min=100)
+    target.offset=1, anchor.confidence.min=100)
 }
 
 }

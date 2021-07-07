@@ -9,7 +9,8 @@ getAllUtterances(
   participant.ids,
   transcript.types = NULL,
   main.participant = TRUE,
-  max.matches = NULL
+  max.matches = NULL,
+  no.progress = FALSE
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ to. If null, all transcript types will be searched.}
 search all utterances.}
 
 \item{max.matches}{The maximum number of matches to return, or null to return all.}
+
+\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+shown when interactive().}
 }
 \value{
 A data frame identifying matches, containing the following columns:

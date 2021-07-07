@@ -4,14 +4,14 @@
 \alias{getTranscriptAttributes}
 \title{Gets transcript attribute values for given transcript IDs.}
 \usage{
-getTranscriptAttributes(labbcat.url, transcriptIds, layerIds)
+getTranscriptAttributes(labbcat.url, transcript.ids, layer.ids)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
-\item{transcriptIds}{A vector of transcript IDs}
+\item{transcript.ids}{A vector of transcript IDs}
 
-\item{layerIds}{A vector of layer IDs corresponding to transcript attributes. In
+\item{layer.ids}{A vector of layer IDs corresponding to transcript attributes. In
 general, these are layers whose ID is prefixed 'transcript_', however formally it's
 any layer where layer$parentId == 'transcript' && layer$alignment == 0, which includes
 'corpus' as well as transcript attribute layers.}
@@ -29,7 +29,7 @@ labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
 ## Get language, duration, and corpus for transcripts starting with 'BR'
 attributes <- getTranscriptAttributes(labbcat.url,
-            getMatchingTranscriptIds(labbcat.url, "id MATCHES 'BR.+'"),
+            getMatchingTranscriptIds(labbcat.url, "/'BR.+'/.test(id)"),
             c('transcript_language', 'transcript_duration', 'corpus'))
 
 }
