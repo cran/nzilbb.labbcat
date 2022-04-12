@@ -7,7 +7,7 @@
 #' 
 #' 'LaBB-CAT' is a web-based language corpus management system and this
 #' package provides access to data stored in a 'LaBB-CAT' instance.
-#' You must have at least version 20210601.1528 'LaBB-CAT' to use
+#' You must have at least version 20220401.1842 'LaBB-CAT' to use
 #' this package.
 #' 
 #' @docType package
@@ -37,7 +37,7 @@ NULL
 ### Internal variables:
 
 ## minimum version of LaBB-CAT required:
-.min.labbcat.version <- "20210601.1528"
+.min.labbcat.version <- "20220401.1842"
 .user.agent <- paste("labbcat-R", packageVersion("nzilbb.labbcat"), sep="/")
 
 ### Internal functions:
@@ -185,8 +185,9 @@ http.get <- function(labbcat.url, path, parameters = NULL, content.type = "appli
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
 
     ## build request URL
-    url <- paste(path, "?", sep="")
+    url <- path
     if (!is.null(parameters)) {
+        url <- paste(path, "?", sep="")
         for (name in names(parameters)) {
             for (parameter in parameters[name]) {
                 for (value in parameter) {
@@ -353,4 +354,27 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name=NULL) {
     } else {
         return(resp)
     }
+}
+
+## Convert HTML to plain text for display purposes
+html.to.text <- function(html) {
+    ## remove DOCTYPE declaration
+    text <- stringr::str_replace(html, "<!DOCTYPE html>", "")
+    ## remove title
+    text <- gsub("<title>.*</title>", "", text)
+    ## leading hyphen and trailing colon for defined terms
+    text <- stringr::str_replace_all(text, "<dt>", "<dt>- ")
+    text <- stringr::str_replace_all(text, "</dt>", ":</dt>")
+    ## leading hyphen for list items
+    text <- stringr::str_replace_all(text, "<li>", "<li>- ")
+    ## leading # for h1
+    text <- stringr::str_replace_all(text, "<h1>", "<h1># ")
+    ## leading ## for h2
+    text <- stringr::str_replace_all(text, "<h2>", "<h2>## ")
+    ## leading ### for h3
+    text <- stringr::str_replace_all(text, "<h3>", "<h3>### ")
+    ## remove tags, retaining their contents
+    pattern <- "</?\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>"
+    text <- stringr::str_replace_all(text, pattern, "")
+    return(text)
 }

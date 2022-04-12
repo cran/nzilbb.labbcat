@@ -22,9 +22,7 @@ praatScriptPitch(
   voicing.threshold.male = 0.4,
   pitch.ceiling.male = 250,
   gender.attribute = "participant_gender",
-  value.for.male = "M",
-  window.length = 0.025,
-  preemphasis.from = 50
+  value.for.male = "M"
 )
 }
 \arguments{
@@ -67,10 +65,6 @@ if pitch.floor.male is also specified.}
 participant's gender - normally this is "participant_gender".}
 
 \item{value.for.male}{The value that the gender.attribute has when the participant is male.}
-
-\item{window.length}{Window length in seconds.}
-
-\item{preemphasis.from}{Pre-emphasis from (Hz)}
 }
 \value{
 A script fragment which can be passed as the praat.script parameter of

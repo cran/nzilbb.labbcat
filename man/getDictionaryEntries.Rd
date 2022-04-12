@@ -13,10 +13,10 @@ getDictionaryEntries(labbcat.url, manager.id, dictionary.id, keys)
 
 \item{dictionary.id}{The ID of the dictionary, as returned by getDictionaries}
 
-\item{keys}{A list of entries to look up}
+\item{keys}{A list of keys (words) identifying entries to look up}
 }
 \value{
-A data frame with the keys and their dictionary entries.
+A data frame with the keys and their dictionary entries, if any.
 }
 \description{
 Lookup entries in a dictionary.

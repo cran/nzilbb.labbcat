@@ -37,8 +37,14 @@ export(labbcatCredentials,
        getUserInfo,
        getSystemAttribute,
        getAllUtterances,
-       newTranscript,
-       updateTranscript,
-       deleteTranscript)
+       newTranscript, updateTranscript, deleteTranscript,
+       updateFragment,
+       generateLayer,
+       generateLayerUtterances,
+       newLayer, saveLayer, deleteLayer,
+       annotatorExt, getAnnotatorDescriptor,   
+       loadLexicon, deleteLexicon,
+       addLayerDictionaryEntry, removeLayerDictionaryEntry,
+       addDictionaryEntry, removeDictionaryEntry)
 importFrom("utils", "URLencode", "setTxtProgressBar", "txtProgressBar", "head", "read.csv", "write.table", "count.fields", "unzip")
 importFrom("rstudioapi", "askForPassword")
