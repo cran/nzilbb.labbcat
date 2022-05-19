@@ -1,6 +1,6 @@
 Package: nzilbb.labbcat
-Version: 1.1-0
-Date: 2022-04-12
+Version: 1.1-1
+Date: 2022-05-19
 Title: Accessing Data Stored in 'LaBB-CAT' Instances
 Authors@R: c(person("Robert", "Fromont", role = c("aut", "cre"),
                      email = "robert.fromont@canterbury.ac.nz",
@@ -24,8 +24,8 @@ URL: https://nzilbb.github.io/labbcat-R/,
 RoxygenNote: 7.1.2
 Suggests: testthat (>= 2.1.0)
 NeedsCompilation: no
-Packaged: 2022-04-12 19:20:57 UTC; robert
+Packaged: 2022-05-19 18:22:42 UTC; robert
 Author: Robert Fromont [aut, cre] (<https://orcid.org/0000-0001-5271-5487>)
 Maintainer: Robert Fromont <robert.fromont@canterbury.ac.nz>
 Repository: CRAN
-Date/Publication: 2022-04-12 19:30:02 UTC
+Date/Publication: 2022-05-19 19:00:02 UTC

@@ -50,6 +50,7 @@ requires, etc.
 \dontrun{
 ## Get information about the BAS Annotator
 basAnnotator <- getAnnotatorDescriptor("https://labbcat.canterbury.ac.nz/demo/", "BASAnnotator")
+cat(basAnnotator$infoText)
 }
 
 }
