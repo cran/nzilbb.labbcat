@@ -2,40 +2,51 @@
 % Please edit documentation in R/getMedia.R
 \name{getMedia}
 \alias{getMedia}
-\title{Gets a given media track for a given transcript.}
+\title{Downloads a given media track for a given transcript.}
 \usage{
-getMedia(labbcat.url, id, track.suffix = "", mime.type = "audio/wav")
+getMedia(
+  labbcat.url,
+  id,
+  track.suffix = "",
+  mime.type = "audio/wav",
+  path = ""
+)
 }
 \arguments{
-\item{labbcat.url}{URL to the LaBB-CAT instance}
+\item{labbcat.url}{URL to the LaBB-CAT instance.}
 
-\item{id}{A transcript ID (i.e. transcript name)}
+\item{id}{A transcript ID (i.e. transcript name).}
 
-\item{track.suffix}{The track suffix of the media}
+\item{track.suffix}{The track suffix of the media.}
 
-\item{mime.type}{The MIME type of the media}
+\item{mime.type}{The MIME type of the media, e.g. "audio/wav" or "application/f0".}
+
+\item{path}{Optional path to directory where the file should be saved.}
 }
 \value{
-A URL to the given media for the given transcript
+The name of the file, which is saved in the current directory, or the given
+        path if specified
 }
 \description{
-Gets a given media track for a given transcript.
+Downloads a given media track for a given transcript.
 }
 \examples{
 \dontrun{
 ## define the LaBB-CAT URL
 labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 
-## Get URL for the WAV file for BR2044_OllyOhlson.eaf
-media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
+## Download the WAV file for BR2044_OllyOhlson.eaf
+wav <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 
-## Get URL for the 'QuakeFace' video file for BR2044_OllyOhlson.eaf
-media <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "video/mp4")
+## Download the 'QuakeFace' video file for BR2044_OllyOhlson.eaf
+quakeFaceMp4 <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "video/mp4")
 }
 
 }
 \seealso{
 \link{getTranscriptIds}
+
+\link{getMediaUrl}
 }
 \keyword{audio}
 \keyword{media}

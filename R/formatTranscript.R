@@ -1,29 +1,27 @@
-#' Gets transcript fragments in a given format.
+#' Gets transcript(s) in a given format.
 #' 
-#' This function gets fragments of transcripts from 'LaBB-CAT', 
+#' This function gets whole transcripts from 'LaBB-CAT', 
 #' converted to a given format (by default, Praat TextGrid).
 #'
 #' \emph{NB} Although many formats will generate exactly one file for each interval
 #'      (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
-#'      a single file or a fixed collection of files regardless of how many fragments there are.
+#'      a single file or a fixed collection of files regardless of how many IDs there are.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id The transcript ID (transcript name) of the sound recording, or
-#'     a vector of transcript IDs. 
-#' @param start The start time in seconds, or a vector of start times.
-#' @param end The end time in seconds, or a vector of end times.
+#'     a vector of transcript IDs. If the same ID appears more than one, the formatted
+#'     file is downloaded only once.
 #' @param layer.ids A vector of layer IDs.
 #' @param mime.type Optional content-type - "text/praat-textgrid" is the default, but your
 #'     LaBB-CAT installation may support other formats, which can be discovered using
 #'     \link{getSerializerDescriptors}.
 #' @param path Optional path to directory where the files should be saved.
-#' @return The name of the file, which is saved in the current
-#'     directory, or a list of names of files, if multiple
-#'     id's/start's/end's were specified 
+#' @return The name of the file, which is saved in the current directory, or the given
+#' path, or a list of names of files, if multiple id's were specified. 
 #'
 #' If a list of files is returned, they are in the order that they
 #'     were returned by the server, which *should* be the order that
-#'     they were specified in the id/start/end lists.
+#'     they were specified in the id list.
 #' 
 #' @seealso \link{getSerializerDescriptors}
 #' @examples
@@ -31,30 +29,26 @@
 #' ## define the LaBB-CAT URL
 #' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 #' 
-#' ## Get the 5 seconds starting from 10s after the beginning of a recording
-#' textgrid.file <- getFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0,
-#'     c("transcript", "phonemes"), path="samples") 
+#' ## Get the TextGrid of a recording
+#' textgrid.file <- formatTranscript(labbcat.url, "AP2505_Nelson.eaf",
+#'     c("transcript", "phonemes"), path="textgrids") 
 #' 
-#' ## Load some search results previously exported from LaBB-CAT
-#' results <- read.csv("results.csv", header=T)
+#' ## Get all the transcripts of a given participant
+#' transcript.ids <- getTranscriptIdsWithParticipant(labbcat.url, "AP2505_Nelson")
 #' 
-#' ## Get a list of fragment TextGrids, including the utterances, transcript, and phonemes layers
-#' textgrid.files <- getFragments(
-#'     labbcat.url, results$Transcript, results$Line, results$LineEnd,
-#'     c("utterance", "word", "phonemes"))
+#' ## Download all the TextGrids, including the utterances, transcript, and segment layers
+#' textgrid.files <- formatTranscript(
+#'     labbcat.url, transcript.ids, c("utterance", "word", "segment"))
 #' 
-#' ## Get a list of fragment TextGrids
-#' textgrid.files <- getFragments(
-#'     labbcat.url, results$Transcript, results$Line, results$LineEnd)
 #' }
-#' @keywords sample fragment TextGrid
+#' @keywords transcript TextGrid
 #' 
-getFragments <- function(labbcat.url, id, start, end, layer.ids, mime.type = "text/praat-textgrid", path="") {
+formatTranscript <- function(labbcat.url, id, layer.ids, mime.type = "text/praat-textgrid", path="") {
 
     dir = path
     if (length(id) > 1) { ## multiple fragments
         ## save fragments into their own directory
-        if (stringr::str_length(dir) == 0) dir <- "fragments"
+        if (stringr::str_length(dir) == 0) dir <- "transcript"
     }
     if (stringr::str_length(dir) > 0) { ## directory is specified
         ## if it wasn't explicitly specified...
@@ -79,23 +73,17 @@ getFragments <- function(labbcat.url, id, start, end, layer.ids, mime.type = "te
     layerParameters <- list()
     mapply(function(l) { layerParameters <<- c(layerParameters, list(layerId=l)) }, layer.ids)
     idParameters <- list()
-    mapply(function(l) { idParameters <<- c(idParameters, list(id=l)) }, id)
-    startParameters <- list()
-    mapply(function(l) { startParameters <<- c(startParameters, list(start=l)) }, start)
-    endParameters <- list()
-    mapply(function(l) { endParameters <<- c(endParameters, list(end=l)) }, end)
+    mapply(function(l) { idParameters <<- c(idParameters, list(id=l)) }, unique(id))
 
     parameters <- list(mimeType=mime.type)
     ## add list parameters
     parameters <- c(parameters, layerParameters)
     parameters <- c(parameters, idParameters)
-    parameters <- c(parameters, startParameters)
-    parameters <- c(parameters, endParameters)
-    file.name <- paste(dir, "fragments.zip", sep="")
+    file.name <- paste(dir, "transcript.zip", sep="")
 
     file.names = c()
     tryCatch({
-        resp <- http.post(labbcat.url, "api/serialize/fragment", parameters, file.name)
+        resp <- http.post(labbcat.url, "api/serialize/graphs", parameters, file.name)
         if (httr::status_code(resp) != 200) { # 200 = OK
             print(paste("ERROR: ", httr::http_status(resp)$message))
             if (httr::status_code(resp) != 404) { # 404 means the audio wasn't on the server
@@ -125,13 +113,7 @@ getFragments <- function(labbcat.url, id, start, end, layer.ids, mime.type = "te
                 ## remove zip file
                 file.remove(file.name)
             } else { ## a single file returned
-                ## move it to the dir
-                if (stringr::str_length(dir) > 0) { ## directory is specified
-                    file.names <- paste(dir, .Platform$file.sep, file.name, sep="")
-                    file.rename(file.name, file.names)
-                } else {
-                    file.names = file.name
-                }
+                file.names = file.name
             }
         }
     }, error = function(e) {

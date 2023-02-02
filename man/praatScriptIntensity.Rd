@@ -58,11 +58,11 @@ labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="s"))
 
-## Get intensity for all matches
+## Get max intensity, and intensity at three points during the segment, for all matches
 intensity <- processWithPraat(
               labbcat.url,
               results$MatchId, results$Target.segment.start, results$Target.segment.end,
-              praatScriptIntensity())
+              praatScriptIntensity(sample.points = c(.25, .5, .75)))
 }
 }
 \seealso{

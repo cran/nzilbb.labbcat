@@ -1,3 +1,23 @@
+# nzilbb.labbcat 1.2-0
+
+Minimum LaBB-CAT version *20230202.1600*
+
+## New functions:
+
+- *countMatchingAnnotations* and *getMatchingAnnotations* : Retrieve individual annotations that match a pattern expression.
+- *formatTranscript*: Downloads an entire transcript in a given format - e.g. Praat TextGrid.
+- *getMediaUrl*: Returns the URL for a given transcript.
+- *getFragmentAnnotations*: Returns all tokens in given transcripts on given layers between start/end times.
+
+## Enhancements
+
+- *getMedia* now downloads the media and returns the file name, rather than returning the URL.
+- *getMatches* accepts a string as a pattern, and assumes it's a space-delimited orthography layer search.
+- *getMatches* now has *anchor.confidence.min* parameter, to allow retrieval of start/end times that have low confidence.
+- *getMatchLabels* and *getMatchAlignments* now return `NA` rather than empty strings.
+- *getTranscriptIdsInCorpus*, *getTranscriptIdsWithParticipant*, and *getTranscriptIds now return a character vector whether there are results or not.
+- *countAnnotations* and *getAnnotations* now has *max.ordinal* parameter, to allow retrieval of only the first word tag annotations in a transcript.
+
 # nzilbb.labbcat 1.1-1
 
 Minimum LaBB-CAT version *20220401.1842*
@@ -12,8 +32,6 @@ Minimum LaBB-CAT version *20220401.1842*
 # nzilbb.labbcat 1.1-0
 
 Minimum LaBB-CAT version *20220401.1842*
-
-## Enhancements
 
 ## New functions:
 

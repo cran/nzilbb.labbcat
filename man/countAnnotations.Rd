@@ -4,7 +4,7 @@
 \alias{countAnnotations}
 \title{Gets the number of annotations on the given layer of the given transcript.}
 \usage{
-countAnnotations(labbcat.url, id, layer.id)
+countAnnotations(labbcat.url, id, layer.id, max.ordinal = NULL)
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
@@ -12,6 +12,10 @@ countAnnotations(labbcat.url, id, layer.id)
 \item{id}{A transcript ID (i.e. transcript name)}
 
 \item{layer.id}{A layer ID}
+
+\item{max.ordinal}{The maximum ordinal for the counted annotations. e.g. a max.ordinal
+of 1 will ensure that only the first annotation for each parent is returned. If
+max.ordinal is null, then all annotations are counted, regardless of their ordinal.}
 }
 \value{
 The number of annotations on that layer

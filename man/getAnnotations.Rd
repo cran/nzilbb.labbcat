@@ -8,6 +8,7 @@ getAnnotations(
   labbcat.url,
   id,
   layer.id,
+  max.ordinal = NULL,
   page.length = NULL,
   page.number = NULL
 )
@@ -18,6 +19,10 @@ getAnnotations(
 \item{id}{A transcript ID (i.e. transcript name)}
 
 \item{layer.id}{A layer ID}
+
+\item{max.ordinal}{The maximum ordinal for the returned annotations. e.g. a max.ordinal
+of 1 will ensure that only the first annotation for each parent is returned. If
+max.ordinal is null, then all annotations are returned, regardless of their ordinal.}
 
 \item{page.length}{The maximum number of annotations to return, or null to return all}
 

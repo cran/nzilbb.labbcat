@@ -2,7 +2,7 @@
 % Please edit documentation in R/getFragments.R
 \name{getFragments}
 \alias{getFragments}
-\title{Gets fragments transcript in a given format.}
+\title{Gets transcript fragments in a given format.}
 \usage{
 getFragments(
   labbcat.url,
@@ -75,7 +75,6 @@ textgrid.files <- getFragments(
 \seealso{
 \link{getSerializerDescriptors}
 }
+\keyword{TextGrid}
 \keyword{fragment}
 \keyword{sample}
-\keyword{sound}
-\keyword{wav}
