@@ -1,3 +1,28 @@
+# nzilbb.labbcat 1.3-0
+
+Minimum LaBB-CAT version *20230224.1731*
+
+## Enhancements
+
+- *getMatches* replaces *participant.ids* and *transcript.types* parameters with *participant.expression* and *transcript.expression* parameters, in line with the underlying API, and allowing more flexibility with queries.
+- *getMatches* parameter *aligned* is now deprecated, please set *anchor.confidence.min* = 50 instead
+- *getMatches* parameter *anchor.confidence.min* now filters out results, instead of just returning NA for offsets below the minumum confidence. To return all results and offsets, regardless of confidence, set *anchor.confidence.min* = 0.
+- *processWithPraat*'s *window.offset* parameter no longer has a default value, and includes more thorough documentation, to ensure callers are aware of the parameter's implications. 
+
+## New functions:
+
+- *labbcatVersionInfo* - gets version information of all components of LaBB-CAT
+- Helper functions for formulating the new *participant.expression* and *transcript.expression* parameters of *getMatches*:
+  + *expressionFromIds* : expression based on a list of IDs
+  + *expressionFromAttributeValue* : expression based on a list of possible attribute values
+  + *expressionFromAttributeValues* : expression based on a list of possible attribute values, for attributes that can have multiple values
+  + *expressionFromTranscriptTypes* : expression based on a list of possible transcript types
+- Manage participant records
+  + *getParticipant* : Gets ID and participant attribute values for a single participant.
+  + *saveParticipant* : Saves participant data (supports creating and renaming participants).
+  + *deleteParticipant* : Deletes a single participant record.
+  + *renameParticipants* : Batch rename participants.
+
 # nzilbb.labbcat 1.2-0
 
 Minimum LaBB-CAT version *20230202.1600*

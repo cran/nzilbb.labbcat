@@ -10,7 +10,7 @@ saveLayer(labbcat.url, layer)
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{layer}{A named list object representing the layer attributes, as would be
-    returned by \link{getLayer} or \link{newLayer}, with members:
+returned by \link{getLayer} or \link{newLayer}, with members:
 \itemize{
  \item{\emph{id} The layer's unique ID}
  \item{\emph{parentId} The layer's parent layer ID}
@@ -29,21 +29,21 @@ saveLayer(labbcat.url, layer)
 }
 \value{
 The resulting layer definition, with members:
-\itemize{
- \item{\emph{id} The layer's unique ID}
- \item{\emph{parentId} The layer's parent layer ID}
- \item{\emph{description} The description of the layer}
- \item{\emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
-    for interval alignment} 
- \item{\emph{peers} Whether children have peers or not}
- \item{\emph{peersOverlap} Whether child peers can overlap or not}
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{saturated} Whether children must temporally fill the entire parent
-    duration (true) or not (false)} 
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{type} The type for labels on this layer}
- \item{\emph{validLabels} List of valid label values for this layer}
-}
+    \itemize{
+     \item{\emph{id} The layer's unique ID}
+     \item{\emph{parentId} The layer's parent layer ID}
+     \item{\emph{description} The description of the layer}
+     \item{\emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
+        for interval alignment} 
+     \item{\emph{peers} Whether children have peers or not}
+     \item{\emph{peersOverlap} Whether child peers can overlap or not}
+     \item{\emph{parentIncludes} Whether the parent t-includes the child}
+     \item{\emph{saturated} Whether children must temporally fill the entire parent
+        duration (true) or not (false)} 
+     \item{\emph{parentIncludes} Whether the parent t-includes the child}
+     \item{\emph{type} The type for labels on this layer}
+     \item{\emph{validLabels} List of valid label values for this layer}
+    }
 }
 \description{
 This function saves the definition of an existing annotation layer.

@@ -10,7 +10,7 @@ processWithPraat(
   start.offsets,
   end.offsets,
   praat.script,
-  window.offset = 0,
+  window.offset,
   gender.attribute = "participant_gender",
   attributes = NULL,
   no.progress = FALSE
@@ -35,7 +35,12 @@ this is a number of seconds to subtract from the sample start and add to the sam
 end time, before extracting that part of the audio for processing. For example, if
 the sample starts at 2.0s and ends at 3.0s, and you set the window offset to 0.5s,
 then Praat will extract a sample of audio from  1.5s to 3.5s, and do the selected
-processing on that sample.}
+processing on that sample. The best value for this depends on what the praat.script
+is doing; if you are getting formants from  vowels, including some context ensures
+that he formants at the edges are more accurate (in LaBB-CAT's web interface, the
+default value for this 0.025), but if you're getting max pitch or COG during a
+segment, most likely you want a window.offset of 0 to ensure neighbouring segments
+doesn't influence the measurement.}
 
 \item{gender.attribute}{Which participant attribute represents the participant's gender.}
 

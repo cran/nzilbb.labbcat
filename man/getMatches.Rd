@@ -7,15 +7,15 @@
 getMatches(
   labbcat.url,
   pattern,
-  participant.ids = NULL,
-  transcript.types = NULL,
+  participant.expression = NULL,
+  transcript.expression = NULL,
   main.participant = TRUE,
-  aligned = FALSE,
+  aligned = NULL,
   matches.per.transcript = NULL,
   words.context = 0,
   max.matches = NULL,
   overlap.threshold = NULL,
-  anchor.confidence.min = 50,
+  anchor.confidence.min = NULL,
   page.length = 1000,
   no.progress = FALSE
 )
@@ -86,17 +86,23 @@ pattern <- list(columns = list(
            frequency = list(max = "2")))))
 }}
 
-\item{participant.ids}{An optional list of participant IDs to search the utterances of. If
-not supplied, all utterances in the corpus will be searched.}
+\item{participant.expression}{An optional participant query expression for identifying
+participants to search the utterances of. This should be the output of
+\link{expressionFromIds}, \link{expressionFromAttributeValue},
+or \link{expressionFromAttributeValues}, or more than one concatentated together
+and delimited by ' && '. If not supplied, utterances of all participants will be searched.}
 
-\item{transcript.types}{An optional list of transcript types to limit the results
-to. If null, all transcript types will be searched.}
+\item{transcript.expression}{An optional transript query expression for identifying
+transcripts to search in. This should be the output of \link{expressionFromIds},
+\link{expressionFromTranscriptTypes}, \link{expressionFromAttributeValue},
+or \link{expressionFromAttributeValues}, or more than one concatentated together
+and delimited by ' && '. If not supplied, all transcripts will be searched.}
 
 \item{main.participant}{TRUE to search only main-participant utterances, FALSE to
 search all utterances.}
 
-\item{aligned}{true to include only words that are aligned (i.e. have anchor
-confidence &ge; 50, false to search include un-aligned words as well.}
+\item{aligned}{This parameter is deprecated and will be removed in future versions;
+please use anchor.confidence.min=50 instead.}
 
 \item{matches.per.transcript}{Optional maximum number of matches per transcript to
 return. NULL means all matches.}
@@ -181,6 +187,19 @@ results <- getMatches(
            phonemes = list(not=TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\\\$@].*"),
            frequency = list(max = "2"))))),
   overlap.threshold = 5)
+
+## all tokens of the KIT vowel, from the interview or monologue
+## of the participants AP511_MikeThorpe and BR2044_OllyOhlson
+results <- getMatches(labbcat.url, list(segment="I"),
+  participant.expression = expressionFromIds(c("AP511_MikeThorpe","BR2044_OllyOhlson")),
+  transcript.expression = expressionFromTranscriptTypes(c("interview","monologue")))
+
+## all tokens of the KIT vowel for male speakers who speak English
+results <- getMatches(labbcat.url, list(segment="I"),
+  participant.expression = paste(
+    expressionFromAttributeValue("participant_gender", "M"),
+    expressionFromAttributeValues("participant_languages_spoken", "en"),
+    sep=" && "))
 
 ## results$Text is the text that matched
 ## results$MatchId can be used to access results using other functions
