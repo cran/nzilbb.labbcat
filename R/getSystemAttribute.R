@@ -1,10 +1,10 @@
-#' Gets the value of the given system attribute.
+#' Gets the value of the given system attribute
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param attribute Name of the attribute.
 #' @return The value of the given attribute.
 #' 
-#' \code{\link{getLayers}}
+#' @seealso [getLayers]
 #' @examples
 #' \dontrun{
 #' ## Get the name of the LaBB-CAT instance

@@ -2,7 +2,7 @@
 % Please edit documentation in R/renameParticipants.R
 \name{renameParticipants}
 \alias{renameParticipants}
-\title{Renames a list of participants.}
+\title{Renames a list of participants}
 \usage{
 renameParticipants(labbcat.url, current.ids, new.ids, no.progress = FALSE)
 }
@@ -15,23 +15,20 @@ the corpus.}
 \item{new.ids}{A vector of new participant IDs, each element corresponding to an ID in
 current.ids.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 A vector of results, each element corresponding to an ID in current.ids. If the
-  ID was successfully changed, the corresponding element is TRUE. If the ID could not
-  be changed (e.g. because there is already an existing participant using the new ID),
-  then the corresponding element is FALSE.
+ID was successfully changed, the corresponding element is TRUE. If the ID could not
+be changed (e.g. because there is already an existing participant using the new ID),
+then the corresponding element is FALSE.
 }
 \description{
 This function changes the IDs of a given set of participants, where possible.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Create some new participant records
 old.ids <- c("test-id-1","test-id-2","test-id-3")
 for (id in old.ids) saveParticipant(labbcat.url, id)
@@ -46,10 +43,12 @@ for (id in new.ids) deleteParticipant(labbcat.url, id)
 
 }
 \seealso{
-\code{\link{getParticipantIds}}
-  \code{\link{getMatchingParticipantIds}}
-  \code{\link{getParticipant}}
-  \code{\link{saveParticipant}}
-  \code{\link{deleteParticipant}}
+\itemize{
+\item \link{getParticipantIds}
+\item \link{getMatchingParticipantIds}
+\item \link{getParticipant}
+\item \link{saveParticipant}
+\item \link{deleteParticipant}
+}
 }
 \keyword{participant}

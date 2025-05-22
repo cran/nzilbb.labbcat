@@ -1,4 +1,4 @@
-#' Retrieve annotator's "ext" resource.
+#' Retrieve annotator's "ext" resource
 #' 
 #' Retrieve a given resource from an annotator's "ext" web app. Annotators are modules
 #' that perform different annotation tasks, and can optionally implement functionality for
@@ -10,7 +10,7 @@
 #' @param labbcat.url URL to the LaBB-CAT instance.
 #' @param annotator.id ID of the annotator to interrogate.
 #' @param resource The name of the file to retrieve or instance method (function) to
-#'     invoke. Possible values for this depend on the specific annotator being interrogated.
+#'   invoke. Possible values for this depend on the specific annotator being interrogated.
 #' @param parameters Optional list of ordered parameters for the instance method (function).
 #' @return The resource requested.
 #' @examples

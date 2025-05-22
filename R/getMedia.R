@@ -1,4 +1,4 @@
-#' Downloads a given media track for a given transcript.
+#' Downloads a given media track for a given transcript
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance.
 #' @param id A transcript ID (i.e. transcript name).
@@ -6,14 +6,12 @@
 #' @param mime.type The MIME type of the media, e.g. "audio/wav" or "application/f0".
 #' @param path Optional path to directory where the file should be saved.
 #' @return The name of the file, which is saved in the current directory, or the given
-#'         path if specified
-#' @seealso \link{getTranscriptIds}
-#' @seealso \link{getMediaUrl}
+#'   path if specified
+#' @seealso
+#'   - [getTranscriptIds]
+#'   - [getMediaUrl]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Download the WAV file for BR2044_OllyOhlson.eaf
 #' wav <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 #' 
@@ -62,12 +60,12 @@ getMedia <- function(labbcat.url, id, track.suffix = "", mime.type = "audio/wav"
             file.remove(file.name)
             file.name <<- NULL
         } else {
-            content.disposition <- as.character(httr::headers(resp)["content-disposition"])
-            content.disposition.parts <- strsplit(content.disposition, "=")
-            if (length(content.disposition.parts[[1]]) > 1
-                && file.name != content.disposition.parts[[1]][2]) {
+            content.disposition.filename <- fileNameFromContentDisposition(
+                as.character(httr::headers(resp)["content-disposition"]))
+            if (!is.null(content.disposition.filename)
+                && file.name != content.disposition.filename) {
                 ## file name is specified, so use it
-                final.file.name <- paste(dir, content.disposition.parts[[1]][2], sep="")
+                final.file.name <- paste(dir, content.disposition.filename, sep="")
                 if (final.file.name != file.name) {
                     file.rename(file.name, final.file.name)
                     file.name <- final.file.name

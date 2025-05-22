@@ -2,7 +2,7 @@
 % Please edit documentation in R/countAnnotations.R
 \name{countAnnotations}
 \alias{countAnnotations}
-\title{Gets the number of annotations on the given layer of the given transcript.}
+\title{Gets the number of annotations on the given layer of the given transcript}
 \usage{
 countAnnotations(labbcat.url, id, layer.id, max.ordinal = NULL)
 }
@@ -26,17 +26,16 @@ transcript.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Count the number of words in UC427_ViktoriaPapp_A_ENG.eaf
 token.count <- countAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 }
 
 }
 \seealso{
-\code{\link{getTranscriptIds}}
-\code{\link{getTranscriptIdsInCorpus}}
-\code{\link{getTranscriptIdsWithParticipant}}
+\itemize{
+\item \link{getTranscriptIds}
+\item \link{getTranscriptIdsInCorpus}
+\item \link{getTranscriptIdsWithParticipant}
+}
 }
 \keyword{transcript}

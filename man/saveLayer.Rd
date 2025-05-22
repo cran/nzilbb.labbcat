@@ -2,7 +2,7 @@
 % Please edit documentation in R/saveLayer.R
 \name{saveLayer}
 \alias{saveLayer}
-\title{Saves the details of an existing layer.}
+\title{Saves the details of an existing layer}
 \usage{
 saveLayer(labbcat.url, layer)
 }
@@ -12,38 +12,38 @@ saveLayer(labbcat.url, layer)
 \item{layer}{A named list object representing the layer attributes, as would be
 returned by \link{getLayer} or \link{newLayer}, with members:
 \itemize{
- \item{\emph{id} The layer's unique ID}
- \item{\emph{parentId} The layer's parent layer ID}
- \item{\emph{description} The description of the layer}
- \item{\emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
-    for interval alignment} 
- \item{\emph{peers} Whether children have peers or not}
- \item{\emph{peersOverlap} Whether child peers can overlap or not}
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{saturated} Whether children must temporally fill the entire parent
-    duration (true) or not (false)} 
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{type} The type for labels on this layer}
- \item{\emph{validLabels} List of valid label values for this layer}
+\item \emph{id} The layer's unique ID
+\item \emph{parentId} The layer's parent layer ID
+\item \emph{description} The description of the layer
+\item \emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
+for interval alignment
+\item \emph{peers} Whether children have peers or not
+\item \emph{peersOverlap} Whether child peers can overlap or not
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{saturated} Whether children must temporally fill the entire parent
+duration (true) or not (false)
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{type} The type for labels on this layer
+\item \emph{validLabels} List of valid label values for this layer
 }}
 }
 \value{
 The resulting layer definition, with members:
-    \itemize{
-     \item{\emph{id} The layer's unique ID}
-     \item{\emph{parentId} The layer's parent layer ID}
-     \item{\emph{description} The description of the layer}
-     \item{\emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
-        for interval alignment} 
-     \item{\emph{peers} Whether children have peers or not}
-     \item{\emph{peersOverlap} Whether child peers can overlap or not}
-     \item{\emph{parentIncludes} Whether the parent t-includes the child}
-     \item{\emph{saturated} Whether children must temporally fill the entire parent
-        duration (true) or not (false)} 
-     \item{\emph{parentIncludes} Whether the parent t-includes the child}
-     \item{\emph{type} The type for labels on this layer}
-     \item{\emph{validLabels} List of valid label values for this layer}
-    }
+\itemize{
+\item \emph{id} The layer's unique ID
+\item \emph{parentId} The layer's parent layer ID
+\item \emph{description} The description of the layer
+\item \emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2
+for interval alignment
+\item \emph{peers} Whether children have peers or not
+\item \emph{peersOverlap} Whether child peers can overlap or not
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{saturated} Whether children must temporally fill the entire parent
+duration (true) or not (false)
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{type} The type for labels on this layer
+\item \emph{validLabels} List of valid label values for this layer
+}
 }
 \description{
 This function saves the definition of an existing annotation layer.
@@ -66,9 +66,14 @@ saveLayer(labbcat.url, pronunciation)
 
 }
 \seealso{
-\code{\link{newLayer}}
-\code{\link{getLayer}}
-\code{\link{deleteLayer}}
+Other Annotation layer functions: 
+\code{\link{deleteLayer}()},
+\code{\link{generateLayer}()},
+\code{\link{getLayer}()},
+\code{\link{getLayerIds}()},
+\code{\link{getLayers}()},
+\code{\link{newLayer}()}
 }
+\concept{Annotation layer functions}
 \keyword{annotation}
 \keyword{layer}

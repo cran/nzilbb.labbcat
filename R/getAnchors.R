@@ -1,4 +1,4 @@
-#' Gets the given anchors in the given transcript.
+#' Gets the given anchors in the given transcript
 #'
 #' Lists the given anchors in the given transcript.
 #' 
@@ -6,24 +6,19 @@
 #' @param id A transcript ID (i.e. transcript name)
 #' @param anchor.id A vector of anchor IDs (or a string representing one anchor ID)
 #' @param page.length In order to prevent timeouts when there are a large number of
-#'     matches or the network connection is slow, rather than retrieving anchors in one
-#'     big request, they are retrieved using many smaller requests. This parameter
-#'     controls the number of anchors retrieved per request.
+#'   matches or the network connection is slow, rather than retrieving anchors in one
+#'   big request, they are retrieved using many smaller requests. This parameter
+#'   controls the number of anchors retrieved per request.
 #' @return  A named list of anchors, with members:
-#' \itemize{
-#'  \item{\emph{id} The annotation's unique ID},
-#'  \item{\emph{offset} The offset from the beginning (in seconds if it's a
-#'  transcript of a recording, or in characters if it's a text document)}
-#'  \item{\emph{confidence} A rating from 0-100 of the confidence of the offset,
-#'   e.g. 10: default value, 50: force-aligned, 100: manually aligned}
-#' }
+#'  - *id* The annotation's unique ID,
+#'  - *offset* The offset from the beginning (in seconds if it's a
+#'  transcript of a recording, or in characters if it's a text document)
+#'  - *confidence* A rating from 0-100 of the confidence of the offset,
+#'   e.g. 10: default value, 50: force-aligned, 100: manually aligned
 #' 
-#' @seealso \link{getAnnotations}
+#' @seealso [getAnnotations]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get the first 20 orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
 #' orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
 #' 

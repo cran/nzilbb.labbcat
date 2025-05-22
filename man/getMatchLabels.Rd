@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMatchLabels.R
 \name{getMatchLabels}
 \alias{getMatchLabels}
-\title{Gets labels of annotations on a given layer, identified by given match IDs.}
+\title{Gets labels of annotations on a given layer, identified by given match IDs}
 \usage{
 getMatchLabels(
   labbcat.url,
@@ -25,9 +25,9 @@ of a results set.}
 
 \item{target.offset}{The distance from the original target of the match, e.g.
 \itemize{
- \item{\emph{0} -- find annotations of the match target itself},
- \item{\emph{1} -- find annotations of the token immediately \emph{after} match target}
- \item{\emph{-1} -- find annotations of the token immediately \emph{before} match target}
+\item \emph{0} -- find annotations of the match target itself
+\item \emph{1} -- find annotations of the token immediately \emph{after} match target
+\item \emph{-1} -- find annotations of the token immediately \emph{before} match target
 }}
 
 \item{annotations.per.layer}{The number of annotations on the given layer to
@@ -44,20 +44,17 @@ matches or the network connection is slow, rather than retrieving matches in one
 big request, they are retrieved using many smaller requests. This parameter
 controls the number of results retrieved per request.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 A data frame of labels.
 }
 \description{
-Gets labels of annotations on a given layer, identified by given match IDs.
+Gets labels of annotations on a given layer, identified by given match IDs
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(orthography="quake"))
 
@@ -67,8 +64,10 @@ topics <- getMatchLabels(labbcat.url, results$MatchId, "topic")
 
 }
 \seealso{
-\code{\link{getMatches}}
-\code{\link{getMatchAlignments}}
+\itemize{
+\item \link{getMatches}
+\item \link{getMatchAlignments}
+}
 }
 \keyword{annotation}
 \keyword{label}

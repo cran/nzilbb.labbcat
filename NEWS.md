@@ -1,3 +1,47 @@
+# nzilbb.labbcat 1.4-0
+
+Minimum LaBB-CAT version *20250430.1502*
+
+## New functions:
+
+- *saveMedia* - saves the given media for the given transcript.
+- *deleteMedia* - deletes media or episode document files.
+
+New, more flexible upload API functions, which allow finely-grained control of how
+transcript files are processed by LaBB-CAT:
+
+- *transcriptUpload* - start upload process by sending files to the server.
+- *transcriptUploadParameters* - complete the upload process by setting upload parameters.
+- *transcriptUploadDelete* - abandon a previously started upload process.
+
+In some annotation layers, the annotations have not only a textual label, but also binary
+data associated with it; e.g. an image or a data file. In these cases, the 'type' of the
+layer is a MIME type, e.g. 'image/png'. The following functions provide access to that data:
+
+- *getMatchingAnnotationData* - Gets binary data for annotations that match a particular pattern.
+- *getFragmentAnnotationData* - Gets binary annotation data in fragments.
+
+## Enhancements
+
+- *getMatches* supports matching within-word segment context by allowing more than one pattern on segment layers, and anchoring segments to word boundaries.
+
+```
+## Examples of within-word segment context:
+
+## words that contain the /I/ phone followed by the /l/ phone
+## (multiple patterns per word currently only works for segment layers)
+pattern <- list(segment = list("I", "l"))
+
+## words that contain the /I/ phone followed by the /l/ phone, targeting the /l/ segment
+## (multiple patterns per word currently only works for segment layers)
+pattern <- list(segment = list("I", list(pattern="l", target=T)))
+
+## words where the spelling starts with "k", but the first segment is /n/
+pattern <- list(
+  orthography = "k.*", 
+  segment = list(pattern = "n", anchorStart = T)
+```
+
 # nzilbb.labbcat 1.3-0
 
 Minimum LaBB-CAT version *20230224.1731*

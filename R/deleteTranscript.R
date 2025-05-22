@@ -1,4 +1,4 @@
-#' Delete a transcript from the corpus.
+#' Delete a transcript from the corpus
 #'
 #' This function deletes the given transcript, and all associated files.
 #'
@@ -11,9 +11,6 @@
 #' 
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## delete a transcript from the server
 #' deleteTranscript(labbcat.url, "my-transcript.eaf")
 #' }
@@ -22,7 +19,7 @@
 deleteTranscript <- function(labbcat.url, id) {
     
     ## delete transcript
-    resp <- http.post(labbcat.url, "edit/store/deleteTranscript", list(id=id))
+    resp <- http.post(labbcat.url, "api/edit/store/deleteTranscript", list(id=id))
     
     ## check response
     if (is.null(resp)) return()

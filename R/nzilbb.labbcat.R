@@ -7,11 +7,12 @@
 #' 
 #' 'LaBB-CAT' is a web-based language corpus management system and this
 #' package provides access to data stored in a 'LaBB-CAT' instance.
-#' You must have at least version 20230224.1731 'LaBB-CAT' to use
+#' You must have at least version 20230818.1400 'LaBB-CAT' to use
 #' this package.
 #' 
 #' @docType package
-#' @keywords package
+#' @aliases nzilbb.labbcat-package
+#' @keywords internal
 #' @name nzilbb.labbcat
 #' @author \packageAuthor{nzilbb.labbcat}
 #' @references
@@ -19,9 +20,6 @@
 #' \cite{Robert Fromont, "Toward a format-neutral annotation store", 2017}
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Perform a search
 #' results <- getMatches(labbcat.url, list(segment="I"))
 #' 
@@ -32,17 +30,20 @@
 #' wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
 #' }
 #' 
-NULL
+"_PACKAGE"
 
 ### Internal variables:
 
 ## minimum version of LaBB-CAT required:
-.min.labbcat.version <- "20230224.1731"
+.min.labbcat.version <- "20250430.1502"
 .user.agent <- paste("labbcat-R", packageVersion("nzilbb.labbcat"), sep="/")
 
 ### Internal functions:
 
-## prompt for password in RStudio, falling back to terminal if we're not in RStudio
+#' prompt for password in RStudio, falling back to terminal if we're not in RStudio
+#' @param prompt Prompt to display to user
+#' @return The usre's response
+#' @noRd
 get.hidden.input <- function(prompt) {
     return(tryCatch({
         ## try using the RStudio API for hidden input
@@ -53,14 +54,22 @@ get.hidden.input <- function(prompt) {
     }))
 }
 
-## encode a parameter value for inclusion in the URL
+#' Encode a parameter value for inclusion in the URL
+#' @param value Value to encode.
+#' @return URL-encoded value.
+#' @noRd
 enc <- function(value) {
     return(
         stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(
           URLencode(value),"\\+","%2B"),":","%3A"),"\\[","%5B"),"\\]","%5D"),"#","%23"),"&&","%26%26"))
 }
 
-## build a store call URL 
+#' build a store call URL 
+#' @param labbcat.url URL to LaBB-CAT
+#' @param call Graph store API enpoint
+#' @param parameters Request parameters
+#' @return URL
+#' @noRd
 buildUrl <- function(labbcat.url, call, parameters = NULL) {
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
     url <- paste("store?call=", call, sep="")
@@ -74,7 +83,12 @@ buildUrl <- function(labbcat.url, call, parameters = NULL) {
     return(url)
 }
 
-## make an HTTP GET request to the store URL, asking for credentials if required
+#' make an HTTP GET request to the store URL, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT
+#' @param call Graph store API enpoint
+#' @param parameters Request parameters
+#' @return response to request
+#' @noRd
 store.get <- function(labbcat.url, call, parameters = NULL) {
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
@@ -126,7 +140,12 @@ store.get <- function(labbcat.url, call, parameters = NULL) {
         return(resp)
     }
 }
-## make an HTTP GET request to the thread URL, asking for credentials if required
+#' make an HTTP GET request to the thread URL, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT
+#' @param threadId Server-side task ID
+#' @param parameters Request parameters
+#' @return task model returned by request
+#' @noRd
 thread.get <- function(labbcat.url, threadId) {
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
@@ -179,7 +198,14 @@ thread.get <- function(labbcat.url, threadId) {
         }
     }
 }
-## make an HTTP GET request, asking for credentials if required
+#' make an HTTP GET request, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT.
+#' @param path Endpoint path.
+#' @param parameters Request parameters.
+#' @param content.type Content (MIME) for encoding of response.
+#' @param file.name Name of file to save response to, or NULL to not save to a fil.
+#' @return Response object.
+#' @noRd
 http.get <- function(labbcat.url, path, parameters = NULL, content.type = "application/json", file.name = NULL) {
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
@@ -246,7 +272,13 @@ http.get <- function(labbcat.url, path, parameters = NULL, content.type = "appli
     }
 }
 
-## make an HTTP POST request, asking for credentials if required
+#' make an HTTP POST request, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT.
+#' @param path Endpoint path.
+#' @param parameters Request parameters.
+#' @param file.name Name of file to save response to, or NULL to not save to a fil.
+#' @return Response object.
+#' @noRd
 http.post <- function(labbcat.url, path, parameters, file.name=NULL) {
     
     ## ensure labbcat base URL has a trailing slash
@@ -257,11 +289,13 @@ http.post <- function(labbcat.url, path, parameters, file.name=NULL) {
     ## attempt the request
     if (is.null(file.name)) {
         resp <- httr::POST(url,
+                           ## httr::verbose(),
                            httr::add_headers("User-Agent" = .user.agent),
                            httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
                            body = parameters, encode = "form")
     } else {
         resp <- httr::POST(url,
+                           ## httr::verbose(),
                            httr::write_disk(file.name, overwrite=TRUE),
                            httr::add_headers("User-Agent" = .user.agent),
                            httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
@@ -301,17 +335,139 @@ http.post <- function(labbcat.url, path, parameters, file.name=NULL) {
     }
 }
 
-## make an HTTP POST request, asking for credentials if required
+#' make an HTTP PUT request, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT.
+#' @param path Endpoint path.
+#' @param parameters Request parameters.
+#' @param file.name Name of file to save response to, or NULL to not save to a fil.
+#' @return Response object.
+#' @noRd
+http.put <- function(labbcat.url, path, parameters, file.name=NULL) {
+    
+    ## ensure labbcat base URL has a trailing slash
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
+
+    ## build request URL
+    url <- paste(labbcat.url, path, sep="")
+    ## print(url)
+    ## attempt the request
+    if (is.null(file.name)) {
+        resp <- httr::PUT(url,
+                          ## httr::verbose(),
+                          httr::add_headers("User-Agent" = .user.agent),
+                          httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                          body = parameters, encode = "form")
+    } else {
+        resp <- httr::PUT(url,
+                          httr::write_disk(file.name, overwrite=TRUE),
+                          httr::add_headers("User-Agent" = .user.agent),
+                          httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
+                          body = parameters, encode = "form")
+    }
+    ## check we don't need credentials
+    if (httr::status_code(resp) == 401 && interactive()) {
+        ## ask for username and password
+        instance.name <- httr::headers(resp)['www-authenticate']
+        if (!is.null(instance.name)) {
+            ## something like 'Basic realm="Demo LaBB-CAT"'
+            instance.name <- stringr::str_replace(instance.name, "^Basic realm=\"", "")
+            instance.name <- stringr::str_replace(instance.name, "\"$", "")
+        } else {
+            instance.name <- "LaBB-CAT"
+        }
+
+        ## loop trying until success, or they cancel out
+        repeat {
+            error <- labbcatCredentials(
+                labbcat.url,
+                get.hidden.input(paste(instance.name, "Username:", "")),
+                get.hidden.input(paste(instance.name, "Password:", "")))
+            ## NULL means everything OK
+            if (is.null(error)) break
+            ## "Version mismatch" means success, but wrong LaBB-CAT version
+            if (grepl("version", error, ignore.case=T)) {
+                print(error)
+                return(NULL)
+            }
+        } ## next try
+        
+        ## and try again
+        return(http.put(labbcat.url, path, parameters, file.name))
+    } else {
+        return(resp)
+    }
+}
+
+#' make an HTTP DELETE request, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT.
+#' @param path Endpoint path.
+#' @param parameters Request parameters.
+#' @param file.name Name of file to save response to, or NULL to not save to a fil.
+#' @return Response object.
+#' @noRd
+http.delete <- function(labbcat.url, path) {
+    
+    ## ensure labbcat base URL has a trailing slash
+    if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
+
+    ## build request URL
+    url <- paste(labbcat.url, path, sep="")
+    resp <- httr::DELETE(url,
+                         httr::add_headers("User-Agent" = .user.agent),
+                         httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)))
+    ## check we don't need credentials
+    if (httr::status_code(resp) == 401 && interactive()) {
+        ## ask for username and password
+        instance.name <- httr::headers(resp)['www-authenticate']
+        if (!is.null(instance.name)) {
+            ## something like 'Basic realm="Demo LaBB-CAT"'
+            instance.name <- stringr::str_replace(instance.name, "^Basic realm=\"", "")
+            instance.name <- stringr::str_replace(instance.name, "\"$", "")
+        } else {
+            instance.name <- "LaBB-CAT"
+        }
+
+        ## loop trying until success, or they cancel out
+        repeat {
+            error <- labbcatCredentials(
+                labbcat.url,
+                get.hidden.input(paste(instance.name, "Username:", "")),
+                get.hidden.input(paste(instance.name, "Password:", "")))
+            ## NULL means everything OK
+            if (is.null(error)) break
+            ## "Version mismatch" means success, but wrong LaBB-CAT version
+            if (grepl("version", error, ignore.case=T)) {
+                print(error)
+                return(NULL)
+            }
+        } ## next try
+        
+        ## and try again
+        return(http.delete(labbcat.url, path))
+    } else {
+        return(resp)
+    }
+}
+
+#' make an HTTP POST request, asking for credentials if required
+#' @param labbcat.url URL to LaBB-CAT.
+#' @param path Endpoint path.
+#' @param parameters Request parameters.
+#' @param file.name Name of file to save response to, or NULL to not save to a fil.
+#' @return Response object.
+#' @noRd
 http.post.multipart <- function(labbcat.url, path, parameters, file.name=NULL) {
     ## ensure labbcat base URL has a trailing slash
     if (!grepl("/$", labbcat.url)) labbcat.url <- paste(labbcat.url, "/", sep="")
 
     ## build request URL
     url <- paste(labbcat.url, path, sep="")
+    ## print(url)
     
     ## attempt the request
     if (is.null(file.name)) {
         resp <- httr::POST(url,
+                           ## httr::verbose(),
                            httr::add_headers("User-Agent" = .user.agent),
                            httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
                            body = parameters, encode = "multipart")
@@ -322,6 +478,7 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name=NULL) {
                            httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)),
                            body = parameters, encode = "multipart")
     }
+    ## print(paste("response ", resp))
     ## check we don't need credentials
     if (httr::status_code(resp) == 401 && interactive()) {
         ## ask for username and password
@@ -356,7 +513,10 @@ http.post.multipart <- function(labbcat.url, path, parameters, file.name=NULL) {
     }
 }
 
-## Convert HTML to plain text for display purposes
+#' Convert HTML to plain text for display purposes
+#' @param html HTML content to convert.
+#' @return Content with HTML tags stripped out.
+#' @noRd
 html.to.text <- function(html) {
     ## remove DOCTYPE declaration
     text <- stringr::str_replace(html, "<!DOCTYPE html>", "")
@@ -377,4 +537,25 @@ html.to.text <- function(html) {
     pattern <- "</?\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>"
     text <- stringr::str_replace_all(text, pattern, "")
     return(text)
+}
+
+#' Determing file name of an HTTP response from the content-disposition header
+#' @param content.disposition Value of the the content-disposition response header
+#' @return The suggested file name of the download, or NULL if it could not be determined
+#' @noRd
+fileNameFromContentDisposition <- function(content.disposition) {
+    if (!is.null(content.disposition) && content.disposition != "") {
+        ## header is something like:
+        ## attachment; filename=orthography_(a).csv; filename*="orthography%E2%89%88_%28%C3%A1%29.csv"
+        content.disposition.filename <- strsplit(content.disposition, "filename\\*?=")
+        if (length(content.disposition.filename[[1]]) > 1) {
+            ## strip everythin after ; so we don't get the "; filename* part
+            content.disposition.filename <- strsplit(content.disposition.filename[[1]][2], ";")
+            filename <- content.disposition.filename[[1]][1]
+            ## strip quotes around name if any
+            filename = sub('"(.*)"', "\\1", filename)
+            return(filename)
+        } ## filename=...
+    } ## there is a header value
+    return(NULL)
 }

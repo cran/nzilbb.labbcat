@@ -2,7 +2,7 @@
 % Please edit documentation in R/addLayerDictionaryEntry.R
 \name{addLayerDictionaryEntry}
 \alias{addLayerDictionaryEntry}
-\title{Adds an entry to a layer dictionary.}
+\title{Adds an entry to a layer dictionary}
 \usage{
 addLayerDictionaryEntry(labbcat.url, layer.id, key, entry)
 }
@@ -33,7 +33,15 @@ addLayerDictionaryEntry(labbcat.url, "phonemes", "robert", "'rQ-b@t")
 
 }
 \seealso{
-\code{\link{generateLayer}}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{annotation}
 \keyword{layer}

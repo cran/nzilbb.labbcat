@@ -1,4 +1,4 @@
-#' Gets information about a single participant.
+#' Gets information about a single participant
 #'
 #' Returns a nested named list with the participant information, including the given
 #' participant attributes.
@@ -8,23 +8,18 @@
 #' @param layer.ids A vector of layer IDs corresponding to participant attributes,
 #'   eg. c('participant_gender', 'participant_year_of_birth')
 #' @return A named list of representing the participant and its attributes, with members:
-#' \itemize{
-#'  \item{\emph{id} The participant's unique internal database ID}
-#'  \item{\emph{label} The ID (name) of the participant}
-#'  \item{\emph{annotations} A named list of participant attributes
-#'  e.g. the label of the participant's 'gender' attribute would be:
-#'  participant$annotations$participant_gender$label}
-#' }
+#'   - *id* The participant's unique internal database ID
+#'   - *label* The ID (name) of the participant
+#'   - *annotations* A named list of participant attributes
+#'     e.g. the label of the participant's 'gender' attribute would be:
+#'     participant$annotations$participant_gender$label
 #' 
 #' @seealso 
-#'   \code{\link{getParticipantAttributes}}
-#'   \code{\link{saveParticipant}}
-#'   \code{\link{deleteParticipant}}
+#'   - [getParticipantAttributes]
+#'   - [saveParticipant]
+#'   - [deleteParticipant]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get the gender and year of birth of AP511_MikeThorpe
 #' participant <- getParticipant(labbcat.url, "AP511_MikeThorpe",
 #'                   c("participant_gender", "participant_year_of_birth"))

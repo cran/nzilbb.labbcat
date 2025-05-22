@@ -2,7 +2,7 @@
 % Please edit documentation in R/removeDictionaryEntry.R
 \name{removeDictionaryEntry}
 \alias{removeDictionaryEntry}
-\title{Removes an entry from a dictionary.}
+\title{Removes an entry from a dictionary}
 \usage{
 removeDictionaryEntry(
   labbcat.url,
@@ -41,9 +41,15 @@ removeDictionaryEntry(labbcat.url, "CELEX-EN", "Phonology (wordform)", "robert",
 
 }
 \seealso{
-\link{getDictionaries}
-
-\link{getDictionaryEntries}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{annotation}
 \keyword{layer}

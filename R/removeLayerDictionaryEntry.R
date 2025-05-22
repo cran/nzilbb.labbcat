@@ -1,4 +1,4 @@
-#' Removes an entry from a layer dictionary.
+#' Removes an entry from a layer dictionary
 #'
 #' This function removes an existing entry from the dictionary that manages a given layer,
 #' and updates all affected tokens in the corpus. Words can have multiple entries.
@@ -9,11 +9,10 @@
 #' @param layer.id The ID of the layer with a dictionary configured to manage it.
 #' @param key The key (word) in the dictionary to remove an entry from.
 #' @param entry The value (definition) for the given key, or NULL to remove all entries
-#'     for the given key.
+#'   for the given key.
 #' @return NULL if the entry was added, or a list of error messages if not.
 #' 
-#' @seealso
-#' \code{\link{generateLayer}}
+#' @family dictionary functions
 #' @examples
 #' \dontrun{
 #' ## Remove a pronunciation for "robert" from the phonemes layer dictionary

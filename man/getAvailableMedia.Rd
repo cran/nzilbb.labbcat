@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAvailableMedia.R
 \name{getAvailableMedia}
 \alias{getAvailableMedia}
-\title{List the media available for the given transcript.}
+\title{List the media available for the given transcript}
 \usage{
 getAvailableMedia(labbcat.url, id)
 }
@@ -14,27 +14,28 @@ getAvailableMedia(labbcat.url, id)
 \value{
 A named list of media files available for the given transcript, with members:
 \itemize{
- \item{\emph{trackSuffix} The track suffix of the media}
- \item{\emph{mimeType} The MIME type of the file}
- \item{\emph{url} URL to the content of the file}
- \item{\emph{name} Name of the file}
+\item \emph{trackSuffix} The track suffix of the media
+\item \emph{mimeType} The MIME type of the file
+\item \emph{url} URL to the content of the file
+\item \emph{name} Name of the file
 }
 }
 \description{
-List the media available for the given transcript.
+List the media available for the given transcript
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## List the media files available for BR2044_OllyOhlson.eaf
 media <- getAvailableMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 }
 
 }
 \seealso{
-\link{getTranscriptIds}
+\itemize{
+\item \link{getTranscriptIds}
+\item \link{saveMedia}
+\item \link{deleteMedia}
+}
 }
 \keyword{audio}
 \keyword{media}

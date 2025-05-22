@@ -1,4 +1,4 @@
-#' Adds an entry to a layer dictionary.
+#' Adds an entry to a layer dictionary
 #'
 #' This function adds a new entry to the dictionary that manages a given layer,
 #' and updates all affected tokens in the corpus. Words can have multiple entries.
@@ -11,8 +11,7 @@
 #' @param entry The value (definition) for the given key.
 #' @return NULL if the entry was added, or a list of error messages if not.
 #' 
-#' @seealso
-#' \code{\link{generateLayer}}
+#' @family dictionary functions
 #' @examples
 #' \dontrun{
 #' ## Add a pronunciation for the word "robert" to the phonemes layer dictionary

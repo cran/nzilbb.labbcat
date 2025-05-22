@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAnchors.R
 \name{getAnchors}
 \alias{getAnchors}
-\title{Gets the given anchors in the given transcript.}
+\title{Gets the given anchors in the given transcript}
 \usage{
 getAnchors(labbcat.url, id, anchor.id, page.length = 1000)
 }
@@ -21,11 +21,11 @@ controls the number of anchors retrieved per request.}
 \value{
 A named list of anchors, with members:
 \itemize{
- \item{\emph{id} The annotation's unique ID},
- \item{\emph{offset} The offset from the beginning (in seconds if it's a
- transcript of a recording, or in characters if it's a text document)}
- \item{\emph{confidence} A rating from 0-100 of the confidence of the offset,
-  e.g. 10: default value, 50: force-aligned, 100: manually aligned}
+\item \emph{id} The annotation's unique ID,
+\item \emph{offset} The offset from the beginning (in seconds if it's a
+transcript of a recording, or in characters if it's a text document)
+\item \emph{confidence} A rating from 0-100 of the confidence of the offset,
+e.g. 10: default value, 50: force-aligned, 100: manually aligned
 }
 }
 \description{
@@ -33,9 +33,6 @@ Lists the given anchors in the given transcript.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get the first 20 orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
 orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography", 20, 0)
 

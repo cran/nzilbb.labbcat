@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMedia.R
 \name{getMedia}
 \alias{getMedia}
-\title{Downloads a given media track for a given transcript.}
+\title{Downloads a given media track for a given transcript}
 \usage{
 getMedia(
   labbcat.url,
@@ -25,16 +25,13 @@ getMedia(
 }
 \value{
 The name of the file, which is saved in the current directory, or the given
-        path if specified
+path if specified
 }
 \description{
-Downloads a given media track for a given transcript.
+Downloads a given media track for a given transcript
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Download the WAV file for BR2044_OllyOhlson.eaf
 wav <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 
@@ -44,9 +41,10 @@ quakeFaceMp4 <- getMedia(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "video/m
 
 }
 \seealso{
-\link{getTranscriptIds}
-
-\link{getMediaUrl}
+\itemize{
+\item \link{getTranscriptIds}
+\item \link{getMediaUrl}
+}
 }
 \keyword{audio}
 \keyword{media}

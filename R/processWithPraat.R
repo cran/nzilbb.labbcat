@@ -1,4 +1,4 @@
-#' Process a set of intervals with Praat.
+#' Process a set of intervals with Praat
 #'
 #' This function instructs the LaBB-CAT server to invoke Praat for a set of sound
 #' intervals, in order to extract acoustic measures.
@@ -8,8 +8,8 @@
 #'
 #' There are functions to allow the generation of a number of pre-defined praat scripts
 #' for common tasks such as formant, pitch, intensity, and centre of gravity -- see
-#' \link{praatScriptFormants}, \link{praatScriptCentreOfGravity}, \link{praatScriptIntensity}
-#' and \link{praatScriptPitch}.
+#' [praatScriptFormants], [praatScriptCentreOfGravity], [praatScriptIntensity]
+#' and [praatScriptPitch].
 #'
 #' You can provide your own script, either by building a string with your code, or loading
 #' one from a file.
@@ -28,69 +28,61 @@
 #' print 'myOutputVariable' 'newline$'
 #' 
 #' Variables that can be assumed to be already set in the context of the script are:
-#' \itemize{
-#'  \item{\emph{windowOffset}
-#'    -- the value used for the Window Offset; how much context to include.} 
-#'  \item{\emph{windowAbsoluteStart}
-#'    -- the start time of the window extracted relative to the start of the original audio file.} 
-#'  \item{\emph{windowAbsoluteEnd}
-#'    -- the end time of the window extracted relative to the start of the original audio file.} 
-#'  \item{\emph{windowDuration}
-#'    -- the duration of the window extracted (including window offset).}
-#'  \item{\emph{targetAbsoluteStart}
-#'    -- the start time of the target interval relative to the start of the original audio file.} 
-#'  \item{\emph{targetAbsoluteEnd}
-#'    -- the end time of the target interval relative to the start of the original audio file.} 
-#'  \item{\emph{targetStart}
-#'    -- the start time of the target interval relative to the start of the window extracted.} 
-#'  \item{\emph{targetEnd}
-#'    -- the end time of the target interval relative to the start of the window extracted.}
-#'  \item{\emph{targetDuration}
-#'    -- the duration of the target interval.}
-#'  \item{\emph{sampleNumber}
-#'    -- the number of the sample within the set of samples being processed.} 
-#'  \item{\emph{sampleName$}
-#'    -- the name of the extracted/selected Sound object.}
-#' }
+#'  - *windowOffset*
+#'    -- the value used for the Window Offset; how much context to include.
+#'  - *windowAbsoluteStart*
+#'    -- the start time of the window extracted relative to the start of the original audio file.
+#'  - *windowAbsoluteEnd*
+#'    -- the end time of the window extracted relative to the start of the original audio file.
+#'  - *windowDuration*
+#'    -- the duration of the window extracted (including window offset).
+#'  - *targetAbsoluteStart*
+#'    -- the start time of the target interval relative to the start of the original audio file.
+#'  - *targetAbsoluteEnd*
+#'    -- the end time of the target interval relative to the start of the original audio file.
+#'  - *targetStart*
+#'    -- the start time of the target interval relative to the start of the window extracted.
+#'  - *targetEnd*
+#'    -- the end time of the target interval relative to the start of the window extracted.
+#'  - *targetDuration*
+#'    -- the duration of the target interval.
+#'  - *sampleNumber*
+#'    -- the number of the sample within the set of samples being processed.
+#'  - *sampleName$*
+#'    -- the name of the extracted/selected Sound object.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param match.ids A vector of annotation IDs, e.g. the MatchId column, or the URL column,
-#'     of a results set. 
+#'   of a results set. 
 #' @param start.offsets The start time in seconds, or a vector of start times.
 #' @param end.offsets The end time in seconds, or a vector of end times.
 #' @param praat.script Script to run on each match. This may be a single string or a
-#'     character vector.
+#'   character vector.
 #' @param window.offset In many circumstances, you will want some context before and after
-#'     the sample start/end time.  For this reason, you can specify a "window offset" -
-#'     this is a number of seconds to subtract from the sample start and add to the sample
-#'     end time, before extracting that part of the audio for processing. For example, if
-#'     the sample starts at 2.0s and ends at 3.0s, and you set the window offset to 0.5s,
-#'     then Praat will extract a sample of audio from  1.5s to 3.5s, and do the selected
-#'     processing on that sample. The best value for this depends on what the praat.script
-#'     is doing; if you are getting formants from  vowels, including some context ensures
-#'     that he formants at the edges are more accurate (in LaBB-CAT's web interface, the
-#'     default value for this 0.025), but if you're getting max pitch or COG during a
-#'     segment, most likely you want a window.offset of 0 to ensure neighbouring segments
-#'     doesn't influence the measurement. 
+#'   the sample start/end time.  For this reason, you can specify a "window offset" -
+#'   this is a number of seconds to subtract from the sample start and add to the sample
+#'   end time, before extracting that part of the audio for processing. For example, if
+#'   the sample starts at 2.0s and ends at 3.0s, and you set the window offset to 0.5s,
+#'   then Praat will extract a sample of audio from  1.5s to 3.5s, and do the selected
+#'   processing on that sample. The best value for this depends on what the praat.script
+#'   is doing; if you are getting formants from  vowels, including some context ensures
+#'   that the formants at the edges are more accurate (in LaBB-CAT's web interface, the
+#'   default value for this 0.025), but if you're getting max pitch or COG during a
+#'   segment, most likely you want a window.offset of 0 to ensure neighbouring segments
+#'   don't influence the measurement. 
 #' @param gender.attribute Which participant attribute represents the participant's gender.
 #' @param attributes Vector of participant attributes to make available to the script. For
-#'     example, if you want to use different acoustic parameters depending on what the
-#'     gender of the speaker is, including the "participant_gender" attribute will make a
-#'     variable called participant_gender$ available to the praat script, whose value will
-#'     be the gender of the speaker for that segment.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#'   example, if you want to use different acoustic parameters depending on what the
+#'   gender of the speaker is, including the "participant_gender" attribute will make a
+#'   variable called participant_gender$ available to the praat script, whose value will
+#'   be the gender of the speaker of that segment.
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return A data frame of acoustic measures, one row for each matchId.
 #' 
-#' @seealso \link{praatScriptFormants}
-#' @seealso \link{praatScriptCentreOfGravity}
-#' @seealso \link{praatScriptIntensity}
-#' @seealso \link{praatScriptPitch}
+#' @family Praat-related functions
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Perform a search
 #' results <- getMatches(labbcat.url, list(segment="I"))
 #' 
@@ -212,6 +204,8 @@ processWithPraat <- function(labbcat.url, match.ids, start.offsets, end.offsets,
 
     ## tidily remove the downloaded file
     file.remove(download.file)
+    ## and release the server resources
+    http.get(labbcat.url, "threads", list(threadId=threadId, command="release"))
     
     return(results)
 

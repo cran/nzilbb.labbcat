@@ -2,7 +2,7 @@
 % Please edit documentation in R/deleteTranscript.R
 \name{deleteTranscript}
 \alias{deleteTranscript}
-\title{Delete a transcript from the corpus.}
+\title{Delete a transcript from the corpus}
 \usage{
 deleteTranscript(labbcat.url, id)
 }
@@ -23,9 +23,6 @@ least 'edit' access.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## delete a transcript from the server
 deleteTranscript(labbcat.url, "my-transcript.eaf")
 }

@@ -1,4 +1,4 @@
-#' Gets the annotations on the given layer of the given transcript.
+#' Gets the annotations on the given layer of the given transcript
 #'
 #' Returns the annotations on the given layer of the given transcript.
 #' 
@@ -11,28 +11,23 @@
 #' @param page.length The maximum number of annotations to return, or null to return all
 #' @param page.number The zero-based page number to return, or null to return the first page
 #' @return A named list of annotations, with members:
-#' \itemize{
-#'  \item{\emph{id} The annotation's unique ID}
-#'  \item{\emph{layerId} The name of the layer it comes from}
-#'  \item{\emph{label} The value of the annotation}
-#'  \item{\emph{startId} The ID of the start anchor},
-#'  \item{\emph{endId} The ID of the end anchor},
-#'  \item{\emph{parentId} The ID of the parent annotation},
-#'  \item{\emph{ordinal} The ordinal of the annotation among its peers},
-#'  \item{\emph{confidence} A rating from 0-100 of the confidence of the label
-#'  e.g. 10: default value, 50: automatically generated, 100: manually annotated}
-#' }
+#'  - *id* The annotation's unique ID
+#'  - *layerId* The name of the layer it comes from
+#'  - *label* The value of the annotation
+#'  - *startId* The ID of the start anchor,
+#'  - *endId* The ID of the end anchor,
+#'  - *parentId* The ID of the parent annotation,
+#'  - *ordinal* The ordinal of the annotation among its peers,
+#'  - *confidence* A rating from 0-100 of the confidence of the label
+#'  e.g. 10: default value, 50: automatically generated, 100: manually annotated
 #' 
 #' @seealso 
-#'   \code{\link{getTranscriptIds}}
-#'   \code{\link{getTranscriptIdsInCorpus}}
-#'   \code{\link{getTranscriptIdsWithParticipant}}
-#'   \code{\link{countAnnotations}}
+#'   - [getTranscriptIds]
+#'   - [getTranscriptIdsInCorpus]
+#'   - [getTranscriptIdsWithParticipant]
+#'   - [countAnnotations]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get all the orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
 #' orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 #' 

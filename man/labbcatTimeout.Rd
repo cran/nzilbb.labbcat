@@ -3,7 +3,7 @@
 \name{labbcatTimeout}
 \alias{labbcatTimeout}
 \title{Sets the timeout for request to the LaBB-CAT server in future function calls. The
-default timeout is 10 seconds.}
+default timeout is 10 seconds}
 \usage{
 labbcatTimeout(seconds = NULL)
 }
@@ -15,7 +15,7 @@ The request timeout in seconds
 }
 \description{
 Sets the timeout for request to the LaBB-CAT server in future function calls. The
-default timeout is 10 seconds.
+default timeout is 10 seconds
 }
 \examples{
 \dontrun{

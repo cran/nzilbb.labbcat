@@ -36,16 +36,15 @@ in the given interval.}
 \item{partial.containment}{Whether to include annotations that are only partially
 contained in the given interval.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 A data frame with three columns for each layer in layer.ids:
-
 \itemize{
- \item{The annotation labels concatenated together}
- \item{The start time of the first annotation}
- \item{The end time of the last annotation}
+\item The annotation labels concatenated together
+\item The start time of the first annotation
+\item The end time of the last annotation
 }
 }
 \description{
@@ -54,9 +53,6 @@ than one annotation matches, labels are concatentated together.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get some span-layer intervales
 topics <- getMatches(labbcat.url, list(topic = ".*quake.*"))
 
@@ -67,9 +63,10 @@ topic.tokens <- getFragmentAnnotations(
 }
 }
 \seealso{
-\link{getFragments}
-
-\link{getSoundFragments}
+\itemize{
+\item \link{getFragments}
+\item \link{getSoundFragments}
+}
 }
 \keyword{TextGrid}
 \keyword{fragment}

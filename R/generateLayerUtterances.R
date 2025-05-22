@@ -1,24 +1,20 @@
-#' Generates a layer for a given set of utterances.
+#' Generates a layer for a given set of utterances
 #'
 #' Generates annotations on a given layer for a given set of utterances, e.g. force-align
 #' selected utterances of a participant.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param match.ids A vector of annotation IDs, e.g. the MatchId column, or the URL column,
-#'     of a results set. 
+#'   of a results set. 
 #' @param layer.id The ID of the layer to generate.
 #' @param collection.name An optional name for the collection, e.g. the participant ID.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return The final status of the layer generation task.
 #' 
-#' @seealso
-#' \code{\link{getAllUtterances}}
+#' @seealso [getAllUtterances]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get all utterances of a participant
 #' allUtterances <- getAllUtterances(labbcat.url, "AP2505_Nelson")
 #' 

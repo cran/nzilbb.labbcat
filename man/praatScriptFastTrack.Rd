@@ -2,7 +2,7 @@
 % Please edit documentation in R/praatScriptFastTrack.R
 \name{praatScriptFastTrack}
 \alias{praatScriptFastTrack}
-\title{Generates a script for extracting formants using FastTrack, for use with \link{processWithPraat}.}
+\title{Generates a script for extracting formants using FastTrack, for use with \link{processWithPraat}}
 \usage{
 praatScriptFastTrack(
   formants = c(1, 2),
@@ -93,7 +93,7 @@ coefficients allow for more sudden, and 'wiggly' formant motion.}
 }
 \value{
 A script fragment which can be passed as the praat.script parameter of
-    \link{processWithPraat}
+\link{processWithPraat}
 }
 \description{
 This function generates a Praat script fragment which can be passed as the praat.script
@@ -108,9 +108,6 @@ information, see \url{https://github.com/santiagobarreda/FastTrack}
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get all tokens of the KIT vowel
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -124,14 +121,12 @@ formants <- processWithPraat(
 }
 }
 \seealso{
-\link{processWithPraat}
-
-\link{praatScriptCentreOfGravity}
-
-\link{praatScriptIntensity}
-
-\link{praatScriptPitch}
-
-\link{praatScriptFormants}
+Other Praat-related functions: 
+\code{\link{praatScriptCentreOfGravity}()},
+\code{\link{praatScriptFormants}()},
+\code{\link{praatScriptIntensity}()},
+\code{\link{praatScriptPitch}()},
+\code{\link{processWithPraat}()}
 }
+\concept{Praat-related functions}
 \keyword{praat}

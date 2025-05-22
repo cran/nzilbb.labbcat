@@ -1,4 +1,4 @@
-#' Renames a list of participants.
+#' Renames a list of participants
 #'
 #' This function changes the IDs of a given set of participants, where possible.
 #' 
@@ -7,24 +7,21 @@
 #'   the corpus.
 #' @param new.ids A vector of new participant IDs, each element corresponding to an ID in
 #'   current.ids. 
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return A vector of results, each element corresponding to an ID in current.ids. If the
 #'   ID was successfully changed, the corresponding element is TRUE. If the ID could not
 #'   be changed (e.g. because there is already an existing participant using the new ID),
 #'   then the corresponding element is FALSE.
 #' 
 #' @seealso 
-#'   \code{\link{getParticipantIds}}
-#'   \code{\link{getMatchingParticipantIds}}
-#'   \code{\link{getParticipant}}
-#'   \code{\link{saveParticipant}}
-#'   \code{\link{deleteParticipant}}
+#'   - [getParticipantIds]
+#'   - [getMatchingParticipantIds]
+#'   - [getParticipant]
+#'   - [saveParticipant]
+#'   - [deleteParticipant]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Create some new participant records
 #' old.ids <- c("test-id-1","test-id-2","test-id-3")
 #' for (id in old.ids) saveParticipant(labbcat.url, id)

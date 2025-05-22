@@ -2,7 +2,7 @@
 % Please edit documentation in R/deleteLayer.R
 \name{deleteLayer}
 \alias{deleteLayer}
-\title{Deletes an existing layer.}
+\title{Deletes an existing layer}
 \usage{
 deleteLayer(labbcat.url, layer.id)
 }
@@ -29,8 +29,14 @@ deleteLayer(labbcat.url, "phonemes")
 
 }
 \seealso{
-\code{\link{newLayer}}
-\code{\link{saveLayer}}
+Other Annotation layer functions: 
+\code{\link{generateLayer}()},
+\code{\link{getLayer}()},
+\code{\link{getLayerIds}()},
+\code{\link{getLayers}()},
+\code{\link{newLayer}()},
+\code{\link{saveLayer}()}
 }
+\concept{Annotation layer functions}
 \keyword{annotation}
 \keyword{layer}

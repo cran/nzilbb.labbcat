@@ -1,4 +1,4 @@
-#' Update a transcript fragment.
+#' Update a transcript fragment
 #'
 #' This function uploads a file (e.g. Praat TextGrid) representing a fragment of a
 #' transcript, with annotations or alignments to update in LaBB-CAT's version of the
@@ -13,9 +13,6 @@
 #' 
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## upload new verison of transcript transcript
 #' updateFragment(labbcat.url, "my-transcript__1.234-5.678.TextGrid")
 #' }

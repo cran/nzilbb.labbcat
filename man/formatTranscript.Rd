@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatTranscript.R
 \name{formatTranscript}
 \alias{formatTranscript}
-\title{Gets transcript(s) in a given format.}
+\title{Gets transcript(s) in a given format}
 \usage{
 formatTranscript(
   labbcat.url,
@@ -29,26 +29,23 @@ LaBB-CAT installation may support other formats, which can be discovered using
 }
 \value{
 The name of the file, which is saved in the current directory, or the given
-path, or a list of names of files, if multiple id's were specified. 
+path, or a list of names of files, if multiple id's were specified.
 
 If a list of files is returned, they are in the order that they
-    were returned by the server, which *should* be the order that
-    they were specified in the id list.
+were returned by the server, which \emph{should} be the order that
+they were specified in the id list.
 }
 \description{
-This function gets whole transcripts from 'LaBB-CAT', 
+This function gets whole transcripts from 'LaBB-CAT',
 converted to a given format (by default, Praat TextGrid).
 }
 \details{
-\emph{NB} Although many formats will generate exactly one file for each interval
-     (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
-     a single file or a fixed collection of files regardless of how many IDs there are.
+\strong{NB} Although many formats will generate exactly one file for each interval
+(e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
+a single file or a fixed collection of files regardless of how many IDs there are.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get the TextGrid of a recording
 textgrid.file <- formatTranscript(labbcat.url, "AP2505_Nelson.eaf",
     c("word", "segment"), path="textgrids") 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/labbcatVersionInfo.R
 \name{labbcatVersionInfo}
 \alias{labbcatVersionInfo}
-\title{Gets version information of all components of LaBB-CAT.}
+\title{Gets version information of all components of LaBB-CAT}
 \usage{
 labbcatVersionInfo(labbcat.url)
 }
@@ -12,12 +12,12 @@ labbcatVersionInfo(labbcat.url)
 \value{
 The versions of different components of LaBB-CAT, divided into sections:
 \itemize{
- \item{\emph{System} Overall LaBB-CAT system components}
- \item{\emph{Formats} Annotation format conversion modules}
- \item{\emph{Layer Managers} Annotator module versions}
- \item{\emph{3rd Pary Software} Versions of software installed on the server that
-       LaBB-CAT integrates with, e.g. Praat, FastTrack, etc.}
- \item{\emph{RDBMS} MySQL Server version information}
+\item \emph{System} Overall LaBB-CAT system components
+\item \emph{Formats} Annotation format conversion modules
+\item \emph{Layer Managers} Annotator module versions
+\item \emph{3rd Pary Software} Versions of software installed on the server that
+LaBB-CAT integrates with, e.g. Praat, FastTrack, etc.
+\item \emph{RDBMS} MySQL Server version information
 }
 }
 \description{
@@ -28,7 +28,7 @@ LaBB-CAT server, including format converters and annotator modules.
 \dontrun{
 ## Get ID of LaBB-CAT instance
 versionInfo <- labbcatVersionInfo("https://labbcat.canterbury.ac.nz/demo/")
-print(paste("LaBB-CAT version", versionInfo$System$`LaBB-CAT`, " Full version info:"))
+print(paste("LaBB-CAT version", versionInfo$System$'LaBB-CAT', " Full version info:"))
 print(t(as.data.frame(versionInfo)))
 }
 

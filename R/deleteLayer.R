@@ -1,4 +1,4 @@
-#' Deletes an existing layer.
+#' Deletes an existing layer
 #'
 #' This function deletes an existing annotation layer, including all annotation data
 #' associated with it.
@@ -9,9 +9,7 @@
 #' @param layer.id The ID of the layer to delete.
 #' @return NULL, or an error message if deletion failed.
 #' 
-#' @seealso
-#' \code{\link{newLayer}}
-#' \code{\link{saveLayer}}
+#' @family Annotation layer functions
 #' @examples
 #' \dontrun{
 #' ## Delete the phonemes layer

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getDeserializerDescriptors.R
 \name{getDeserializerDescriptors}
 \alias{getDeserializerDescriptors}
-\title{Lists the descriptors of all registered deserializers.}
+\title{Lists the descriptors of all registered deserializers}
 \usage{
 getDeserializerDescriptors(labbcat.url)
 }
@@ -12,11 +12,11 @@ getDeserializerDescriptors(labbcat.url)
 \value{
 A list of serializers, each including the following information:
 \itemize{
- \item{\emph{name} The name of the format.}
- \item{\emph{version} The installed version of the serializer module.}
- \item{\emph{fileSuffixes} The normal file name suffixes (extensions) of the files.},
- \item{\emph{mimeType} The MIME type of the format, i.e. the value to use as the
-    \emph{mimeType} parameter of \link{getFragments}},
+\item \emph{name} The name of the format.
+\item \emph{version} The installed version of the serializer module.
+\item \emph{fileSuffixes} The normal file name suffixes (extensions) of the files.
+\item \emph{mimeType} The MIME type of the format, i.e. the value to use as the
+\emph{mimeType} parameter of \link{getFragments}
 }
 }
 \description{

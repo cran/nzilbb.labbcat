@@ -2,7 +2,7 @@
 % Please edit documentation in R/loadLexicon.R
 \name{loadLexicon}
 \alias{loadLexicon}
-\title{Upload a flat lexicon file for lexical tagging.}
+\title{Upload a flat lexicon file for lexical tagging}
 \usage{
 loadLexicon(
   labbcat.url,
@@ -27,7 +27,7 @@ entries will be deleted befor adding new entries from the file).
 e.g. 'cmudict'}
 
 \item{field.delimiter}{The character used to delimit fields in the file.
-If this is " - ", rows are split on only the <em>first</em> space, in line with
+If this is " - ", rows are split on only the \if{html}{\out{<em>}}first\if{html}{\out{</em>}} space, in line with
 common dictionary formats.
 e.g. ',' for Comma Separated Values (CSV) files.}
 
@@ -42,7 +42,7 @@ e.g. '#'.}
 \item{skip.first.line}{Whether to ignore the first line of the file (because it
 contains field names).}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -68,7 +68,14 @@ loadLexicon(labbcat.url, "cmudict", " - ", "", ";", "Word - Pron", FALSE, "cmudi
 
 }
 \seealso{
-\code{\link{getDictionaries}}
-\code{\link{deleteLexicon}}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{lexicon}

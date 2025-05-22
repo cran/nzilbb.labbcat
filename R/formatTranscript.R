@@ -1,34 +1,31 @@
-#' Gets transcript(s) in a given format.
+#' Gets transcript(s) in a given format
 #' 
 #' This function gets whole transcripts from 'LaBB-CAT', 
 #' converted to a given format (by default, Praat TextGrid).
 #'
-#' \emph{NB} Although many formats will generate exactly one file for each interval
-#'      (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
-#'      a single file or a fixed collection of files regardless of how many IDs there are.
+#' **NB** Although many formats will generate exactly one file for each interval
+#' (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
+#' a single file or a fixed collection of files regardless of how many IDs there are.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id The transcript ID (transcript name) of the sound recording, or
-#'     a vector of transcript IDs. If the same ID appears more than one, the formatted
-#'     file is downloaded only once.
+#'   a vector of transcript IDs. If the same ID appears more than one, the formatted
+#'   file is downloaded only once.
 #' @param layer.ids A vector of layer IDs.
 #' @param mime.type Optional content-type - "text/praat-textgrid" is the default, but your
-#'     LaBB-CAT installation may support other formats, which can be discovered using
-#'     \link{getSerializerDescriptors}.
+#'   LaBB-CAT installation may support other formats, which can be discovered using
+#'   [getSerializerDescriptors].
 #' @param path Optional path to directory where the files should be saved.
 #' @return The name of the file, which is saved in the current directory, or the given
 #' path, or a list of names of files, if multiple id's were specified. 
 #'
 #' If a list of files is returned, they are in the order that they
-#'     were returned by the server, which *should* be the order that
-#'     they were specified in the id list.
+#' were returned by the server, which *should* be the order that
+#' they were specified in the id list.
 #' 
-#' @seealso \link{getSerializerDescriptors}
+#' @seealso [getSerializerDescriptors]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get the TextGrid of a recording
 #' textgrid.file <- formatTranscript(labbcat.url, "AP2505_Nelson.eaf",
 #'     c("word", "segment"), path="textgrids") 
@@ -93,12 +90,12 @@ formatTranscript <- function(labbcat.url, id, layer.ids, mime.type = "text/praat
             file.remove(file.name)
             file.name <<- NULL
         } else {
-            content.disposition <- as.character(httr::headers(resp)["content-disposition"])
-            content.disposition.parts <- strsplit(content.disposition, "=")
-            if (length(content.disposition.parts[[1]]) > 1
-                && file.name != content.disposition.parts[[1]][2]) {
+            content.disposition.filename <- fileNameFromContentDisposition(
+                as.character(httr::headers(resp)["content-disposition"]))
+            if (!is.null(content.disposition.filename)
+                && file.name != content.disposition.filename) {
                 ## file name is specified, so use it
-                final.file.name <- paste(dir, content.disposition.parts[[1]][2], sep="")
+                final.file.name <- paste(dir, content.disposition.filename, sep="")
                 file.rename(file.name, final.file.name)
                 file.name <- final.file.name
             }

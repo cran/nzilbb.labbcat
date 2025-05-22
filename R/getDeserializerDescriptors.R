@@ -1,17 +1,15 @@
-#' Lists the descriptors of all registered deserializers.
+#' Lists the descriptors of all registered deserializers
 #' 
 #' Returns a list of deserializers, which are modules that import transcriptions and
 #' annotation structures from a specific file format, e.g. Praat TextGrid, plain text, etc.
 #' 
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of serializers, each including the following information:
-#' \itemize{
-#'  \item{\emph{name} The name of the format.}
-#'  \item{\emph{version} The installed version of the serializer module.}
-#'  \item{\emph{fileSuffixes} The normal file name suffixes (extensions) of the files.},
-#'  \item{\emph{mimeType} The MIME type of the format, i.e. the value to use as the
-#'     \emph{mimeType} parameter of \link{getFragments}},
-#' }
+#'  - *name* The name of the format.
+#'  - *version* The installed version of the serializer module.
+#'  - *fileSuffixes* The normal file name suffixes (extensions) of the files.
+#'  - *mimeType* The MIME type of the format, i.e. the value to use as the
+#'     *mimeType* parameter of \link{getFragments}
 #' 
 #' @examples
 #' \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateLayer.R
 \name{generateLayer}
 \alias{generateLayer}
-\title{Generates a layer.}
+\title{Generates a layer}
 \usage{
 generateLayer(labbcat.url, layer.id, no.progress = FALSE)
 }
@@ -22,17 +22,23 @@ Generates annotations on a given layer for all transcripts in the corpus.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Generate all phonemic transcription annotations
 generateLayer(labbcat.url, "phonemes")
 }
 
 }
 \seealso{
-\code{\link{getAllUtterances}}
+\link{getAllUtterances}
+
+Other Annotation layer functions: 
+\code{\link{deleteLayer}()},
+\code{\link{getLayer}()},
+\code{\link{getLayerIds}()},
+\code{\link{getLayers}()},
+\code{\link{newLayer}()},
+\code{\link{saveLayer}()}
 }
+\concept{Annotation layer functions}
 \keyword{annotation}
 \keyword{label}
 \keyword{layer}

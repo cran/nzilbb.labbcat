@@ -2,7 +2,7 @@
 % Please edit documentation in R/getLayerIds.R
 \name{getLayerIds}
 \alias{getLayerIds}
-\title{Gets a list of layer IDs.}
+\title{Gets a list of layer IDs}
 \usage{
 getLayerIds(labbcat.url)
 }
@@ -22,4 +22,14 @@ layer.ids <- getLayerIds("https://labbcat.canterbury.ac.nz/demo/")
 }
 
 }
+\seealso{
+Other Annotation layer functions: 
+\code{\link{deleteLayer}()},
+\code{\link{generateLayer}()},
+\code{\link{getLayer}()},
+\code{\link{getLayers}()},
+\code{\link{newLayer}()},
+\code{\link{saveLayer}()}
+}
+\concept{Annotation layer functions}
 \keyword{layer}

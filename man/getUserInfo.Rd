@@ -2,7 +2,7 @@
 % Please edit documentation in R/getUserInfo.R
 \name{getUserInfo}
 \alias{getUserInfo}
-\title{Gets information about the current user.}
+\title{Gets information about the current user}
 \usage{
 getUserInfo(labbcat.url)
 }

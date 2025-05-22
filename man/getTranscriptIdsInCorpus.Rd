@@ -2,7 +2,7 @@
 % Please edit documentation in R/getTranscriptIdsInCorpus.R
 \name{getTranscriptIdsInCorpus}
 \alias{getTranscriptIdsInCorpus}
-\title{Gets a list of transcript in a corpus.}
+\title{Gets a list of transcript in a corpus}
 \usage{
 getTranscriptIdsInCorpus(labbcat.url, id)
 }

@@ -1,4 +1,4 @@
-#' Gets the number of annotations on the given layer of the given transcript.
+#' Gets the number of annotations on the given layer of the given transcript
 #'
 #' Returns the number of annotations on the given layer of the given
 #' transcript.
@@ -7,19 +7,16 @@
 #' @param id A transcript ID (i.e. transcript name)
 #' @param layer.id A layer ID
 #' @param max.ordinal The maximum ordinal for the counted annotations. e.g. a max.ordinal
-#' of 1 will ensure that only the first annotation for each parent is returned. If
-#' max.ordinal is null, then all annotations are counted, regardless of their ordinal.
+#'   of 1 will ensure that only the first annotation for each parent is returned. If
+#'   max.ordinal is null, then all annotations are counted, regardless of their ordinal.
 #' @return The number of annotations on that layer
 #' 
 #' @seealso
-#' \code{\link{getTranscriptIds}}
-#' \code{\link{getTranscriptIdsInCorpus}}
-#' \code{\link{getTranscriptIdsWithParticipant}}
+#' - [getTranscriptIds]
+#' - [getTranscriptIdsInCorpus]
+#' - [getTranscriptIdsWithParticipant]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Count the number of words in UC427_ViktoriaPapp_A_ENG.eaf
 #' token.count <- countAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 #' }

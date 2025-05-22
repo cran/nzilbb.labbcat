@@ -2,7 +2,7 @@
 % Please edit documentation in R/getLayer.R
 \name{getLayer}
 \alias{getLayer}
-\title{Gets a layer definition.}
+\title{Gets a layer definition}
 \usage{
 getLayer(labbcat.url, id)
 }
@@ -14,21 +14,21 @@ getLayer(labbcat.url, id)
 \value{
 The definition of the given layer, with members:
 \itemize{
- \item{\emph{id} The layer's unique ID}
- \item{\emph{parentId} The layer's parent layer ID}
- \item{\emph{description} The description of the layer}
- \item{\emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2 for interval alignment}
- \item{\emph{peers} Whether children have peers or not}
- \item{\emph{peersOverlap} Whether child peers can overlap or not}
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{saturated} Whether children must temporally fill the entire parent duration (true) or not (false)}
- \item{\emph{parentIncludes} Whether the parent t-includes the child}
- \item{\emph{type} The type for labels on this layer}
- \item{\emph{validLabels} List of valid label values for this layer}
+\item \emph{id} The layer's unique ID
+\item \emph{parentId} The layer's parent layer ID
+\item \emph{description} The description of the layer
+\item \emph{alignment} The layer's alignment - 0 for none, 1 for point alignment, 2 for interval alignment
+\item \emph{peers} Whether children have peers or not
+\item \emph{peersOverlap} Whether child peers can overlap or not
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{saturated} Whether children must temporally fill the entire parent duration (true) or not (false)
+\item \emph{parentIncludes} Whether the parent t-includes the child
+\item \emph{type} The type for labels on this layer
+\item \emph{validLabels} List of valid label values for this layer
 }
 }
 \description{
-Gets a layer definition.
+Gets a layer definition
 }
 \examples{
 \dontrun{
@@ -38,7 +38,13 @@ orthography.layer <- getLayer("https://labbcat.canterbury.ac.nz/demo/", "orthogr
 
 }
 \seealso{
-\code{\link{getLayerIds}}
-\code{\link{getLayers}}
+Other Annotation layer functions: 
+\code{\link{deleteLayer}()},
+\code{\link{generateLayer}()},
+\code{\link{getLayerIds}()},
+\code{\link{getLayers}()},
+\code{\link{newLayer}()},
+\code{\link{saveLayer}()}
 }
+\concept{Annotation layer functions}
 \keyword{layer}

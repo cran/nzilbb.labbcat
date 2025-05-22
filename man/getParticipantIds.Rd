@@ -2,7 +2,7 @@
 % Please edit documentation in R/getParticipantIds.R
 \name{getParticipantIds}
 \alias{getParticipantIds}
-\title{Gets a list of participant IDs.}
+\title{Gets a list of participant IDs}
 \usage{
 getParticipantIds(labbcat.url)
 }

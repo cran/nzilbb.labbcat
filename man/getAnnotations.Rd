@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAnnotations.R
 \name{getAnnotations}
 \alias{getAnnotations}
-\title{Gets the annotations on the given layer of the given transcript.}
+\title{Gets the annotations on the given layer of the given transcript}
 \usage{
 getAnnotations(
   labbcat.url,
@@ -31,15 +31,15 @@ max.ordinal is null, then all annotations are returned, regardless of their ordi
 \value{
 A named list of annotations, with members:
 \itemize{
- \item{\emph{id} The annotation's unique ID}
- \item{\emph{layerId} The name of the layer it comes from}
- \item{\emph{label} The value of the annotation}
- \item{\emph{startId} The ID of the start anchor},
- \item{\emph{endId} The ID of the end anchor},
- \item{\emph{parentId} The ID of the parent annotation},
- \item{\emph{ordinal} The ordinal of the annotation among its peers},
- \item{\emph{confidence} A rating from 0-100 of the confidence of the label
- e.g. 10: default value, 50: automatically generated, 100: manually annotated}
+\item \emph{id} The annotation's unique ID
+\item \emph{layerId} The name of the layer it comes from
+\item \emph{label} The value of the annotation
+\item \emph{startId} The ID of the start anchor,
+\item \emph{endId} The ID of the end anchor,
+\item \emph{parentId} The ID of the parent annotation,
+\item \emph{ordinal} The ordinal of the annotation among its peers,
+\item \emph{confidence} A rating from 0-100 of the confidence of the label
+e.g. 10: default value, 50: automatically generated, 100: manually annotated
 }
 }
 \description{
@@ -47,9 +47,6 @@ Returns the annotations on the given layer of the given transcript.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get all the orthography tokens in UC427_ViktoriaPapp_A_ENG.eaf
 orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orthography")
 
@@ -59,9 +56,11 @@ orthography <- getAnnotations(labbcat.url, "UC427_ViktoriaPapp_A_ENG.eaf", "orth
 
 }
 \seealso{
-\code{\link{getTranscriptIds}}
-  \code{\link{getTranscriptIdsInCorpus}}
-  \code{\link{getTranscriptIdsWithParticipant}}
-  \code{\link{countAnnotations}}
+\itemize{
+\item \link{getTranscriptIds}
+\item \link{getTranscriptIdsInCorpus}
+\item \link{getTranscriptIdsWithParticipant}
+\item \link{countAnnotations}
+}
 }
 \keyword{transcript}

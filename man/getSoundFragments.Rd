@@ -2,7 +2,7 @@
 % Please edit documentation in R/getSoundFragments.R
 \name{getSoundFragments}
 \alias{getSoundFragments}
-\title{Gets sound fragments from 'LaBB-CAT'.}
+\title{Gets sound fragments from 'LaBB-CAT'}
 \usage{
 getSoundFragments(
   labbcat.url,
@@ -29,26 +29,23 @@ integer, then the result is a mono file with the given sample rate.}
 
 \item{path}{Optional path to directory where the files should be saved.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 The name of the file, which is saved in the current
-    directory, or a list of names of files, if multiple
-    id's/start's/end's were specified 
+directory, or a list of names of files, if multiple
+id's/start's/end's were specified
 
 If a list of files is returned, they are in the order that they
-    were returned by the server, which *should* be the order that
-    they were specified in the id/start/end lists.
+were returned by the server, which \emph{should} be the order that
+they were specified in the id/start/end lists.
 }
 \description{
-Gets sound fragments from 'LaBB-CAT'.
+Gets sound fragments from 'LaBB-CAT'
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get the 5 seconds starting from 10s after the beginning of a recording
 wav.file <- getSoundFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, path="samples")
 

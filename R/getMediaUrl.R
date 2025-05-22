@@ -1,17 +1,15 @@
-#' Gets the URL of the given media track for a given transcript.
+#' Gets the URL of the given media track for a given transcript
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance.
 #' @param id A transcript ID (i.e. transcript name).
 #' @param track.suffix The track suffix of the media.
 #' @param mime.type The MIME type of the media, e.g. "audio/wav" or "application/f0".
 #' @return A URL to the given media for the given transcript.
-#' @seealso \link{getTranscriptIds}
-#' @seealso \link{getMedia}
+#' @seealso
+#'   - [getTranscriptIds]
+#'   - [getMedia]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get URL for the WAV file for BR2044_OllyOhlson.eaf
 #' wavUrl <- getMediaUrl(labbcat.url, "BR2044_OllyOhlson.eaf")
 #' 

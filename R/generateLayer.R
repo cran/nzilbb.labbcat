@@ -1,20 +1,17 @@
-#' Generates a layer.
+#' Generates a layer
 #'
 #' Generates annotations on a given layer for all transcripts in the corpus.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param layer.id The ID of the layer to generate.
 #' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#'   shown when interactive().
 #' @return The final status of the layer generation task.
 #' 
-#' @seealso
-#' \code{\link{getAllUtterances}}
+#' @family Annotation layer functions
+#' @seealso [getAllUtterances]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Generate all phonemic transcription annotations
 #' generateLayer(labbcat.url, "phonemes")
 #' }

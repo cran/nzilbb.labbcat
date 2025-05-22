@@ -2,7 +2,7 @@
 % Please edit documentation in R/updateTranscript.R
 \name{updateTranscript}
 \alias{updateTranscript}
-\title{Update an existing transcript.}
+\title{Update an existing transcript}
 \usage{
 updateTranscript(labbcat.url, transcript.path, no.progress = FALSE)
 }
@@ -11,7 +11,7 @@ updateTranscript(labbcat.url, transcript.path, no.progress = FALSE)
 
 \item{transcript.path}{The path to the transcript to upload.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -21,16 +21,24 @@ The ID of the updated transcript in the corpus
 This function uploads a new version of an existing transcript.
 }
 \details{
+\emph{NB} This method of uploading is an alternative to using transcriptUpload and
+transcriptUploadParameters.
+
 For this function to work, the credentials used to connect to the server must have at
 least 'edit' access.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## upload new verison of transcript transcript
 updateTranscript(labbcat.url, "my-transcript.eaf")
+}
+}
+\seealso{
+\itemize{
+\item \link{transcriptUpload}
+\item \link{transcriptUploadParameters}
+\item \link{transcriptUploadDelete}
+\item \link{newTranscript}
 }
 }
 \keyword{management}

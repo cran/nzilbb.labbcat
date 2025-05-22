@@ -2,7 +2,7 @@
 % Please edit documentation in R/getFragments.R
 \name{getFragments}
 \alias{getFragments}
-\title{Gets transcript fragments in a given format.}
+\title{Gets transcript fragments in a given format}
 \usage{
 getFragments(
   labbcat.url,
@@ -34,27 +34,24 @@ LaBB-CAT installation may support other formats, which can be discovered using
 }
 \value{
 The name of the file, which is saved in the current
-    directory, or a list of names of files, if multiple
-    id's/start's/end's were specified 
+directory, or a list of names of files, if multiple
+id's/start's/end's were specified
 
 If a list of files is returned, they are in the order that they
-    were returned by the server, which *should* be the order that
-    they were specified in the id/start/end lists.
+were returned by the server, which \emph{should} be the order that
+they were specified in the id/start/end lists.
 }
 \description{
-This function gets fragments of transcripts from 'LaBB-CAT', 
+This function gets fragments of transcripts from 'LaBB-CAT',
 converted to a given format (by default, Praat TextGrid).
 }
 \details{
-\emph{NB} Although many formats will generate exactly one file for each interval
-     (e.g. mime.type=text/praat-textgrid), this is not guaranted; some formats generate
-     a single file or a fixed collection of files regardless of how many fragments there are.
+\strong{NB} Although many formats will generate exactly one file for each interval
+(e.g. mime.type=text/praat-textgrid), this is not guaranteed; some formats generate
+a single file or a fixed collection of files regardless of how many fragments there are.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get the 5 seconds starting from 10s after the beginning of a recording
 textgrid.file <- getFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0,
     c("transcript", "phonemes"), path="samples") 

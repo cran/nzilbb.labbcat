@@ -2,7 +2,7 @@
 % Please edit documentation in R/updateFragment.R
 \name{updateFragment}
 \alias{updateFragment}
-\title{Update a transcript fragment.}
+\title{Update a transcript fragment}
 \usage{
 updateFragment(labbcat.url, fragment.path)
 }
@@ -25,9 +25,6 @@ least 'edit' access.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## upload new verison of transcript transcript
 updateFragment(labbcat.url, "my-transcript__1.234-5.678.TextGrid")
 }

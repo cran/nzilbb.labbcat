@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMediaTracks.R
 \name{getMediaTracks}
 \alias{getMediaTracks}
-\title{List the predefined media tracks available for transcripts.}
+\title{List the predefined media tracks available for transcripts}
 \usage{
 getMediaTracks(labbcat.url)
 }
@@ -13,7 +13,7 @@ getMediaTracks(labbcat.url)
 A list of media track definitions.
 }
 \description{
-List the predefined media tracks available for transcripts.
+List the predefined media tracks available for transcripts
 }
 \examples{
 \dontrun{

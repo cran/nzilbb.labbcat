@@ -2,8 +2,8 @@
 % Please edit documentation in R/expressionFromAttributeValue.R
 \name{expressionFromAttributeValue}
 \alias{expressionFromAttributeValue}
-\title{Generates a query expression for matching a transcript/participant attribute, for use with
-\link{getMatches}.}
+\title{Generates a query expression for matching a single-value transcript/participant
+attribute, for use with \link{getMatches}}
 \usage{
 expressionFromAttributeValue(transcript.attribute, values, not = FALSE)
 }
@@ -12,7 +12,7 @@ expressionFromAttributeValue(transcript.attribute, values, not = FALSE)
 
 \item{values}{A list of possible values for transcript.attribute.}
 
-\item{not}{Whether to match the given IDs (FALSE), or everything *except* the
+\item{not}{Whether to match the given IDs (FALSE), or everything \emph{except} the
 given IDs.}
 }
 \value{
@@ -25,7 +25,7 @@ This function generates a query expression fragment which can be passed as
 the transcript.expression or participant.expression parameter of \link{getMatches}, (or
 the expression parameter of \link{getMatchingTranscriptIds} or
 \link{getMatchingParticipantIds}) using a list of possible values for a given
-transcript attribute.
+attribute.
 }
 \details{
 The attribute defined by transcript.attribute is expected to have exactly one value. If
@@ -33,9 +33,6 @@ it may have multiple values, use \link{expressionFromAttributeValues} instead.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 languages <- c("en","en-NZ")
 results <- getMatches(labbcat.url, list(segment="I"),
@@ -44,12 +41,11 @@ results <- getMatches(labbcat.url, list(segment="I"),
 }
 }
 \seealso{
-\link{expressionFromAttributeValues}
-
-\link{expressionFromTranscriptTypes}
-
-\link{expressionFromIds}
-
-\link{getMatches}
+\itemize{
+\item \link{expressionFromAttributeValues}
+\item \link{expressionFromTranscriptTypes}
+\item \link{expressionFromIds}
+\item \link{getMatches}
+}
 }
 \keyword{search}

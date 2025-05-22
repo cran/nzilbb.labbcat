@@ -2,7 +2,7 @@
 % Please edit documentation in R/getTranscriptIds.R
 \name{getTranscriptIds}
 \alias{getTranscriptIds}
-\title{Gets a list of transcript IDs.}
+\title{Gets a list of transcript IDs}
 \usage{
 getTranscriptIds(labbcat.url)
 }

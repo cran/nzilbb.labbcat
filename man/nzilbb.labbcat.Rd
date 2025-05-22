@@ -3,6 +3,7 @@
 \docType{package}
 \name{nzilbb.labbcat}
 \alias{nzilbb.labbcat}
+\alias{nzilbb.labbcat-package}
 \title{\packageTitle{nzilbb.labbcat}}
 \description{
 \packageDescription{nzilbb.labbcat}
@@ -13,14 +14,11 @@
 
 'LaBB-CAT' is a web-based language corpus management system and this
 package provides access to data stored in a 'LaBB-CAT' instance.
-You must have at least version 20230224.1731 'LaBB-CAT' to use
+You must have at least version 20230818.1400 'LaBB-CAT' to use
 this package.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -36,7 +34,15 @@ wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, re
 \cite{Robert Fromont and Jennifer Hay, "{ONZE Miner}: the development of a browser-based research tool", 2008}
 \cite{Robert Fromont, "Toward a format-neutral annotation store", 2017}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://nzilbb.github.io/labbcat-R/}
+  \item \url{https://labbcat.canterbury.ac.nz}
+}
+
+}
 \author{
 \packageAuthor{nzilbb.labbcat}
 }
-\keyword{package}
+\keyword{internal}

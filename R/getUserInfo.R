@@ -1,11 +1,11 @@
-#' Gets information about the current user.
+#' Gets information about the current user
 #' 
 #' Returns information about the current user, including the roles or groups they are in.
 #' 
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A named list containing information about current the LaBB-CAT user.
 #' 
-#' @seealso \link{labbcatCredentials}
+#' @seealso [labbcatCredentials]
 #' @examples
 #' \dontrun{
 #' ## List file export formats supported

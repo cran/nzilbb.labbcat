@@ -2,8 +2,7 @@
 % Please edit documentation in R/labbcatCredentials.R
 \name{labbcatCredentials}
 \alias{labbcatCredentials}
-\title{Sets the username and password that the package should use for connecting
-to a given LaBB-CAT server in future function calls.}
+\title{Sets the username and password for a given LaBB-CAT server}
 \usage{
 labbcatCredentials(labbcat.url, username, password)
 }
@@ -16,29 +15,47 @@ labbcatCredentials(labbcat.url, username, password)
 }
 \value{
 NULL if the username/password are correct, and a string describing the problem
-    if a problem occurred, e.g. "Credentials rejected" if the username/password are
-    incorrect, or a string starting "Version mismatch" if the server's version of
-    LaBB-CAT is lower than the minimum required.
+if a problem occurred, e.g. "Credentials rejected" if the username/password are
+incorrect, or a string starting "Version mismatch" if the server's version of
+LaBB-CAT is lower than the minimum required.
 }
 \description{
-This step is optional, as all functions will prompt the user for the username
-and password if required.  If the script is running in RStudio, then the
-RStudio password input dialog is used, hiding the credentials from view.
-Otherwise, the console is used, and credentials are visible.
+Sets the username and password that the package should use for connecting
+to a given LaBB-CAT server in future function calls.
 }
 \details{
-The recommended approach is to *not* use labbcatCredentials, to avoid saving
+If you are using R interactively, this step is optional, as all functions will prompt
+the user for the username and password if required. If the script is running in
+RStudio, then the RStudio password input dialog is used, hiding the credentials from view.
+Otherwise, the console is used, and credentials are visible.
+
+The recommended approach is to \strong{not} use labbcatCredentials, to avoid saving
 user credentials in script files that may eventually become visible to other.
-Use labbcatCredentials *only* in cases where the script execution is unsupervised.
+Use labbcatCredentials \strong{only} in cases where the script execution is unsupervised,
+e.g. if you are executing an R script from a shell script, or using Knit to render an
+Rmarkdown document.
+
+If you must use labbcatCredentials, avoid including the actual username and password in
+your script. The recommended approach is to store the username and password (and
+perhaps the URL too) in your \file{.Renviron} file (in your home directory, or the
+project directory), like this:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{LABBCAT_URL=https://labbcat.canterbury.ac.nz/demo/
+LABBCAT_USERNAME=demo
+LABBCAT_PASSWORD=demo
+}\if{html}{\out{</div>}}
+
+And then call Sys.getenv to retrieve the
+username/password, as illustrated in the example.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
+## load the LaBB-CAT URL from .Renviron
+labbcat.url <- Sys.getenv('LABBCAT_URL')
 
-## specify the username/password in the script
-## (only use labbcatCredentials for scripts that must execute unsupervised!)
-labbcatCredentials(labbcat.url, "demo", "demo")
+## load the username/password from .Renviron so secrets are not included in the script:
+labbcatCredentials(
+    labbcat.url, Sys.getenv('LABBCAT_USERNAME'), Sys.getenv('LABBCAT_PASSWORD'))
 }
 
 }

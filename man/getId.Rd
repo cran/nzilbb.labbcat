@@ -2,7 +2,7 @@
 % Please edit documentation in R/getId.R
 \name{getId}
 \alias{getId}
-\title{Gets the store's ID.}
+\title{Gets the store's ID}
 \usage{
 getId(labbcat.url)
 }

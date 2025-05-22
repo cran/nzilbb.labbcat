@@ -1,21 +1,19 @@
-#' Lists the descriptors of all registered serializers.
+#' Lists the descriptors of all registered serializers
 #' 
 #' Returns a list of serializers, which are modules that export annotation structures as
 #' a specific file format, e.g. Praat TextGrid, plain text, etc., so the
 #' \emph{mimeType} of descriptors reflects what \emph{mimeType}s can be specified for
-#' \link{getFragments}. 
+#' [getFragments]. 
 #' 
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of serializers, each including the following information:
-#' \itemize{
-#'  \item{\emph{name} The name of the format.}
-#'  \item{\emph{version} The installed version of the serializer module.}
-#'  \item{\emph{fileSuffixes} The normal file name suffixes (extensions) of the files.},
-#'  \item{\emph{mimeType} The MIME type of the format, i.e. the value to use as the
-#'     \emph{mimeType} parameter of \link{getFragments}},
-#' }
+#'   - *name* The name of the format.
+#'   - *version* The installed version of the serializer module.
+#'   - *fileSuffixes* The normal file name suffixes (extensions) of the files.
+#'   - *mimeType* The MIME type of the format, i.e. the value to use as the
+#'     *mimeType* parameter of [getFragments]
 #' 
-#' @seealso \link{getFragments}
+#' @seealso [getFragments]
 #' @examples
 #' \dontrun{
 #' ## List file export formats supported

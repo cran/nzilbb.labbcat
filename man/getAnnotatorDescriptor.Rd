@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAnnotatorDescriptor.R
 \name{getAnnotatorDescriptor}
 \alias{getAnnotatorDescriptor}
-\title{Gets annotator information.}
+\title{Gets annotator information}
 \usage{
 getAnnotatorDescriptor(labbcat.url, annotator.id)
 }
@@ -14,30 +14,30 @@ getAnnotatorDescriptor(labbcat.url, annotator.id)
 \value{
 The annotator info:
 \itemize{
- \item{\emph{annotatorId} The annotators's unique ID}
- \item{\emph{version} The currently install version of the annotator.}
- \item{\emph{info} HTML-encoded description of the function of the annotator.}
- \item{\emph{infoText} A plain text version of $info (converted automatically).}
- \item{\emph{hasConfigWebapp} Determines whether the annotator includes a web-app for
-    installation or general configuration.}
- \item{\emph{configParameterInfo} An HTML-encoded definition of the installation config
-    parameters, including a list of all parameters, and the encoding of the parameter
-    string.}
- \item{\emph{configParameterInfoText} A plain text version of $configParameterInfo
-    (converted automatically).} 
- \item{\emph{hasTaskWebapp} Determines whether the annotator includes a web-app for
-    task parameter configuration.}
- \item{\emph{taskParameterInfo} An HTML-encoded definition of the task parameters,
-    including a list of all parameters, and the encoding of the parameter string.}
- \item{\emph{taskParameterInfoText} A plain text version of $taskParameterInfo
-    (converted automatically).} 
- \item{\emph{hasExtWebapp} Determines whether the annotator includes an extras web-app
-    which implements functionality for providing extra data or extending functionality
-    in an annotator-specific way.}
- \item{\emph{extApiInfo} An HTML-encoded document containing information about what
-    endpoints are published by the ext web-app.}
- \item{\emph{extApiInfoText} A plain text version of $extApiInfo
-    (converted automatically).} 
+\item \emph{annotatorId} The annotators's unique ID
+\item \emph{version} The currently install version of the annotator.
+\item \emph{info} HTML-encoded description of the function of the annotator.
+\item \emph{infoText} A plain text version of $info (converted automatically).
+\item \emph{hasConfigWebapp} Determines whether the annotator includes a web-app for
+installation or general configuration.
+\item \emph{configParameterInfo} An HTML-encoded definition of the installation config
+parameters, including a list of all parameters, and the encoding of the parameter
+string.
+\item \emph{configParameterInfoText} A plain text version of $configParameterInfo
+(converted automatically).
+\item \emph{hasTaskWebapp} Determines whether the annotator includes a web-app for
+task parameter configuration.
+\item \emph{taskParameterInfo} An HTML-encoded definition of the task parameters,
+including a list of all parameters, and the encoding of the parameter string.
+\item \emph{taskParameterInfoText} A plain text version of $taskParameterInfo
+(converted automatically).
+\item \emph{hasExtWebapp} Determines whether the annotator includes an extras web-app
+which implements functionality for providing extra data or extending functionality
+in an annotator-specific way.
+\item \emph{extApiInfo} An HTML-encoded document containing information about what
+endpoints are published by the ext web-app.
+\item \emph{extApiInfoText} A plain text version of $extApiInfo
+(converted automatically).
 }
 }
 \description{
@@ -55,8 +55,10 @@ cat(basAnnotator$infoText)
 
 }
 \seealso{
-\code{\link{annotatorExt}}
-\code{\link{newLayer}}
+\itemize{
+\item \link{annotatorExt}
+\item \link{newLayer}
+}
 }
 \keyword{annotator}
 \keyword{layer}

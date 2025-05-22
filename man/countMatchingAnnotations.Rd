@@ -2,7 +2,7 @@
 % Please edit documentation in R/countMatchingAnnotations.R
 \name{countMatchingAnnotations}
 \alias{countMatchingAnnotations}
-\title{Gets the number of annotations matching a particular pattern.}
+\title{Gets the number of annotations matching a particular pattern}
 \usage{
 countMatchingAnnotations(labbcat.url, expression)
 }
@@ -12,17 +12,15 @@ countMatchingAnnotations(labbcat.url, expression)
 \item{expression}{An expression that determines which annotations match. This must
 match by either id or layer.id.
 The expression language is currently not well defined, but is based on JavaScript
-syntax. e.g.
-
+syntax. e.g.:
 \itemize{
- \item{id == 'ew_0_456'}
- \item{['ew_2_456', 'ew_2_789', 'ew_2_101112'].includes(id)}
- \item{layerId == 'orthography' && !/th[aeiou].+/.test(label)}
- \item{graph.id == 'AdaAicheson-01.trs' && layer.id == 'orthography' &&
-   start.offset &gt; 10.5} 
- \item{layer.id == 'utterance' && all('word').includes('ew_0_456')}
- \item{layerId = 'utterance' && labels('orthography').includes('foo')}
- \item{layerId = 'utterance' && labels('participant').includes('Ada')}
+\item \code{id == 'ew_0_456'}
+\item \verb{['ew_2_456', 'ew_2_789', 'ew_2_101112'].includes(id)}
+\item \verb{layerId == 'orthography' && !/th[aeiou].+/.test(label)}
+\item \verb{graph.id == 'AdaAicheson-01.trs' && layer.id == 'orthography' && start.offset &gt; 10.5}
+\item \verb{layer.id == 'utterance' && all('word').includes('ew_0_456')}
+\item \verb{layerId = 'utterance' && labels('orthography').includes('foo')}
+\item \verb{layerId = 'utterance' && labels('participant').includes('Ada')}
 }}
 }
 \value{
@@ -33,16 +31,13 @@ Returns the number of annotations in the corpus that match the given expression.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## count the number of topic tags that include the word 'quake'
 countMatchingAnnotations(labbcat.url, "layer.id == 'topic' && /.*quake.*/.test(label)")
 }
 
 }
 \seealso{
-\code{\link{getMatchingAnnotations}}
+\link{getMatchingAnnotations}
 }
 \keyword{annotation}
 \keyword{expression}

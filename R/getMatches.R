@@ -1,4 +1,4 @@
-#' Search for tokens.
+#' Search for tokens
 #'
 #' Searches through transcripts for tokens matching the given pattern.
 #'
@@ -6,51 +6,46 @@
 #' @param pattern An object representing the pattern to search for.
 #'
 #' This can be:
-#' \itemize{
-#'  \item{A string, representing a search of the orthography layer - spaces are
-#'        taken to be word boundaries}
-#'  \item{A single named list, representing a one-column search - names are taken to be layer IDs}
-#'  \item{A list of named lists, representing a multi-column search - the outer list
-#'        represents the columns of the search matrix where each column 'immediately
-#'        follows' the previous, and the names of the inner lists are taken to be layer IDs} 
-#'  \item{A named list fully replicating the structure of the search matrix in the
-#'        LaBB-CAT browser interface, with one element called ``columns'', containing a
-#'        named list for each column.
-#' 
-#'        Each element in the ``columns'' named list contains an element named ``layers'', whose
-#'     value is a named list for patterns to match on each layer, and optionally an
-#'     element named ``adj'', whose value is a number representing the maximum distance, in
-#'     tokens, between this column and the next column - if ``adj'' is not specified, the
-#'     value defaults to 1, so tokens are contiguous.
+#' * A string, representing a search of the orthography layer - spaces are
+#'   taken to be word boundaries
+#' * A single named list, representing a one-column search - names are taken to be layer IDs
+#' * A list of named lists, representing a multi-column search - the outer list
+#'   represents the columns of the search matrix where each column 'immediately
+#'   follows' the previous, and the names of the inner lists are taken to be layer IDs
+#' * A named list (or for segment layers, a list of named lists) fully replicating
+#'   the structure of the search matrix in the LaBB-CAT browser interface, with one
+#'   element called "columns", containing a named list for each column.  
 #'
-#'         Each element in the ``layers'' named list is named after the layer it matches, and the
-#'     value is a named list with the following possible elements:
-#'         \itemize{
-#'          \item{\emph{pattern}  A regular expression to match against the label}
-#'          \item{\emph{min}  An inclusive minimum numeric value for the label}
-#'          \item{\emph{max}  An exclusive maximum numeric value for the label}
-#'          \item{\emph{not}  TRUE to negate the match}
-#'          \item{\emph{anchorStart}  TRUE to anchor to the start of the annotation on this layer
-#'             (i.e. the matching word token will be the first at/after the start of the matching
-#'             annotation on this layer)}
-#'          \item{\emph{anchorEnd}  TRUE to anchor to the end of the annotation on this layer
-#'             (i.e. the matching word token will be the last before/at the end of the matching
-#'             annotation on this layer)}
-#'          \item{\emph{target}  TRUE to make this layer the target of the search; the
-#'             results will contain one row for each match on the target layer}
-#'       }
-#'  }
-#' }
+#'   Each element in the "columns" named list contains an element named "layers", whose
+#'   value is a named list (or a list of named lists) for patterns to match on each
+#'   layer, and optionally an element named "adj", whose value is a number representing
+#'   the maximum distance, in tokens, between this column and the next column - if "adj"
+#'   is not specified, the value defaults to 1, so tokens are contiguous.  
+#'
+#'   Each element in the "layers" named list is named after the layer it matches, and the
+#'   value is a named list with the following possible elements:
+#'   - *pattern*  A regular expression to match against the label
+#'   - *min*  An inclusive minimum numeric value for the label
+#'   - *max*  An exclusive maximum numeric value for the label
+#'   - *not*  TRUE to negate the match
+#'   - *anchorStart*  TRUE to anchor to the start of the annotation on this layer
+#'     (i.e. the matching word token will be the first at/after the start of the matching
+#'     annotation on this layer)
+#'   - *anchorEnd*  TRUE to anchor to the end of the annotation on this layer
+#'     (i.e. the matching word token will be the last before/at the end of the matching
+#'     annotation on this layer)
+#'   - *target*  TRUE to make this layer the target of the search; the
+#'     results will contain one row for each match on the target layer
 #'
 #' Examples of valid pattern objects include:
-#' \preformatted{
+#' ```
 #' ## the word 'the' followed immediately by a word starting with an orthographic vowel
-#' pattern <- "the [aeiou]"
+#' pattern <- "the [aeiou].*"
 #' 
 #' ## a word spelt with "k" but pronounced "n" word initially
 #' pattern <- list(orthography = "k.*", phonemes = "n.*")
 #' 
-#' ## the word 'the' followed immediately by a word starting with an phonemic vowel
+#' ## the word 'the' followed immediately by a word starting with a phonemic vowel
 #' pattern <- list(
 #'     list(orthography = "the"),
 #'     list(phonemes = "[cCEFHiIPqQuUV0123456789~#\\$@].*"))
@@ -64,77 +59,87 @@
 #'     list(layers = list(
 #'            phonemes = list(not = TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\$@].*"),
 #'            frequency = list(max = "2")))))
-#' }
+#'
+#' ## words that contain the /I/ phone followed by the /l/ phone
+#' ## (multiple patterns per word currently only works for segment layers)
+#' pattern <- list(segment = list("I", "l"))
+#'
+#' ## words that contain the /I/ phone followed by the /l/ phone, targeting the /l/ segment
+#' ## (multiple patterns per word currently only works for segment layers)
+#' pattern <- list(segment = list("I", list(pattern="l", target=T)))
+#'
+#' ## words where the spelling starts with "k", but the first segment is /n/
+#' pattern <- list(
+#'   orthography = "k.*", 
+#'   segment = list(pattern = "n", anchorStart = T)
+#' 
+#' ```
 #' @param participant.expression An optional participant query expression for identifying
-#'     participants to search the utterances of. This should be the output of
-#'     \link{expressionFromIds}, \link{expressionFromAttributeValue},
-#'     or \link{expressionFromAttributeValues}, or more than one concatentated together
-#'     and delimited by ' && '. If not supplied, utterances of all participants will be searched.
+#'   participants to search the utterances of. This should be the output of
+#'   [expressionFromIds], [expressionFromAttributeValue],
+#'   or [expressionFromAttributeValues], or more than one concatentated together
+#'   and delimited by ' && '. If not supplied, utterances of all participants will be searched.
 #' @param transcript.expression An optional transript query expression for identifying
-#'     transcripts to search in. This should be the output of \link{expressionFromIds},
-#'     \link{expressionFromTranscriptTypes}, \link{expressionFromAttributeValue},
-#'     or \link{expressionFromAttributeValues}, or more than one concatentated together
-#'     and delimited by ' && '. If not supplied, all transcripts will be searched.
+#'   transcripts to search in. This should be the output of [expressionFromIds],
+#'   [expressionFromTranscriptTypes], [expressionFromAttributeValue],
+#'   or [expressionFromAttributeValues], or more than one concatentated together
+#'   and delimited by ' && '. If not supplied, all transcripts will be searched.
 #' @param main.participant TRUE to search only main-participant utterances, FALSE to
-#'     search all utterances.
+#'   search all utterances.
 #' @param aligned This parameter is deprecated and will be removed in future versions;
-#'     please use anchor.confidence.min=50 instead.
+#'   please use `anchor.confidence.min = 50` instead.
 #' @param matches.per.transcript Optional maximum number of matches per transcript to
-#'     return. NULL means all matches.
-#' @param words.context Number of words context to include in the `Before.Match' and
-#'     `After.Match' columns in the results.
+#'   return. NULL means all matches.
+#' @param words.context Number of words context to include in the 'Before.Match' and
+#'   'After.Match' columns in the results.
 #' @param max.matches The maximum number of matches to return, or null to return all.
 #' @param overlap.threshold The percentage overlap with other utterances before
-#'     simultaneous speech is excluded, or null to include overlapping speech.
+#'   simultaneous speech is excluded, or null to include overlapping speech.
 #' @param anchor.confidence.min The minimum confidence for alignments, e.g.
-#' \itemize{
-#'  \item{\emph{0} -- return all alignments, regardless of confidence;}
-#'  \item{\emph{50} -- return only alignments that have been at least automatically aligned;}
-#'  \item{\emph{100} -- return only manually-set alignments.}
-#' }
+#'   - *0* - return all alignments, regardless of confidence;
+#'   - *50* - return only alignments that have been at least automatically aligned;
+#'   - *100* - return only manually-set alignments.
 #' @param page.length In order to prevent timeouts when there are a large number of
-#'     matches or the network connection is slow, rather than retrieving matches in one
-#'     big request, they are retrieved using many smaller requests. This parameter
-#'     controls the number of results retrieved per request.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#'   matches or the network connection is slow, rather than retrieving matches in one
+#'   big request, they are retrieved using many smaller requests. This parameter
+#'   controls the number of results retrieved per request.
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return A data frame identifying matches, containing the following columns:
-#' \itemize{
-#'  \item{\emph{SearchName} A name based on the pattern -- the same for all rows}
-#'  \item{\emph{MatchId} A unique ID for the matching target token}
-#'  \item{\emph{Transcript} Name of the transcript in which the match was found}
-#'  \item{\emph{Participant} Name of the speaker}
-#'  \item{\emph{Corpus} The corpus of the transcript}
-#'  \item{\emph{Line} The start offset of the utterance/line}
-#'  \item{\emph{LineEnd} The end offset of the utterance/line}
-#'  \item{\emph{Before.Match} Transcript text immediately before the match}
-#'  \item{\emph{Text} Transcript text of the match}
-#'  \item{\emph{After.Match} Transcript text immediately after the match}
-#'  \item{\emph{Number} Row number}
-#'  \item{\emph{URL} URL of the first matching word token}
-#'  \item{\emph{Target.word} Text of the target word token}
-#'  \item{\emph{Target.word.start} Start offset of the target word token}
-#'  \item{\emph{Target.word.end} End offset of the target word token}
-#'  \item{\emph{Target.segment} Label of the target segment (only present if the segment
-#'     layer is included in the pattern)}
-#'  \item{\emph{Target.segment.start} Start offset of the target segment (only present if the
-#'     segment layer is included in the pattern)}
-#'  \item{\emph{Target.segment.end} End offset of the target segment (only present if the
-#'     segment layer is included in the pattern)}
-#' }
+#'   - *Title* The title of the LaBB-CAT instance
+#'   - *Version* The current version of the LaBB-CAT instance
+#'   - *SearchName* A name based on the pattern -- the same for all rows
+#'   - *MatchId* A unique ID for the matching target token
+#'   - *Transcript* Name of the transcript in which the match was found
+#'   - *Participant* Name of the speaker
+#'   - *Corpus* The corpus of the transcript
+#'   - *Line* The start offset of the utterance/line
+#'   - *LineEnd* The end offset of the utterance/line
+#'   - *Before.Match* Transcript text immediately before the match
+#'   - *Text* Transcript text of the match
+#'   - *After.Match* Transcript text immediately after the match
+#'   - *Number* Row number
+#'   - *URL* URL of the first matching word token
+#'   - *Target.word* Text of the target word token
+#'   - *Target.word.start* Start offset of the target word token
+#'   - *Target.word.end* End offset of the target word token
+#'   - *Target.segment* Label of the target segment (only present if the segment
+#'      layer is included in the pattern)
+#'   - *Target.segment.start* Start offset of the target segment (only present if the
+#'      segment layer is included in the pattern)
+#'   - *Target.segment.end* End offset of the target segment (only present if the
+#'      segment layer is included in the pattern)
 #' 
-#' @seealso \code{\link{getFragments}}
-#' @seealso \code{\link{getSoundFragments}}
-#' @seealso \code{\link{getMatchLabels}}
-#' @seealso \code{\link{getMatchAlignments}}
-#' @seealso \code{\link{processWithPraat}}
-#' @seealso \code{\link{getParticipantIds}}
+#' @seealso
+#'   - [getFragments]
+#'   - [getSoundFragments]
+#'   - [getMatchLabels]
+#'   - [getMatchAlignments]
+#'   - [processWithPraat]
+#'   - [getParticipantIds]
 #' 
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#'
 #' ## the word 'the' followed immediately by a word starting with an orthographic vowel
 #' theThenOrthVowel <- getMatches(labbcat.url, "the [aeiou]")
 #'
@@ -222,22 +227,23 @@ getMatches <- function(labbcat.url, pattern, participant.expression=NULL, transc
     } # next column
 
     ## convert layer=string to layer=list(pattern=string)
-    target.layer <- "word"
     for (c in 1:length(pattern$columns)) { # for each column
         for (l in names(pattern$columns[[c]]$layers)) { # for each layer in the column
-            # if the layer value isn't a list
+            ## if the layer value isn't a list
             if (!is.list(pattern$columns[[c]]$layers[[l]])) {
-                # wrap a list(pattern=...) around it
-                pattern$columns[[c]]$layers[[l]] <- list(pattern = pattern$columns[[c]]$layers[[l]])
-            } # value isn't a list
-            # if they're searching the segment layer, assume it's the target
-            if (l == "segment" && target.layer == "word") {
-                target.layer <- "segment"
-            }
-            # ... unless there's an explicitly selected target
-            if (!is.null(pattern$columns[[c]]$layers[[l]]$target)
-                && pattern$columns[[c]]$layers[[l]]$target) {
-                target.layer <- l
+                ## wrap a list(pattern=...) around it
+                pattern$columns[[c]]$layers[[l]] <-
+                    list(pattern = pattern$columns[[c]]$layers[[l]])
+            } else if (is.null(names(pattern$columns[[c]]$layers[[l]]))) {
+                ## the layer value list is 'nameless' - i.e. multiple matches on same layer
+                for (m in 1:length(pattern$columns[[c]]$layers[[l]])) {
+                    ## if the layer match isn't a list
+                    if (!is.list(pattern$columns[[c]]$layers[[l]][[m]])) {
+                        ## wrap a list(pattern=...) around it
+                        pattern$columns[[c]]$layers[[l]][[m]] <-
+                            list(pattern = pattern$columns[[c]]$layers[[l]][[m]])
+                    }
+                } # next layer match
             }
         } # next layer
     } # next column
@@ -336,9 +342,6 @@ getMatches <- function(labbcat.url, pattern, participant.expression=NULL, transc
 
     ## define the dataframe to return (which is, for now, empty)
     allMatches <- data.frame(matrix(ncol = 15, nrow = 0))
-    if (target.layer != "word") {
-        allMatches <- data.frame(matrix(ncol = 18, nrow = 0))
-    }
     if (thread$size > 0) { ## there were actually some matches
         
         ## ensure labbcat base URL has a trailing slash (for URL reconstruction)
@@ -346,7 +349,6 @@ getMatches <- function(labbcat.url, pattern, participant.expression=NULL, transc
 
         ## layers - "word", and "segment" if mentioned in the pattern
         tokenLayers <- c("word")
-        if (target.layer != "word") tokenLayers <- c("word", target.layer)
         
         ## search results can be very large, and httr timeouts are short and merciless,
         ## so we break the results into chunks and retrieve them using lots of small
@@ -379,6 +381,28 @@ getMatches <- function(labbcat.url, pattern, participant.expression=NULL, transc
             resp.content <- httr::content(resp, as="text", encoding="UTF-8")
             resp.json <- jsonlite::fromJSON(resp.content)
             matches <- resp.json$model$matches
+            
+            if (nrow(allMatches) == 0) { ## if it's the first row
+                ## figure out what the target layer is from the first result MatchId
+                target.layer <- "word" # default to word
+                target.layer_id = gsub(".*#=e.?_([0-9]+)_.*", "\\1", matches$MatchId[[1]])
+                if (target.layer_id == "0" || target.layer_id == "2") { ## word or orthography
+                    target.layer <- "word"
+                } else if (target.layer_id == "1") { # segment
+                    target.layer <- "segment"
+                } else { ## not an a priori known layer_id, so look it up
+                    if (!deprecatedApi) {
+                        layer <- getLayer(labbcat.url, target.layer_id)
+                        if (!is.null(layer)) {
+                            target.layer = layer$id
+                        }
+                    } 
+                }
+                if (target.layer != "word") {
+                    allMatches <- data.frame(matrix(ncol = 18, nrow = 0))
+                    tokenLayers <- c("word", target.layer)
+                }
+            }
             
             ## decrement the number of rows left to get
             matchesLeft <- matchesLeft - nrow(matches)
@@ -441,7 +465,7 @@ getMatches <- function(labbcat.url, pattern, participant.expression=NULL, transc
             "MatchId","URL","Before.Match","Text","After.Match","Number",
             "Target.word","Target.word.start","Target.word.end")
     }
-    if (target.layer != "word") {
+    if (thread$size > 0 && target.layer != "word") {
         frameNames <- c(frameNames,
                         c(paste("Target.",target.layer,sep=""),
                           paste("Target.",target.layer,".start",sep=""),

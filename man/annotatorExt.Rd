@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotatorExt.R
 \name{annotatorExt}
 \alias{annotatorExt}
-\title{Retrieve annotator's "ext" resource.}
+\title{Retrieve annotator's "ext" resource}
 \usage{
 annotatorExt(labbcat.url, annotator.id, resource, parameters = NULL)
 }

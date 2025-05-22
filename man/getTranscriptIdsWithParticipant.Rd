@@ -2,7 +2,7 @@
 % Please edit documentation in R/getTranscriptIdsWithParticipant.R
 \name{getTranscriptIdsWithParticipant}
 \alias{getTranscriptIdsWithParticipant}
-\title{Gets a list of IDs of transcripts that include the given participant.}
+\title{Gets a list of IDs of transcripts that include the given participant}
 \usage{
 getTranscriptIdsWithParticipant(labbcat.url, id)
 }
@@ -20,16 +20,13 @@ the given participant.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## List transcripts in which UC427_ViktoriaPapp_A_ENG speaks
 transcripts <- getTranscriptIdsWithParticipant(labbcat.url, "UC427_ViktoriaPapp_A_ENG")
 }
 
 }
 \seealso{
-\code{\link{getParticipantIds}}
+\link{getParticipantIds}
 }
 \keyword{graph}
 \keyword{transcript}

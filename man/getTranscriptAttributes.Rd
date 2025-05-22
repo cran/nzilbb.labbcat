@@ -2,7 +2,7 @@
 % Please edit documentation in R/getTranscriptAttributes.R
 \name{getTranscriptAttributes}
 \alias{getTranscriptAttributes}
-\title{Gets transcript attribute values for given transcript IDs.}
+\title{Gets transcript attribute values for given transcript IDs}
 \usage{
 getTranscriptAttributes(labbcat.url, transcript.ids, layer.ids)
 }
@@ -20,13 +20,10 @@ any layer where layer$parentId == 'transcript' && layer$alignment == 0, which in
 A data frame of attribute value labels.
 }
 \description{
-Gets transcript attribute values for given transcript IDs.
+Gets transcript attribute values for given transcript IDs
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get language, duration, and corpus for transcripts starting with 'BR'
 attributes <- getTranscriptAttributes(labbcat.url,
             getMatchingTranscriptIds(labbcat.url, "/'BR.+'/.test(id)"),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMatches.R
 \name{getMatches}
 \alias{getMatches}
-\title{Search for tokens.}
+\title{Search for tokens}
 \usage{
 getMatches(
   labbcat.url,
@@ -27,53 +27,52 @@ getMatches(
 
 This can be:
 \itemize{
- \item{A string, representing a search of the orthography layer - spaces are
-       taken to be word boundaries}
- \item{A single named list, representing a one-column search - names are taken to be layer IDs}
- \item{A list of named lists, representing a multi-column search - the outer list
-       represents the columns of the search matrix where each column 'immediately
-       follows' the previous, and the names of the inner lists are taken to be layer IDs} 
- \item{A named list fully replicating the structure of the search matrix in the
-       LaBB-CAT browser interface, with one element called ``columns'', containing a
-       named list for each column.
+\item A string, representing a search of the orthography layer - spaces are
+taken to be word boundaries
+\item A single named list, representing a one-column search - names are taken to be layer IDs
+\item A list of named lists, representing a multi-column search - the outer list
+represents the columns of the search matrix where each column 'immediately
+follows' the previous, and the names of the inner lists are taken to be layer IDs
+\item A named list (or for segment layers, a list of named lists) fully replicating
+the structure of the search matrix in the LaBB-CAT browser interface, with one
+element called "columns", containing a named list for each column.
 
-       Each element in the ``columns'' named list contains an element named ``layers'', whose
-    value is a named list for patterns to match on each layer, and optionally an
-    element named ``adj'', whose value is a number representing the maximum distance, in
-    tokens, between this column and the next column - if ``adj'' is not specified, the
-    value defaults to 1, so tokens are contiguous.
+Each element in the "columns" named list contains an element named "layers", whose
+value is a named list (or a list of named lists) for patterns to match on each
+layer, and optionally an element named "adj", whose value is a number representing
+the maximum distance, in tokens, between this column and the next column - if "adj"
+is not specified, the value defaults to 1, so tokens are contiguous.
 
-        Each element in the ``layers'' named list is named after the layer it matches, and the
-    value is a named list with the following possible elements:
-        \itemize{
-         \item{\emph{pattern}  A regular expression to match against the label}
-         \item{\emph{min}  An inclusive minimum numeric value for the label}
-         \item{\emph{max}  An exclusive maximum numeric value for the label}
-         \item{\emph{not}  TRUE to negate the match}
-         \item{\emph{anchorStart}  TRUE to anchor to the start of the annotation on this layer
-            (i.e. the matching word token will be the first at/after the start of the matching
-            annotation on this layer)}
-         \item{\emph{anchorEnd}  TRUE to anchor to the end of the annotation on this layer
-            (i.e. the matching word token will be the last before/at the end of the matching
-            annotation on this layer)}
-         \item{\emph{target}  TRUE to make this layer the target of the search; the
-            results will contain one row for each match on the target layer}
-      }
- }
+Each element in the "layers" named list is named after the layer it matches, and the
+value is a named list with the following possible elements:
+\itemize{
+\item \emph{pattern}  A regular expression to match against the label
+\item \emph{min}  An inclusive minimum numeric value for the label
+\item \emph{max}  An exclusive maximum numeric value for the label
+\item \emph{not}  TRUE to negate the match
+\item \emph{anchorStart}  TRUE to anchor to the start of the annotation on this layer
+(i.e. the matching word token will be the first at/after the start of the matching
+annotation on this layer)
+\item \emph{anchorEnd}  TRUE to anchor to the end of the annotation on this layer
+(i.e. the matching word token will be the last before/at the end of the matching
+annotation on this layer)
+\item \emph{target}  TRUE to make this layer the target of the search; the
+results will contain one row for each match on the target layer
+}
 }
 
 Examples of valid pattern objects include:
-\preformatted{
-## the word 'the' followed immediately by a word starting with an orthographic vowel
-pattern <- "the [aeiou]"
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## the word 'the' followed immediately by a word starting with an orthographic vowel
+pattern <- "the [aeiou].*"
 
 ## a word spelt with "k" but pronounced "n" word initially
 pattern <- list(orthography = "k.*", phonemes = "n.*")
 
-## the word 'the' followed immediately by a word starting with an phonemic vowel
+## the word 'the' followed immediately by a word starting with a phonemic vowel
 pattern <- list(
     list(orthography = "the"),
-    list(phonemes = "[cCEFHiIPqQuUV0123456789~#\\$@].*"))
+    list(phonemes = "[cCEFHiIPqQuUV0123456789~#\\\\$@].*"))
 
 ## the word 'the' followed immediately or with one intervening word by
 ## a hapax legomenon (word with a frequency of 1) that doesn't start with a vowel
@@ -82,9 +81,23 @@ pattern <- list(columns = list(
            orthography = list(pattern = "the")),
          adj = 2),
     list(layers = list(
-           phonemes = list(not = TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\$@].*"),
+           phonemes = list(not = TRUE, pattern = "[cCEFHiIPqQuUV0123456789~#\\\\$@].*"),
            frequency = list(max = "2")))))
-}}
+
+## words that contain the /I/ phone followed by the /l/ phone
+## (multiple patterns per word currently only works for segment layers)
+pattern <- list(segment = list("I", "l"))
+
+## words that contain the /I/ phone followed by the /l/ phone, targeting the /l/ segment
+## (multiple patterns per word currently only works for segment layers)
+pattern <- list(segment = list("I", list(pattern="l", target=T)))
+
+## words where the spelling starts with "k", but the first segment is /n/
+pattern <- list(
+  orthography = "k.*", 
+  segment = list(pattern = "n", anchorStart = T)
+
+}\if{html}{\out{</div>}}}
 
 \item{participant.expression}{An optional participant query expression for identifying
 participants to search the utterances of. This should be the output of
@@ -102,13 +115,13 @@ and delimited by ' && '. If not supplied, all transcripts will be searched.}
 search all utterances.}
 
 \item{aligned}{This parameter is deprecated and will be removed in future versions;
-please use anchor.confidence.min=50 instead.}
+please use \code{anchor.confidence.min = 50} instead.}
 
 \item{matches.per.transcript}{Optional maximum number of matches per transcript to
 return. NULL means all matches.}
 
-\item{words.context}{Number of words context to include in the `Before.Match' and
-`After.Match' columns in the results.}
+\item{words.context}{Number of words context to include in the 'Before.Match' and
+'After.Match' columns in the results.}
 
 \item{max.matches}{The maximum number of matches to return, or null to return all.}
 
@@ -117,9 +130,9 @@ simultaneous speech is excluded, or null to include overlapping speech.}
 
 \item{anchor.confidence.min}{The minimum confidence for alignments, e.g.
 \itemize{
- \item{\emph{0} -- return all alignments, regardless of confidence;}
- \item{\emph{50} -- return only alignments that have been at least automatically aligned;}
- \item{\emph{100} -- return only manually-set alignments.}
+\item \emph{0} - return all alignments, regardless of confidence;
+\item \emph{50} - return only alignments that have been at least automatically aligned;
+\item \emph{100} - return only manually-set alignments.
 }}
 
 \item{page.length}{In order to prevent timeouts when there are a large number of
@@ -127,33 +140,35 @@ matches or the network connection is slow, rather than retrieving matches in one
 big request, they are retrieved using many smaller requests. This parameter
 controls the number of results retrieved per request.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 A data frame identifying matches, containing the following columns:
 \itemize{
- \item{\emph{SearchName} A name based on the pattern -- the same for all rows}
- \item{\emph{MatchId} A unique ID for the matching target token}
- \item{\emph{Transcript} Name of the transcript in which the match was found}
- \item{\emph{Participant} Name of the speaker}
- \item{\emph{Corpus} The corpus of the transcript}
- \item{\emph{Line} The start offset of the utterance/line}
- \item{\emph{LineEnd} The end offset of the utterance/line}
- \item{\emph{Before.Match} Transcript text immediately before the match}
- \item{\emph{Text} Transcript text of the match}
- \item{\emph{After.Match} Transcript text immediately after the match}
- \item{\emph{Number} Row number}
- \item{\emph{URL} URL of the first matching word token}
- \item{\emph{Target.word} Text of the target word token}
- \item{\emph{Target.word.start} Start offset of the target word token}
- \item{\emph{Target.word.end} End offset of the target word token}
- \item{\emph{Target.segment} Label of the target segment (only present if the segment
-    layer is included in the pattern)}
- \item{\emph{Target.segment.start} Start offset of the target segment (only present if the
-    segment layer is included in the pattern)}
- \item{\emph{Target.segment.end} End offset of the target segment (only present if the
-    segment layer is included in the pattern)}
+\item \emph{Title} The title of the LaBB-CAT instance
+\item \emph{Version} The current version of the LaBB-CAT instance
+\item \emph{SearchName} A name based on the pattern -- the same for all rows
+\item \emph{MatchId} A unique ID for the matching target token
+\item \emph{Transcript} Name of the transcript in which the match was found
+\item \emph{Participant} Name of the speaker
+\item \emph{Corpus} The corpus of the transcript
+\item \emph{Line} The start offset of the utterance/line
+\item \emph{LineEnd} The end offset of the utterance/line
+\item \emph{Before.Match} Transcript text immediately before the match
+\item \emph{Text} Transcript text of the match
+\item \emph{After.Match} Transcript text immediately after the match
+\item \emph{Number} Row number
+\item \emph{URL} URL of the first matching word token
+\item \emph{Target.word} Text of the target word token
+\item \emph{Target.word.start} Start offset of the target word token
+\item \emph{Target.word.end} End offset of the target word token
+\item \emph{Target.segment} Label of the target segment (only present if the segment
+layer is included in the pattern)
+\item \emph{Target.segment.start} Start offset of the target segment (only present if the
+segment layer is included in the pattern)
+\item \emph{Target.segment.end} End offset of the target segment (only present if the
+segment layer is included in the pattern)
 }
 }
 \description{
@@ -161,9 +176,6 @@ Searches through transcripts for tokens matching the given pattern.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## the word 'the' followed immediately by a word starting with an orthographic vowel
 theThenOrthVowel <- getMatches(labbcat.url, "the [aeiou]")
 
@@ -207,16 +219,13 @@ results <- getMatches(labbcat.url, list(segment="I"),
 
 }
 \seealso{
-\code{\link{getFragments}}
-
-\code{\link{getSoundFragments}}
-
-\code{\link{getMatchLabels}}
-
-\code{\link{getMatchAlignments}}
-
-\code{\link{processWithPraat}}
-
-\code{\link{getParticipantIds}}
+\itemize{
+\item \link{getFragments}
+\item \link{getSoundFragments}
+\item \link{getMatchLabels}
+\item \link{getMatchAlignments}
+\item \link{processWithPraat}
+\item \link{getParticipantIds}
+}
 }
 \keyword{search}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/deleteParticipant.R
 \name{deleteParticipant}
 \alias{deleteParticipant}
-\title{Deletes a participant record.}
+\title{Deletes a participant record}
 \usage{
 deleteParticipant(labbcat.url, id)
 }
@@ -20,9 +20,6 @@ not appear in any transcripts.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Create a new participant record
 saveParticipant(labbcat.url, "Juan Perez")
 
@@ -32,7 +29,9 @@ deleteParticipant(labbcat.url, "Juan Perez")
 
 }
 \seealso{
-\code{\link{getParticipant}}
-  \code{\link{saveParticipant}}
+\itemize{
+\item \link{getParticipant}
+\item \link{saveParticipant}
+}
 }
 \keyword{participant}

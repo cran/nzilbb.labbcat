@@ -2,7 +2,7 @@
 % Please edit documentation in R/newTranscript.R
 \name{newTranscript}
 \alias{newTranscript}
-\title{Upload a new transcript.}
+\title{Upload a new transcript}
 \usage{
 newTranscript(
   labbcat.url,
@@ -27,7 +27,7 @@ newTranscript(
 
 \item{episode}{The transcript's episode.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -37,14 +37,14 @@ The ID of the new transcript in the corpus
 This function adds a transcript and optionally a media file to the corpus.
 }
 \details{
+\emph{NB} This method of uploading is an alternative to using transcriptUpload and
+transcriptUploadParameters.
+
 For this function to work, the credentials used to connect to the server must have at
 least 'edit' access.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get attributes for new transcript
 corpus <- getCorpusIds(labbcat.url)[1]
 transcript.type.layer <- getLayer(labbcat.url, "transcript_type")
@@ -54,6 +54,14 @@ transcript.type <- transcript.type.layer$validLabels[[1]]
 newTranscript(
     labbcat.url, "my-transcript.eaf", "my-transcript.wav",
     "", transcript.type, corpus, "episode-1")
+}
+}
+\seealso{
+\itemize{
+\item \link{transcriptUpload}
+\item \link{transcriptUploadParameters}
+\item \link{transcriptUploadDelete}
+\item \link{updateTranscript}
 }
 }
 \keyword{management}

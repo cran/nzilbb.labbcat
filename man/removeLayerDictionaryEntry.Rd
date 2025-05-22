@@ -2,7 +2,7 @@
 % Please edit documentation in R/removeLayerDictionaryEntry.R
 \name{removeLayerDictionaryEntry}
 \alias{removeLayerDictionaryEntry}
-\title{Removes an entry from a layer dictionary.}
+\title{Removes an entry from a layer dictionary}
 \usage{
 removeLayerDictionaryEntry(labbcat.url, layer.id, key, entry = NULL)
 }
@@ -34,7 +34,15 @@ removeLayerDictionaryEntry(labbcat.url, "phonemes", "robert", "'rQ-bErt")
 
 }
 \seealso{
-\code{\link{generateLayer}}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{annotation}
 \keyword{layer}

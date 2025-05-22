@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMediaUrl.R
 \name{getMediaUrl}
 \alias{getMediaUrl}
-\title{Gets the URL of the given media track for a given transcript.}
+\title{Gets the URL of the given media track for a given transcript}
 \usage{
 getMediaUrl(labbcat.url, id, track.suffix = "", mime.type = "audio/wav")
 }
@@ -19,13 +19,10 @@ getMediaUrl(labbcat.url, id, track.suffix = "", mime.type = "audio/wav")
 A URL to the given media for the given transcript.
 }
 \description{
-Gets the URL of the given media track for a given transcript.
+Gets the URL of the given media track for a given transcript
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get URL for the WAV file for BR2044_OllyOhlson.eaf
 wavUrl <- getMediaUrl(labbcat.url, "BR2044_OllyOhlson.eaf")
 
@@ -35,9 +32,10 @@ quakeFaceMp4Url <- getMediaUrl(labbcat.url, "BR2044_OllyOhlson.eaf", "_face", "v
 
 }
 \seealso{
-\link{getTranscriptIds}
-
-\link{getMedia}
+\itemize{
+\item \link{getTranscriptIds}
+\item \link{getMedia}
+}
 }
 \keyword{audio}
 \keyword{media}

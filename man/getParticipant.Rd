@@ -2,7 +2,7 @@
 % Please edit documentation in R/getParticipant.R
 \name{getParticipant}
 \alias{getParticipant}
-\title{Gets information about a single participant.}
+\title{Gets information about a single participant}
 \usage{
 getParticipant(labbcat.url, id, layer.ids)
 }
@@ -17,11 +17,11 @@ eg. c('participant_gender', 'participant_year_of_birth')}
 \value{
 A named list of representing the participant and its attributes, with members:
 \itemize{
- \item{\emph{id} The participant's unique internal database ID}
- \item{\emph{label} The ID (name) of the participant}
- \item{\emph{annotations} A named list of participant attributes
- e.g. the label of the participant's 'gender' attribute would be:
- participant$annotations$participant_gender$label}
+\item \emph{id} The participant's unique internal database ID
+\item \emph{label} The ID (name) of the participant
+\item \emph{annotations} A named list of participant attributes
+e.g. the label of the participant's 'gender' attribute would be:
+participant$annotations$participant_gender$label
 }
 }
 \description{
@@ -30,9 +30,6 @@ participant attributes.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get the gender and year of birth of AP511_MikeThorpe
 participant <- getParticipant(labbcat.url, "AP511_MikeThorpe",
                   c("participant_gender", "participant_year_of_birth"))
@@ -44,8 +41,10 @@ print(paste("ID:", participant$label,
 
 }
 \seealso{
-\code{\link{getParticipantAttributes}}
-  \code{\link{saveParticipant}}
-  \code{\link{deleteParticipant}}
+\itemize{
+\item \link{getParticipantAttributes}
+\item \link{saveParticipant}
+\item \link{deleteParticipant}
+}
 }
 \keyword{transcript}

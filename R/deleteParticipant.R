@@ -1,4 +1,4 @@
-#' Deletes a participant record.
+#' Deletes a participant record
 #'
 #' This function deletes the identified participant from the corpus, but only if they do
 #' not appear in any transcripts.
@@ -8,13 +8,10 @@
 #' @return TRUE if the participant's record was delete, FALSE otherwise.
 #' 
 #' @seealso 
-#'   \code{\link{getParticipant}}
-#'   \code{\link{saveParticipant}}
+#'   - [getParticipant]
+#'   - [saveParticipant]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Create a new participant record
 #' saveParticipant(labbcat.url, "Juan Perez")
 #' 

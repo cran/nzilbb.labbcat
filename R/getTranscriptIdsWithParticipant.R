@@ -1,4 +1,4 @@
-#' Gets a list of IDs of transcripts that include the given participant.
+#' Gets a list of IDs of transcripts that include the given participant
 #'
 #' Returns a list of IDs of transcripts (i.e. transcript names) that include
 #' the given participant.
@@ -7,12 +7,9 @@
 #' @param id A participant ID
 #' @return A list of transcript IDs
 #' 
-#' @seealso \code{\link{getParticipantIds}}
+#' @seealso [getParticipantIds]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## List transcripts in which UC427_ViktoriaPapp_A_ENG speaks
 #' transcripts <- getTranscriptIdsWithParticipant(labbcat.url, "UC427_ViktoriaPapp_A_ENG")
 #' }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getSystemAttribute.R
 \name{getSystemAttribute}
 \alias{getSystemAttribute}
-\title{Gets the value of the given system attribute.}
+\title{Gets the value of the given system attribute}
 \usage{
 getSystemAttribute(labbcat.url, attribute)
 }
@@ -13,11 +13,9 @@ getSystemAttribute(labbcat.url, attribute)
 }
 \value{
 The value of the given attribute.
-
-\code{\link{getLayers}}
 }
 \description{
-Gets the value of the given system attribute.
+Gets the value of the given system attribute
 }
 \examples{
 \dontrun{
@@ -25,4 +23,7 @@ Gets the value of the given system attribute.
 title <- getSystemAttribute("https://labbcat.canterbury.ac.nz/demo/", "title")
 }
 
+}
+\seealso{
+\link{getLayers}
 }

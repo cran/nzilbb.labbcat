@@ -1,4 +1,4 @@
-#' Gets a list of annotations that match a particular pattern.
+#' Gets a list of annotations that match a particular pattern
 #'
 #' Returns the annotations in the corpus that match the given expression.
 #'
@@ -8,31 +8,23 @@
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param expression An expression that determines which annotations match. This must
-#' match by either id or layer.id.
-#' The expression language is currently not well defined, but is based on JavaScript
-#' syntax. e.g.
-#' 
-#' \itemize{
-#'  \item{id == 'ew_0_456'}
-#'  \item{['ew_2_456', 'ew_2_789', 'ew_2_101112'].includes(id)}
-#'  \item{layerId == 'orthography' && !/th[aeiou].+/.test(label)}
-#'  \item{graph.id == 'AdaAicheson-01.trs' && layer.id == 'orthography' &&
-#'    start.offset &gt; 10.5} 
-#'  \item{layer.id == 'utterance' && all('word').includes('ew_0_456')}
-#'  \item{layerId = 'utterance' && labels('orthography').includes('foo')}
-#'  \item{layerId = 'utterance' && labels('participant').includes('Ada')}
-#' }
+#'   match by either id or layer.id.
+#'   The expression language is currently not well defined, but is based on JavaScript
+#'   syntax. e.g.
+#'   - `id == 'ew_0_456'`
+#'   - `layerId == 'orthography' && !/th[aeiou].+/.test(label)`
+#'   - `graph.id == 'AdaAicheson-01.trs' && layer.id == 'orthography' &&
+#'     start.offset &gt; 10.5`
+#'   - `layer.id == 'utterance' && all('word').includes('ew_0_456')`
+#'   - `layerId = 'utterance' && labels('orthography').includes('foo')`
+#'   - `layerId = 'utterance' && labels('participant').includes('Ada')`
 #' @param page.length The maximum number of IDs to return, or null to return all
 #' @param page.number The zero-based page number to return, or null to return the first page
 #' @return A list of annotations.
 #' 
-#' @seealso
-#' \code{\link{countMatchingAnnotations}}
+#' @seealso [countMatchingAnnotations]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#'
 #' ## get all topic annotations whose label includes the word 'quake'
 #' quake.topics <- getMatchingAnnotations(
 #'                    labbcat.url, "layer.id == 'topic' && /.*quake.*/.test(label)")

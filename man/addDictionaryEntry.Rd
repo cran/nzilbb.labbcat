@@ -2,7 +2,7 @@
 % Please edit documentation in R/addDictionaryEntry.R
 \name{addDictionaryEntry}
 \alias{addDictionaryEntry}
-\title{Adds an entry to a dictionary.}
+\title{Adds an entry to a dictionary}
 \usage{
 addDictionaryEntry(labbcat.url, manager.id, dictionary.id, key, entry)
 }
@@ -34,9 +34,15 @@ addDictionaryEntry(labbcat.url, "CELEX-EN", "Phonology (wordform)", "robert", "'
 
 }
 \seealso{
-\link{getDictionaries}
-
-\link{getDictionaryEntries}
+Other dictionary functions: 
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{annotation}
 \keyword{layer}

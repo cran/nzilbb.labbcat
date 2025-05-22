@@ -1,4 +1,4 @@
-#' Saves information about a single participant.
+#' Saves information about a single participant
 #'
 #' This function allows the participant attributes and the ID of a given participant to be
 #' updated.
@@ -13,18 +13,16 @@
 #' @param id The participant ID - either the unique internal database ID, or their name.
 #' @param label The new ID (name) for the participant
 #' @param attributes A named list of participant attribute values - the names are the
-#'     participant attribute layer IDs, and the values are the corresponding new attribute
-#'     values. The pass phrase for participant access can also be set by specifying a "_password"
-#'     attribute.
+#'   participant attribute layer IDs, and the values are the corresponding new attribute
+#'   values. The pass phrase for participant access can also be set by specifying a "_password"
+#'   attribute.
 #' @return TRUE if the participant's record was updated, FALSE if there were no changes detected.
 #' 
-#' @seealso \code{\link{getParticipant}}
-#' @seealso \code{\link{deleteParticipant}}
+#' @seealso
+#'   - [getParticipant]
+#'   - [deleteParticipant]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Create a new participant record
 #' saveParticipant(labbcat.url, "Juan Perez", attributes=list(participant_gender="M"))
 #' 

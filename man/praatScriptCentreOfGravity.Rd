@@ -2,7 +2,7 @@
 % Please edit documentation in R/praatScriptCentreOfGravity.R
 \name{praatScriptCentreOfGravity}
 \alias{praatScriptCentreOfGravity}
-\title{Generates a script for extracting the CoG, for use with \link{processWithPraat}.}
+\title{Generates a script for extracting the CoG, for use with \link{processWithPraat}}
 \usage{
 praatScriptCentreOfGravity(powers = c(2), spectrum.fast = TRUE)
 }
@@ -11,11 +11,11 @@ praatScriptCentreOfGravity(powers = c(2), spectrum.fast = TRUE)
 c(1.0,2.0).}
 
 \item{spectrum.fast}{Whether to use the 'fast' option when creating the spectrum object
-to query .}
+to query.}
 }
 \value{
 A script fragment which can be passed as the praat.script parameter of
-    \link{processWithPraat}
+\link{processWithPraat}
 }
 \description{
 This function generates a Praat script fragment which can be passed as the praat.script
@@ -24,9 +24,6 @@ of gravity (CoG) measurements.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -38,14 +35,12 @@ cog <- processWithPraat(
 }
 }
 \seealso{
-\link{processWithPraat}
-
-\link{praatScriptFormants}
-
-\link{praatScriptIntensity}
-
-\link{praatScriptPitch}
-
-\link{praatScriptFastTrack}
+Other Praat-related functions: 
+\code{\link{praatScriptFastTrack}()},
+\code{\link{praatScriptFormants}()},
+\code{\link{praatScriptIntensity}()},
+\code{\link{praatScriptPitch}()},
+\code{\link{processWithPraat}()}
 }
+\concept{Praat-related functions}
 \keyword{praat}

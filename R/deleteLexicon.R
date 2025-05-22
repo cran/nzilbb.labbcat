@@ -1,4 +1,4 @@
-#' Delete a previously loaded lexicon.
+#' Delete a previously loaded lexicon
 #' 
 #' By default LaBB-CAT includes a layer manager called the Flat Lexicon Tagger, which can
 #' be configured to annotate words with data from a dictionary loaded from a plain text
@@ -11,9 +11,7 @@
 #' @param labbcat.url URL to the LaBB-CAT instance.
 #' @param lexicon The name of the lexicon to delete, e.g. 'cmudict'
 #' @return NULL if the deletion was successful, or an error message if not.
-#' @keywords lexicon
-#' @seealso
-#' \code{\link{loadLexicon}}
+#' @family dictionary functions
 #' @examples
 #' \dontrun{
 #' ## Delete the previously loaded CMU Pronouncing Dictionary lexicon

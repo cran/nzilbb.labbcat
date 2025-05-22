@@ -2,7 +2,7 @@
 % Please edit documentation in R/getDictionaries.R
 \name{getDictionaries}
 \alias{getDictionaries}
-\title{List the dictionaries available.}
+\title{List the dictionaries available}
 \usage{
 getDictionaries(labbcat.url)
 }
@@ -14,7 +14,7 @@ A named list of layer manager IDs, each of which containing a list of
 dictionaries that the layer manager makes available.
 }
 \description{
-List the dictionaries available.
+List the dictionaries available
 }
 \examples{
 \dontrun{
@@ -24,6 +24,14 @@ dictionaries <- getDictionaries("https://labbcat.canterbury.ac.nz/demo/")
 
 }
 \seealso{
-\link{getDictionaryEntries}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{dictionary}

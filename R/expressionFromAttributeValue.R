@@ -1,11 +1,11 @@
-#' Generates a query expression for matching a transcript/participant attribute, for use with
-#' \link{getMatches}.
+#' Generates a query expression for matching a single-value transcript/participant
+#' attribute, for use with \link{getMatches}
 #'
 #' This function generates a query expression fragment which can be passed as
 #' the transcript.expression or participant.expression parameter of \link{getMatches}, (or
 #' the expression parameter of \link{getMatchingTranscriptIds} or
 #' \link{getMatchingParticipantIds}) using a list of possible values for a given
-#' transcript attribute. 
+#' attribute. 
 #'
 #' The attribute defined by transcript.attribute is expected to have exactly one value. If
 #' it may have multiple values, use \link{expressionFromAttributeValues} instead.
@@ -18,15 +18,13 @@
 #' transcript.expression parameter of \link{getMatches} or the expression parameter
 #' of \link{getMatchingTranscriptIds}
 #' 
-#' @seealso \link{expressionFromAttributeValues}
-#' @seealso \link{expressionFromTranscriptTypes}
-#' @seealso \link{expressionFromIds}
-#' @seealso \link{getMatches}
+#' @seealso
+#'   - [expressionFromAttributeValues]
+#'   - [expressionFromTranscriptTypes]
+#'   - [expressionFromIds]
+#'   - [getMatches]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Perform a search
 #' languages <- c("en","en-NZ")
 #' results <- getMatches(labbcat.url, list(segment="I"),

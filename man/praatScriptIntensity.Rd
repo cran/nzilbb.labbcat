@@ -2,7 +2,7 @@
 % Please edit documentation in R/praatScriptIntensity.R
 \name{praatScriptIntensity}
 \alias{praatScriptIntensity}
-\title{Generates a script for extracting maximum intensity, for use with \link{processWithPraat}.}
+\title{Generates a script for extracting maximum intensity, for use with \link{processWithPraat}}
 \usage{
 praatScriptIntensity(
   minimum.pitch = 100,
@@ -27,9 +27,9 @@ praatScriptIntensity(
 points at which to take the measurement.  The default is NULL, meaning no
 individual measurements will be taken (only the aggregate values identified by
 get.mean, get.minimum, and get.maximum).  A single point at 0.5 means one
-measurement will be taken halfway through the target interval.  If, for example, 
+measurement will be taken halfway through the target interval.  If, for example,
 you wanted eleven measurements evenly spaced throughout the interval, you would
-specify sample.points as being 
+specify sample.points as being
 c(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0).}
 
 \item{interpolation}{If sample.points are specified, this is the interpolation to use
@@ -44,7 +44,7 @@ be returned for any segments in the same recording.}
 }
 \value{
 A script fragment which can be passed as the praat.script parameter of
-    \link{processWithPraat}
+\link{processWithPraat}
 }
 \description{
 This function generates a Praat script fragment which can be passed as the praat.script
@@ -52,9 +52,6 @@ parameter of \link{processWithPraat}, in order to extract maximum intensity valu
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="s"))
 
@@ -66,14 +63,12 @@ intensity <- processWithPraat(
 }
 }
 \seealso{
-\link{processWithPraat}
-
-\link{praatScriptFormants}
-
-\link{praatScriptCentreOfGravity}
-
-\link{praatScriptPitch}
-
-\link{praatScriptFastTrack}
+Other Praat-related functions: 
+\code{\link{praatScriptCentreOfGravity}()},
+\code{\link{praatScriptFastTrack}()},
+\code{\link{praatScriptFormants}()},
+\code{\link{praatScriptPitch}()},
+\code{\link{processWithPraat}()}
 }
+\concept{Praat-related functions}
 \keyword{praat}

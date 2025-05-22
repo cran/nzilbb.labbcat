@@ -2,7 +2,7 @@
 % Please edit documentation in R/getCorpusIds.R
 \name{getCorpusIds}
 \alias{getCorpusIds}
-\title{Gets a list of corpus IDs.}
+\title{Gets a list of corpus IDs}
 \usage{
 getCorpusIds(labbcat.url)
 }

@@ -1,21 +1,25 @@
-#' Update an existing transcript.
+#' Update an existing transcript
 #'
 #' This function uploads a new version of an existing transcript.
+#'
+#' *NB* This method of uploading is an alternative to using transcriptUpload and
+#' transcriptUploadParameters.
 #'
 #' For this function to work, the credentials used to connect to the server must have at
 #' least 'edit' access.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param transcript.path The path to the transcript to upload.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return The ID of the updated transcript in the corpus
-#' 
+#' @seealso
+#' - [transcriptUpload]
+#' - [transcriptUploadParameters]
+#' - [transcriptUploadDelete]
+#' - [newTranscript]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## upload new verison of transcript transcript
 #' updateTranscript(labbcat.url, "my-transcript.eaf")
 #' }

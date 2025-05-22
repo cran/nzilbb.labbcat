@@ -1,21 +1,19 @@
-#' List the media available for the given transcript.
+#' List the media available for the given transcript
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param id A transcript ID (i.e. transcript name)
 #' @return A named list of media files available for the given transcript, with members:
-#' \itemize{
-#'  \item{\emph{trackSuffix} The track suffix of the media}
-#'  \item{\emph{mimeType} The MIME type of the file}
-#'  \item{\emph{url} URL to the content of the file}
-#'  \item{\emph{name} Name of the file}
-#' }
+#'   - *trackSuffix* The track suffix of the media
+#'   - *mimeType* The MIME type of the file
+#'   - *url* URL to the content of the file
+#'   - *name* Name of the file
 #' 
-#' @seealso \link{getTranscriptIds}
+#' @seealso
+#'   - [getTranscriptIds]
+#'   - [saveMedia]
+#'   - [deleteMedia]
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## List the media files available for BR2044_OllyOhlson.eaf
 #' media <- getAvailableMedia(labbcat.url, "BR2044_OllyOhlson.eaf")
 #' }

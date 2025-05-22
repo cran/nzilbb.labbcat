@@ -1,23 +1,21 @@
-#' Gets version information of all components of LaBB-CAT.
+#' Gets version information of all components of LaBB-CAT
 #' 
 #' Version information includes versions of all components and modules installed on the
 #' LaBB-CAT server, including format converters and annotator modules.
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @return The versions of different components of LaBB-CAT, divided into sections:
-#' \itemize{
-#'  \item{\emph{System} Overall LaBB-CAT system components}
-#'  \item{\emph{Formats} Annotation format conversion modules}
-#'  \item{\emph{Layer Managers} Annotator module versions}
-#'  \item{\emph{3rd Pary Software} Versions of software installed on the server that
-#'        LaBB-CAT integrates with, e.g. Praat, FastTrack, etc.}
-#'  \item{\emph{RDBMS} MySQL Server version information}
-#' }
+#'   - *System* Overall LaBB-CAT system components
+#'   - *Formats* Annotation format conversion modules
+#'   - *Layer Managers* Annotator module versions
+#'   - *3rd Pary Software* Versions of software installed on the server that
+#'     LaBB-CAT integrates with, e.g. Praat, FastTrack, etc.
+#'   - *RDBMS* MySQL Server version information
 #' @examples
 #' \dontrun{
 #' ## Get ID of LaBB-CAT instance
 #' versionInfo <- labbcatVersionInfo("https://labbcat.canterbury.ac.nz/demo/")
-#' print(paste("LaBB-CAT version", versionInfo$System$`LaBB-CAT`, " Full version info:"))
+#' print(paste("LaBB-CAT version", versionInfo$System$'LaBB-CAT', " Full version info:"))
 #' print(t(as.data.frame(versionInfo)))
 #' }
 #'

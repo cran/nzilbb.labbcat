@@ -2,7 +2,7 @@
 % Please edit documentation in R/getAllUtterances.R
 \name{getAllUtterances}
 \alias{getAllUtterances}
-\title{Get all utterances of participants.}
+\title{Get all utterances of participants}
 \usage{
 getAllUtterances(
   labbcat.url,
@@ -26,30 +26,30 @@ search all utterances.}
 
 \item{max.matches}{The maximum number of matches to return, or null to return all.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
 A data frame identifying matches, containing the following columns:
 \itemize{
- \item{\emph{SearchName} A name based on the pattern -- the same for all rows}
- \item{\emph{Number} Row number}
- \item{\emph{Transcript} Name of the transcript in which the match was found}
- \item{\emph{Line} The start offset of the utterance/line}
- \item{\emph{LineEnd} The end offset of the utterance/line}
- \item{\emph{MatchId} A unique ID for the matching target token}
- \item{\emph{Before.Match} Transcript text immediately before the match}
- \item{\emph{Text} Transcript text of the match}
- \item{\emph{Before.Match} Transcript text immediately after the match}
- \item{\emph{Target.word} Text of the target word token}
- \item{\emph{Target.word.start} Start offset of the target word token}
- \item{\emph{Target.word.end} End offset of the target word token}
- \item{\emph{Target.segment} Label of the target segment (only present if the segment
-    layer is included in the pattern)}
- \item{\emph{Target.segment.start} Start offset of the target segment (only present if the
-    segment layer is included in the pattern)}
- \item{\emph{Target.segment.end} End offset of the target segment (only present if the
-    segment layer is included in the pattern)}
+\item \emph{SearchName} A name based on the pattern -- the same for all rows
+\item \emph{Number} Row number
+\item \emph{Transcript} Name of the transcript in which the match was found
+\item \emph{Line} The start offset of the utterance/line
+\item \emph{LineEnd} The end offset of the utterance/line
+\item \emph{MatchId} A unique ID for the matching target token
+\item \emph{Before.Match} Transcript text immediately before the match
+\item \emph{Text} Transcript text of the match
+\item \emph{Before.Match} Transcript text immediately after the match
+\item \emph{Target.word} Text of the target word token
+\item \emph{Target.word.start} Start offset of the target word token
+\item \emph{Target.word.end} End offset of the target word token
+\item \emph{Target.segment} Label of the target segment (only present if the segment
+layer is included in the pattern)
+\item \emph{Target.segment.start} Start offset of the target segment (only present if the
+segment layer is included in the pattern)
+\item \emph{Target.segment.end} End offset of the target segment (only present if the
+segment layer is included in the pattern)
 }
 }
 \description{
@@ -57,9 +57,6 @@ Identifies all utterances of a given set of participants.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## get all utterances of the given participants
 participant.ids <- getParticipantIds(labbcat.url)[1:3]
 results <- getAllUtterances(labbcat.url, participant.ids)
@@ -69,6 +66,6 @@ results <- getAllUtterances(labbcat.url, participant.ids)
 
 }
 \seealso{
-\code{\link{getParticipantIds}}
+\link{getParticipantIds}
 }
 \keyword{search}

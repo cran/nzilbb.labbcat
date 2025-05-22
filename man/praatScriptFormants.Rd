@@ -2,7 +2,7 @@
 % Please edit documentation in R/praatScriptFormants.R
 \name{praatScriptFormants}
 \alias{praatScriptFormants}
-\title{Generates a script for extracting formants, for use with \link{processWithPraat}.}
+\title{Generates a script for extracting formants, for use with \link{processWithPraat}}
 \usage{
 praatScriptFormants(
   formants = c(1, 2),
@@ -49,7 +49,7 @@ participant's gender - normally this is "participant_gender".}
 }
 \value{
 A script fragment which can be passed as the praat.script parameter of
-    \link{processWithPraat}
+\link{processWithPraat}
 }
 \description{
 This function generates a Praat script fragment which can be passed as the praat.script
@@ -61,9 +61,6 @@ uses the FastTrack Praat plugin for formant analysis.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get all tokens of the KIT vowel
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -77,14 +74,12 @@ formants <- processWithPraat(
 }
 }
 \seealso{
-\link{processWithPraat}
-
-\link{praatScriptCentreOfGravity}
-
-\link{praatScriptIntensity}
-
-\link{praatScriptPitch}
-
-\link{praatScriptFastTrack}
+Other Praat-related functions: 
+\code{\link{praatScriptCentreOfGravity}()},
+\code{\link{praatScriptFastTrack}()},
+\code{\link{praatScriptIntensity}()},
+\code{\link{praatScriptPitch}()},
+\code{\link{processWithPraat}()}
 }
+\concept{Praat-related functions}
 \keyword{praat}

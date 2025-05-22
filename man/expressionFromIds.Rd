@@ -3,19 +3,19 @@
 \name{expressionFromIds}
 \alias{expressionFromIds}
 \title{Generates a query expression for matching transcripts or participants by ID, for use with
-\link{getMatches}.}
+\link{getMatches}}
 \usage{
 expressionFromIds(ids, not = FALSE)
 }
 \arguments{
 \item{ids}{A list of IDs.}
 
-\item{not}{Whether to match the given IDs (FALSE), or everything *except* the
+\item{not}{Whether to match the given IDs (FALSE), or everything \emph{except} the
 given IDs.}
 }
 \value{
 A query expression which can be passed as the
-transcript.expression or participant.expression parameter of \link{getMatches} 
+transcript.expression or participant.expression parameter of \link{getMatches}
 or the expression parameter of \link{getMatchingTranscriptIds} or
 \link{getMatchingParticipantIds}
 }
@@ -26,9 +26,6 @@ using a list of corresponding IDs.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 transcript.ids <- c("AP511_MikeThorpe.eaf", "BR2044_OllyOhlson.eaf")
 results <- getMatches(labbcat.url, list(segment="I"),

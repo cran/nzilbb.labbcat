@@ -2,7 +2,7 @@
 % Please edit documentation in R/saveParticipant.R
 \name{saveParticipant}
 \alias{saveParticipant}
-\title{Saves information about a single participant.}
+\title{Saves information about a single participant}
 \usage{
 saveParticipant(labbcat.url, id, label = id, attributes = NULL)
 }
@@ -34,9 +34,6 @@ is created.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Create a new participant record
 saveParticipant(labbcat.url, "Juan Perez", attributes=list(participant_gender="M"))
 
@@ -49,8 +46,9 @@ deleteParticipant(labbcat.url, "Maria Perez")
 
 }
 \seealso{
-\code{\link{getParticipant}}
-
-\code{\link{deleteParticipant}}
+\itemize{
+\item \link{getParticipant}
+\item \link{deleteParticipant}
+}
 }
 \keyword{participant}

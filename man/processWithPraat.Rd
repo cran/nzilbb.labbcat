@@ -2,7 +2,7 @@
 % Please edit documentation in R/processWithPraat.R
 \name{processWithPraat}
 \alias{processWithPraat}
-\title{Process a set of intervals with Praat.}
+\title{Process a set of intervals with Praat}
 \usage{
 processWithPraat(
   labbcat.url,
@@ -37,10 +37,10 @@ the sample starts at 2.0s and ends at 3.0s, and you set the window offset to 0.5
 then Praat will extract a sample of audio from  1.5s to 3.5s, and do the selected
 processing on that sample. The best value for this depends on what the praat.script
 is doing; if you are getting formants from  vowels, including some context ensures
-that he formants at the edges are more accurate (in LaBB-CAT's web interface, the
+that the formants at the edges are more accurate (in LaBB-CAT's web interface, the
 default value for this 0.025), but if you're getting max pitch or COG during a
 segment, most likely you want a window.offset of 0 to ensure neighbouring segments
-doesn't influence the measurement.}
+don't influence the measurement.}
 
 \item{gender.attribute}{Which participant attribute represents the participant's gender.}
 
@@ -48,9 +48,9 @@ doesn't influence the measurement.}
 example, if you want to use different acoustic parameters depending on what the
 gender of the speaker is, including the "participant_gender" attribute will make a
 variable called participant_gender$ available to the praat script, whose value will
-be the gender of the speaker for that segment.}
+be the gender of the speaker of that segment.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -75,8 +75,7 @@ one from a file.
 LaBB-CAT prefixes praat.script with code to open a sound file and extract a defined part
 of it into a Sound object which is then selected.
 
-LaBB-CAT `Remove's this Sound object after the script finishes executing. Any other objects
-created by the script must be `Remove'd before the end of the script (otherwise Praat runs out
+LaBB-CAT \verb{Remove's this Sound object after the script finishes executing. Any other objects created by the script must be }Remove'd before the end of the script (otherwise Praat runs out
 of memory during very large batches)
 
 LaBB-CAT assumes that all calls to the function 'print' correspond to fields for export
@@ -87,35 +86,32 @@ print 'myOutputVariable' 'newline$'
 
 Variables that can be assumed to be already set in the context of the script are:
 \itemize{
- \item{\emph{windowOffset}
-   -- the value used for the Window Offset; how much context to include.} 
- \item{\emph{windowAbsoluteStart}
-   -- the start time of the window extracted relative to the start of the original audio file.} 
- \item{\emph{windowAbsoluteEnd}
-   -- the end time of the window extracted relative to the start of the original audio file.} 
- \item{\emph{windowDuration}
-   -- the duration of the window extracted (including window offset).}
- \item{\emph{targetAbsoluteStart}
-   -- the start time of the target interval relative to the start of the original audio file.} 
- \item{\emph{targetAbsoluteEnd}
-   -- the end time of the target interval relative to the start of the original audio file.} 
- \item{\emph{targetStart}
-   -- the start time of the target interval relative to the start of the window extracted.} 
- \item{\emph{targetEnd}
-   -- the end time of the target interval relative to the start of the window extracted.}
- \item{\emph{targetDuration}
-   -- the duration of the target interval.}
- \item{\emph{sampleNumber}
-   -- the number of the sample within the set of samples being processed.} 
- \item{\emph{sampleName$}
-   -- the name of the extracted/selected Sound object.}
+\item \emph{windowOffset}
+-- the value used for the Window Offset; how much context to include.
+\item \emph{windowAbsoluteStart}
+-- the start time of the window extracted relative to the start of the original audio file.
+\item \emph{windowAbsoluteEnd}
+-- the end time of the window extracted relative to the start of the original audio file.
+\item \emph{windowDuration}
+-- the duration of the window extracted (including window offset).
+\item \emph{targetAbsoluteStart}
+-- the start time of the target interval relative to the start of the original audio file.
+\item \emph{targetAbsoluteEnd}
+-- the end time of the target interval relative to the start of the original audio file.
+\item \emph{targetStart}
+-- the start time of the target interval relative to the start of the window extracted.
+\item \emph{targetEnd}
+-- the end time of the target interval relative to the start of the window extracted.
+\item \emph{targetDuration}
+-- the duration of the target interval.
+\item \emph{sampleNumber}
+-- the number of the sample within the set of samples being processed.
+\item \emph{sampleName$}
+-- the name of the extracted/selected Sound object.
 }
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -145,12 +141,12 @@ acoustic.measurements <- processWithPraat(
 }
 }
 \seealso{
-\link{praatScriptFormants}
-
-\link{praatScriptCentreOfGravity}
-
-\link{praatScriptIntensity}
-
-\link{praatScriptPitch}
+Other Praat-related functions: 
+\code{\link{praatScriptCentreOfGravity}()},
+\code{\link{praatScriptFastTrack}()},
+\code{\link{praatScriptFormants}()},
+\code{\link{praatScriptIntensity}()},
+\code{\link{praatScriptPitch}()}
 }
+\concept{Praat-related functions}
 \keyword{praat}

@@ -2,8 +2,8 @@
 % Please edit documentation in R/expressionFromAttributeValues.R
 \name{expressionFromAttributeValues}
 \alias{expressionFromAttributeValues}
-\title{Generates a query expression for matching a transcript/participant attribute, for use with
-\link{getMatches}.}
+\title{Generates a query expression for matching a multi-value transcript/participant
+attribute, for use with \link{getMatches}}
 \usage{
 expressionFromAttributeValues(transcript.attribute, values, not = FALSE)
 }
@@ -12,7 +12,7 @@ expressionFromAttributeValues(transcript.attribute, values, not = FALSE)
 
 \item{values}{A list of possible values for transcript.attribute.}
 
-\item{not}{Whether to match the given IDs (FALSE), or everything *except* the
+\item{not}{Whether to match the given IDs (FALSE), or everything \emph{except} the
 given IDs.}
 }
 \value{
@@ -33,9 +33,6 @@ one value. If it can have only one value, use \link{expressionFromAttributeValue
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 languages <- c("en","es")
 results <- getMatches(labbcat.url, list(segment="I"),

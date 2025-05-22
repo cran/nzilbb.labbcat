@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateLayerUtterances.R
 \name{generateLayerUtterances}
 \alias{generateLayerUtterances}
-\title{Generates a layer for a given set of utterances.}
+\title{Generates a layer for a given set of utterances}
 \usage{
 generateLayerUtterances(
   labbcat.url,
@@ -22,7 +22,7 @@ of a results set.}
 
 \item{collection.name}{An optional name for the collection, e.g. the participant ID.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -34,9 +34,6 @@ selected utterances of a participant.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get all utterances of a participant
 allUtterances <- getAllUtterances(labbcat.url, "AP2505_Nelson")
 
@@ -46,7 +43,7 @@ generateLayerUtterances(labbcat.url, allUtterances$MatchId, "htk", "AP2505_Nelso
 
 }
 \seealso{
-\code{\link{getAllUtterances}}
+\link{getAllUtterances}
 }
 \keyword{annotation}
 \keyword{label}

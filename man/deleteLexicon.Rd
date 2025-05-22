@@ -2,7 +2,7 @@
 % Please edit documentation in R/deleteLexicon.R
 \name{deleteLexicon}
 \alias{deleteLexicon}
-\title{Delete a previously loaded lexicon.}
+\title{Delete a previously loaded lexicon}
 \usage{
 deleteLexicon(labbcat.url, lexicon)
 }
@@ -32,6 +32,13 @@ deleteLexicon(labbcat.url, "cmudict")
 
 }
 \seealso{
-\code{\link{loadLexicon}}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{getDictionaries}()},
+\code{\link{getDictionaryEntries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
-\keyword{lexicon}
+\concept{dictionary functions}

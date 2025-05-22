@@ -1,10 +1,11 @@
-#' Gets a list of layer IDs.
+#' Gets a list of layer IDs
 #'
 #' Layer IDs are annotation 'types'.
 #' 
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @return A list of layer IDs
 #' 
+#' @family Annotation layer functions
 #' @examples
 #' \dontrun{
 #' ## Get names of all layers

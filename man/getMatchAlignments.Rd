@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMatchAlignments.R
 \name{getMatchAlignments}
 \alias{getMatchAlignments}
-\title{Gets temporal alignments of matches on a given layer.}
+\title{Gets temporal alignments of matches on a given layer}
 \usage{
 getMatchAlignments(
   labbcat.url,
@@ -26,9 +26,9 @@ of a results set.}
 
 \item{target.offset}{The distance from the original target of the match, e.g.
 \itemize{
- \item{\emph{0} -- find annotations of the match target itself},
- \item{\emph{1} -- find annotations of the token immediately \emph{after} match target}
- \item{\emph{-1} -- find annotations of the token immediately \emph{before} match target}
+\item \emph{0} -- find annotations of the match target itself
+\item \emph{1} -- find annotations of the token immediately \emph{after} match target
+\item \emph{-1} -- find annotations of the token immediately \emph{before} match target
 }}
 
 \item{annotations.per.layer}{The number of annotations on the given layer to
@@ -39,9 +39,9 @@ transcriptions, for tokens that have more than one.}
 
 \item{anchor.confidence.min}{The minimum confidence for alignments, e.g.
 \itemize{
- \item{\emph{0} -- return all alignments, regardless of confidence;}
- \item{\emph{50} -- return only alignments that have been at least automatically aligned;}
- \item{\emph{100} -- return only manually-set alignments.}
+\item \emph{0} -- return all alignments, regardless of confidence;
+\item \emph{50} -- return only alignments that have been at least automatically aligned;
+\item \emph{100} -- return only manually-set alignments.
 }}
 
 \item{include.match.ids}{Whether or not the data frame returned includes the original
@@ -52,7 +52,7 @@ matches or the network connection is slow, rather than retrieving matches in one
 big request, they are retrieved using many smaller requests. This parameter
 controls the number of results retrieved per request.}
 
-\item{no.progress}{TRUE to supress visual progress bar. Otherwise, progress bar will be
+\item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
 }
 \value{
@@ -71,9 +71,6 @@ is returned, but the start/end times are NA.
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Perform a search
 results <- getMatches(labbcat.url, list(segment="I"))
 
@@ -84,8 +81,10 @@ following.segment <- getMatchAlignments(labbcat.url, results$MatchId, "segment",
 
 }
 \seealso{
-\code{\link{getMatches}}
-\code{\link{getMatchLabels}}
+\itemize{
+\item \link{getMatches}
+\item \link{getMatchLabels}
+}
 }
 \keyword{annotation}
 \keyword{label}

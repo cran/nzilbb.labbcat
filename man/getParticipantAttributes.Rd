@@ -2,7 +2,7 @@
 % Please edit documentation in R/getParticipantAttributes.R
 \name{getParticipantAttributes}
 \alias{getParticipantAttributes}
-\title{Gets participant attribute values for given participant IDs.}
+\title{Gets participant attribute values for given participant IDs}
 \usage{
 getParticipantAttributes(labbcat.url, participant.ids, layer.ids)
 }
@@ -19,13 +19,10 @@ any layer where layer$parentId == 'participant' && layer$alignment == 0.}
 A data frame of attribute value labels.
 }
 \description{
-Gets participant attribute values for given participant IDs.
+Gets participant attribute values for given participant IDs
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 ## Get gender and age for all participants
 attributes <- getParticipantAttributes(labbcat.url,
             getParticipantIds(labbcat.url),

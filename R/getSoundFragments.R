@@ -1,28 +1,25 @@
-#' Gets sound fragments from 'LaBB-CAT'.
+#' Gets sound fragments from 'LaBB-CAT'
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param ids The transcript ID (transcript name) of the sound recording, or
-#'     a vector of transcript IDs. 
+#'   a vector of transcript IDs. 
 #' @param start.offsets The start time in seconds, or a vector of start times.
 #' @param end.offsets The end time in seconds, or a vector of end times.
 #' @param sample.rate Optional sample rate in Hz - if a positive
-#'     integer, then the result is a mono file with the given sample rate.
+#'   integer, then the result is a mono file with the given sample rate.
 #' @param path Optional path to directory where the files should be saved.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return The name of the file, which is saved in the current
-#'     directory, or a list of names of files, if multiple
-#'     id's/start's/end's were specified 
+#'   directory, or a list of names of files, if multiple
+#'   id's/start's/end's were specified 
 #'
-#' If a list of files is returned, they are in the order that they
-#'     were returned by the server, which *should* be the order that
-#'     they were specified in the id/start/end lists.
+#'   If a list of files is returned, they are in the order that they
+#'   were returned by the server, which *should* be the order that
+#'   they were specified in the id/start/end lists.
 #' 
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get the 5 seconds starting from 10s after the beginning of a recording
 #' wav.file <- getSoundFragments(labbcat.url, "AP2505_Nelson.eaf", 10.0, 15.0, path="samples")
 #' 
@@ -94,12 +91,12 @@ getSoundFragments <- function(labbcat.url, ids, start.offsets, end.offsets, samp
                 file.remove(file.name)
                 file.name <<- NULL
             } else {
-                content.disposition <- as.character(httr::headers(resp)["content-disposition"])
-                content.disposition.parts <- strsplit(content.disposition, "=")
-                if (length(content.disposition.parts[[1]]) > 1
-                    && file.name != content.disposition.parts[[1]][2]) {
+                content.disposition.filename <- fileNameFromContentDisposition(
+                    as.character(httr::headers(resp)["content-disposition"]))
+                if (!is.null(content.disposition.filename)
+                    && file.name != content.disposition.filename) {
                     ## file name is specified, so use it
-                    final.file.name <- paste(dir, content.disposition.parts[[1]][2], sep="")
+                    final.file.name <- paste(dir, content.disposition.filename, sep="")
                     file.rename(file.name, final.file.name)
                     file.name <- final.file.name
                 }

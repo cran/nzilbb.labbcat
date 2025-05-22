@@ -1,4 +1,4 @@
-#' Lookup entries in a dictionary.
+#' Lookup entries in a dictionary
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param manager.id The layer manager ID of the dictionary, as returned by getDictionaries
@@ -6,12 +6,9 @@
 #' @param keys A list of keys (words) identifying entries to look up
 #' @return A data frame with the keys and their dictionary entries, if any.
 #' 
-#' @seealso \link{getDictionaries}
+#' @family dictionary functions
 #' @examples 
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#'
 #' keys <- c("the", "quick", "brown", "fox")
 #' 
 #' ## get the pronunciations according to CELEX

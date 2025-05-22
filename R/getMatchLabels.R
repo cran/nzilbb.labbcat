@@ -1,38 +1,33 @@
-#' Gets labels of annotations on a given layer, identified by given match IDs.
+#' Gets labels of annotations on a given layer, identified by given match IDs
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param match.ids A vector of annotation IDs, e.g. the MatchId column, or the URL column,
-#'     of a results set. 
+#'    of a results set. 
 #' @param layer.ids A vector of layer IDs.
 #' @param target.offset The distance from the original target of the match, e.g.
-#' \itemize{
-#'  \item{\emph{0} -- find annotations of the match target itself},
-#'  \item{\emph{1} -- find annotations of the token immediately \emph{after} match target}
-#'  \item{\emph{-1} -- find annotations of the token immediately \emph{before} match target}
-#' }
+#'   - *0* -- find annotations of the match target itself
+#'   - *1* -- find annotations of the token immediately *after* match target
+#'   - *-1* -- find annotations of the token immediately *before* match target
 #' @param annotations.per.layer The number of annotations on the given layer to
-#'     retrieve. In most cases, there's only one annotation available. However, tokens
-#'     may, for example, be annotated with `all possible phonemic transcriptions', in which
-#'     case using a value of greater than 1 for this parameter provides other phonemic
-#'     transcriptions, for tokens that have more than one.
+#'   retrieve. In most cases, there's only one annotation available. However, tokens
+#'   may, for example, be annotated with `all possible phonemic transcriptions', in which
+#'   case using a value of greater than 1 for this parameter provides other phonemic
+#'   transcriptions, for tokens that have more than one.
 #' @param include.match.ids Whether or not the data frame returned includes the original
-#'     MatchId column or not.
+#'   MatchId column or not.
 #' @param page.length In order to prevent timeouts when there are a large number of
-#'     matches or the network connection is slow, rather than retrieving matches in one
-#'     big request, they are retrieved using many smaller requests. This parameter
-#'     controls the number of results retrieved per request.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#'   matches or the network connection is slow, rather than retrieving matches in one
+#'   big request, they are retrieved using many smaller requests. This parameter
+#'   controls the number of results retrieved per request.
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return A data frame of labels.
 #' 
 #' @seealso
-#' \code{\link{getMatches}}
-#' \code{\link{getMatchAlignments}}
+#'   - [getMatches]
+#'   - [getMatchAlignments]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Perform a search
 #' results <- getMatches(labbcat.url, list(orthography="quake"))
 #' 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getDictionaryEntries.R
 \name{getDictionaryEntries}
 \alias{getDictionaryEntries}
-\title{Lookup entries in a dictionary.}
+\title{Lookup entries in a dictionary}
 \usage{
 getDictionaryEntries(labbcat.url, manager.id, dictionary.id, keys)
 }
@@ -19,13 +19,10 @@ getDictionaryEntries(labbcat.url, manager.id, dictionary.id, keys)
 A data frame with the keys and their dictionary entries, if any.
 }
 \description{
-Lookup entries in a dictionary.
+Lookup entries in a dictionary
 }
 \examples{
 \dontrun{
-## define the LaBB-CAT URL
-labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-
 keys <- c("the", "quick", "brown", "fox")
 
 ## get the pronunciations according to CELEX
@@ -34,6 +31,14 @@ entries <- getDictionaryEntries(labbcat.url, "CELEX-EN", "Phonology (wordform)",
 
 }
 \seealso{
-\link{getDictionaries}
+Other dictionary functions: 
+\code{\link{addDictionaryEntry}()},
+\code{\link{addLayerDictionaryEntry}()},
+\code{\link{deleteLexicon}()},
+\code{\link{getDictionaries}()},
+\code{\link{loadLexicon}()},
+\code{\link{removeDictionaryEntry}()},
+\code{\link{removeLayerDictionaryEntry}()}
 }
+\concept{dictionary functions}
 \keyword{dictionary}

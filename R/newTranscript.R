@@ -1,6 +1,9 @@
-#' Upload a new transcript.
+#' Upload a new transcript
 #'
 #' This function adds a transcript and optionally a media file to the corpus.
+#'
+#' *NB* This method of uploading is an alternative to using transcriptUpload and
+#' transcriptUploadParameters.
 #'
 #' For this function to work, the credentials used to connect to the server must have at
 #' least 'edit' access.
@@ -11,15 +14,17 @@
 #' @param transcript.type The transcript type.
 #' @param corpus The corpus to add the transcript to.
 #' @param episode The transcript's episode.
-#' @param no.progress TRUE to supress visual progress bar. Otherwise, progress bar will be
-#'     shown when interactive().
+#' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
+#'   shown when interactive().
 #' @return The ID of the new transcript in the corpus
 #' 
+#' @seealso
+#' - [transcriptUpload]
+#' - [transcriptUploadParameters]
+#' - [transcriptUploadDelete]
+#' - [updateTranscript]
 #' @examples
 #' \dontrun{
-#' ## define the LaBB-CAT URL
-#' labbcat.url <- "https://labbcat.canterbury.ac.nz/demo/"
-#' 
 #' ## Get attributes for new transcript
 #' corpus <- getCorpusIds(labbcat.url)[1]
 #' transcript.type.layer <- getLayer(labbcat.url, "transcript_type")
