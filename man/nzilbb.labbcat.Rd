@@ -20,10 +20,9 @@ this package.
 \examples{
 \dontrun{
 ## Perform a search
-results <- getMatches(labbcat.url, list(segment="I"))
-
-## Get the phonemic transcriptions for the matches
-phonemes <- getMatchLabels(labbcat.url, results$MatchId, "phonemes")
+results <- getMatches(labbcat.url, list(segment="I")) |>
+    ## Get the phonemic transcriptions for the matches
+    appendLabels("phonemes")
 
 ## Get sound fragments for the matches
 wav.files <- getSoundFragments(labbcat.url, results$Transcript, results$Line, results$LineEnd)
@@ -39,6 +38,7 @@ Useful links:
 \itemize{
   \item \url{https://nzilbb.github.io/labbcat-R/}
   \item \url{https://labbcat.canterbury.ac.nz}
+  \item Report bugs at \url{https://github.com/nzilbb/labbcat-R/issues}
 }
 
 }

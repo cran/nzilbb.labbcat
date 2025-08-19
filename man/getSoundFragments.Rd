@@ -2,7 +2,7 @@
 % Please edit documentation in R/getSoundFragments.R
 \name{getSoundFragments}
 \alias{getSoundFragments}
-\title{Gets sound fragments from 'LaBB-CAT'}
+\title{Gets sound fragments from 'LaBB-CAT'.}
 \usage{
 getSoundFragments(
   labbcat.url,
@@ -42,7 +42,7 @@ were returned by the server, which \emph{should} be the order that
 they were specified in the id/start/end lists.
 }
 \description{
-Gets sound fragments from 'LaBB-CAT'
+Gets sound fragments from 'LaBB-CAT'.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getFragments.R
 \name{getFragments}
 \alias{getFragments}
-\title{Gets transcript fragments in a given format}
+\title{Gets transcript fragments in a given format.}
 \usage{
 getFragments(
   labbcat.url,
@@ -42,8 +42,8 @@ were returned by the server, which \emph{should} be the order that
 they were specified in the id/start/end lists.
 }
 \description{
-This function gets fragments of transcripts from 'LaBB-CAT',
-converted to a given format (by default, Praat TextGrid).
+This function gets fragments of transcripts from LaBB-CAT,
+converted to a given file format (by default, Praat TextGrid).
 }
 \details{
 \strong{NB} Although many formats will generate exactly one file for each interval

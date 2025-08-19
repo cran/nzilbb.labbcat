@@ -64,6 +64,9 @@ intensity <- processWithPraat(
 }
 \seealso{
 Other Praat-related functions: 
+\code{\link{appendFromPraat}()},
+\code{\link{fragmentLabels}()},
+\code{\link{fragmentTranscripts}()},
 \code{\link{praatScriptCentreOfGravity}()},
 \code{\link{praatScriptFastTrack}()},
 \code{\link{praatScriptFormants}()},

@@ -4,14 +4,17 @@
 \alias{labbcatCredentials}
 \title{Sets the username and password for a given LaBB-CAT server}
 \usage{
-labbcatCredentials(labbcat.url, username, password)
+labbcatCredentials(labbcat.url, username, password, auth.method = NULL)
 }
 \arguments{
-\item{labbcat.url}{URL to the LaBB-CAT instance}
+\item{labbcat.url}{URL to the LaBB-CAT instance.}
 
-\item{username}{The LaBB-CAT username, if it is password-protected}
+\item{username}{The LaBB-CAT username, if it is password-protected.}
 
-\item{password}{The LaBB-CAT password, if it is password-protected}
+\item{password}{The LaBB-CAT password, if it is password-protected.}
+
+\item{auth.method}{The HTTP authentication method to use (e.g. "Basic" or "Form",
+or NULL to detect automatically.}
 }
 \value{
 NULL if the username/password are correct, and a string describing the problem
