@@ -1,7 +1,7 @@
 Package: nzilbb.labbcat
 Encoding: UTF-8
-Version: 1.5-0
-Date: 2025-08-19
+Version: 1.5-1
+Date: 2026-03-31
 Title: Accessing Data Stored in 'LaBB-CAT' Instances
 Authors@R: c(person("Robert", "Fromont", role = c("aut", "cre"),
                      email = "robert.fromont@canterbury.ac.nz",
@@ -26,9 +26,9 @@ BugReports: https://github.com/nzilbb/labbcat-R/issues
 RoxygenNote: 7.3.2
 Suggests: testthat (>= 2.1.0)
 NeedsCompilation: no
-Packaged: 2025-08-19 18:47:43 UTC; robert
+Packaged: 2026-03-31 20:12:13 UTC; robert
 Author: Robert Fromont [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-5271-5487>)
 Maintainer: Robert Fromont <robert.fromont@canterbury.ac.nz>
 Repository: CRAN
-Date/Publication: 2025-08-19 19:10:08 UTC
+Date/Publication: 2026-03-31 20:30:02 UTC

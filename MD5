@@ -1,6 +1,6 @@
-b99856ea85b82f4fa294f9f26488459d *DESCRIPTION
+fee746e260da6fb4b5ba9c8f2dc07f63 *DESCRIPTION
 a6818c3d166a90bd3cc6346819e4b055 *NAMESPACE
-e5449d79c47bb71039744bbdd8bca61a *NEWS.md
+ebc2048455c16d6434cd66d2af271b7e *NEWS.md
 7088a39d7674878063afd2255ca1e25f *R/addDictionaryEntry.R
 d37244907f0b54b89641bc862e92cc5b *R/addLayerDictionaryEntry.R
 0d8f897dfa5b2effb337acf6016d949f *R/annotatorExt.R
@@ -73,7 +73,7 @@ b12f545ec8249f0cbaa64d544106a7f9 *R/labbcatTimeout.R
 429ed452dd97d548b7c888d9f6803e1d *R/loadLexicon.R
 5cf15f42586323a1ee5cbd1341bba35d *R/newLayer.R
 ab31426efb168f790f494e03138ca8ea *R/newTranscript.R
-d3dfb222474c05b62365118b5dcad285 *R/nzilbb.labbcat.R
+8c3f4dd763f81e3eb2b8affefc122a2f *R/nzilbb.labbcat.R
 718c6ec27258d3ad9b2b98b89a9eba80 *R/praatScriptCentreOfGravity.R
 d1671cf501cf2bda90bec41ca92d2628 *R/praatScriptFastTrack.R
 205cd35a939265f2f9b4b14901ac61ac *R/praatScriptFormants.R
@@ -91,7 +91,7 @@ b05636f642d2d4bd7a1271541abaa27f *R/transcriptUploadDelete.R
 c396e018cff5d4b1300892089749733d *R/transcriptUploadParameters.R
 b7ffc606e29cf2ec6dd14fbc3e69b770 *R/updateFragment.R
 076a2f3b9ab58acb639966f8aff2c7b2 *R/updateTranscript.R
-c26dbe18351feea250117876d4654cc9 *build/partial.rdb
+e0963e41ad66db44916a51e8206a556c *build/partial.rdb
 a441ae2c03aa17186def9aea50f54148 *man/addDictionaryEntry.Rd
 8d6610bbec5ce4a30f3ac4f70a4719a3 *man/addLayerDictionaryEntry.Rd
 1cd5a10afd62ddab02085c7c36afa1d3 *man/annotatorExt.Rd
@@ -216,7 +216,7 @@ becb196fca55d86d7e9bf65a0f65b8d2 *tests/testthat/test-getLayer.R
 3849a3b0bd9d7b85ab4d95ff16bebbb9 *tests/testthat/test-getLayers.R
 d166f5425dffcefbfeedf253a5c05034 *tests/testthat/test-getMatchAlignments.R
 5f422129534690bd89979b5ccdf310ad *tests/testthat/test-getMatchLabels.R
-64aa53b11ac649a5240f0e00237c7fc5 *tests/testthat/test-getMatches.R
+2a14963c4b9d8063f05bb1d089d0b8e0 *tests/testthat/test-getMatches.R
 c539636b22846ef9e6113ef63eaa6773 *tests/testthat/test-getMatchingAnnotations.R
 cfaa33ee2efd8c4b8306101ca12f9e06 *tests/testthat/test-getMatchingParticipantIds.R
 ea53ad1ae33f66ac619542798de19fd9 *tests/testthat/test-getMatchingTrancriptIds.R
