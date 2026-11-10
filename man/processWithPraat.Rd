@@ -13,14 +13,17 @@ processWithPraat(
   window.offset,
   gender.attribute = "participant_gender",
   attributes = NULL,
-  no.progress = FALSE
+  page.length = 1000,
+  no.progress = FALSE,
+  participant.ids = NULL
 )
 }
 \arguments{
 \item{labbcat.url}{URL to the LaBB-CAT instance}
 
 \item{match.ids}{A vector of annotation IDs, e.g. the MatchId column, or the URL column,
-of a results set.}
+of a results set. Alternatively, if participant.ids is specified, match.ids is
+aseumed to be a vector of transcript IDs.}
 
 \item{start.offsets}{The start time in seconds, or a vector of start times.}
 
@@ -50,8 +53,16 @@ gender of the speaker is, including the "participant_gender" attribute will make
 variable called participant_gender$ available to the praat script, whose value will
 be the gender of the speaker of that segment.}
 
+\item{page.length}{In order to prevent timeouts when there are a large number of
+matches or the network connection is slow, rather than retrieving matches in one
+big request, they are retrieved using many smaller requests. This parameter
+controls the number of results retrieved per request.}
+
 \item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
+
+\item{participant.ids}{A vector of participant IDs parallel to match.ids, start.offsets
+and end.offsets. If specified, match.ids is assumed to be a list of transcript IDs.}
 }
 \value{
 A data frame of acoustic measures, one row for each matchId.
@@ -138,6 +149,16 @@ acoustic.measurements <- processWithPraat(
        labbcat.url,
        results$MatchId, results$Target.segment.start, result$Target.segment.end,
        readLines("acousticMeasurements.praat"))
+
+## specify transcript IDs and participant IDs, instad of MatchIds
+results <- read.csv("results.csv", header=T)
+formants <- processWithPraat(
+       labbcat.url,
+       match.ids=results$Transcript,
+       participant.ids=results$Participant,
+       start.offsets=results$Target.segment.start,
+       end.offsets=results$Target.segment.end,
+       praatScriptFormants())
 }
 }
 \seealso{

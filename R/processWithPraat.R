@@ -53,7 +53,8 @@
 #'
 #' @param labbcat.url URL to the LaBB-CAT instance
 #' @param match.ids A vector of annotation IDs, e.g. the MatchId column, or the URL column,
-#'   of a results set. 
+#'   of a results set. Alternatively, if participant.ids is specified, match.ids is
+#'   aseumed to be a vector of transcript IDs.
 #' @param start.offsets The start time in seconds, or a vector of start times.
 #' @param end.offsets The end time in seconds, or a vector of end times.
 #' @param praat.script Script to run on each match. This may be a single string or a
@@ -76,8 +77,14 @@
 #'   gender of the speaker is, including the "participant_gender" attribute will make a
 #'   variable called participant_gender$ available to the praat script, whose value will
 #'   be the gender of the speaker of that segment.
+#' @param page.length In order to prevent timeouts when there are a large number of
+#'   matches or the network connection is slow, rather than retrieving matches in one
+#'   big request, they are retrieved using many smaller requests. This parameter
+#'   controls the number of results retrieved per request.
 #' @param no.progress TRUE to suppress visual progress bar. Otherwise, progress bar will be
 #'   shown when interactive().
+#' @param participant.ids A vector of participant IDs parallel to match.ids, start.offsets
+#'   and end.offsets. If specified, match.ids is assumed to be a list of transcript IDs.
 #' @return A data frame of acoustic measures, one row for each matchId.
 #' 
 #' @family Praat-related functions
@@ -109,104 +116,134 @@
 #'        labbcat.url,
 #'        results$MatchId, results$Target.segment.start, result$Target.segment.end,
 #'        readLines("acousticMeasurements.praat"))
+#' 
+#' ## specify transcript IDs and participant IDs, instad of MatchIds
+#' results <- read.csv("results.csv", header=T)
+#' formants <- processWithPraat(
+#'        labbcat.url,
+#'        match.ids=results$Transcript,
+#'        participant.ids=results$Participant,
+#'        start.offsets=results$Target.segment.start,
+#'        end.offsets=results$Target.segment.end,
+#'        praatScriptFormants())
 #' }
 #' @keywords praat
 #' 
 processWithPraat <- function(labbcat.url, match.ids, start.offsets, end.offsets,
                              praat.script, window.offset,
                              gender.attribute="participant_gender", attributes=NULL,
-                             no.progress=FALSE) {
+                             page.length=1000, no.progress=FALSE,
+                             participant.ids=NULL) {
 
     ## make the script a single string
     praat.script <- paste(praat.script, collapse="\n")
 
-    ## split match.ids into transcript ID and participant ID
-    transcriptIds <- stringr::str_replace(match.ids, ".*(g_[0-9]+);.*","\\1")
-    participantIds <- stringr::str_replace(match.ids, ".*(p_[0-9]+);.*","\\1")
-
-    ## save CSV file to upload
-    upload.file <- tempfile(pattern="processWithPraat.", fileext=".csv")
-    write.table(data.frame(transcriptIds, participantIds, start.offsets, end.offsets),
-                upload.file, sep=",", row.names=FALSE, col.names=TRUE)
-    download.file <- tempfile(pattern="praatOutput.", fileext=".csv")
-
-    if (is.null(attributes)) {
-        attributes <- c(gender.attribute)
-    }
-    if (!is.element(gender.attribute, attributes)) {
-        attributes <- c(attributes, gender.attribute)
+    if (is.null(participant.ids)) { # match.ids...
+        ## split match.ids into transcript ID and participant ID
+        transcriptIds <- stringr::str_replace(match.ids, ".*(g_[0-9]+);.*","\\1")
+        participantIds <- stringr::str_replace(match.ids, ".*(p_[0-9]+);.*","\\1")
+    } else { # transcript IDs and participant IDS
+        transcriptIds <- match.ids
+        participantIds <- participant.ids
     }
 
-    ## upload CSV
-    parameters <- list(
-        attributes=attributes,
-        transcriptColumn="0", participantColumn="1", startTimeColumn="2", endTimeColumn="3",
-        windowOffset=window.offset,
-        script=praat.script, passThroughData="false",
-        csv=httr::upload_file(upload.file))
-    resp <- http.post.multipart(labbcat.url, "api/praat", parameters, download.file)
+    ## create a data frame for all columns
+    targets <- data.frame(transcriptIds, participantIds, start.offsets, end.offsets)
 
-    ## tidily remove the uploaded file
-    file.remove(upload.file)
-
-    ## check response
-    if (is.null(resp)) return()
-    resp.content <- httr::content(resp, as="text", encoding="UTF-8")
-    if (httr::status_code(resp) != 200) { # 200 = OK
-        print(paste("ERROR: ", httr::http_status(resp)$message))
-        print(resp.content)
-        return()
-    }
-    resp.json <- jsonlite::fromJSON(resp.content)
-    for (error in resp.json$errors) print(error)
-
-    ## wait until the task is finished
-    threadId <- resp.json$model$threadId
+    results <- NULL
+    ## break data into manageable chunks for possibly slow upload
+    chunks <- split(targets, ceiling(seq_along(match.ids)/page.length))
+    chunksSoFar <- 0
     pb <- NULL
     if (interactive() && !no.progress) {
-        pb <- txtProgressBar(min = 0, max = 100, style = 3)        
+        pb <- txtProgressBar(min = 0, max = 100*length(chunks), style = 3)
     }
-    thread <- thread.get(labbcat.url, threadId)
-    if (is.null(thread)) {
-        return()
-    }
-    while (thread$running) {
-        if (!is.null(pb) && !is.null(thread$percentComplete)) {
-            setTxtProgressBar(pb, thread$percentComplete)
+    for (chunk in chunks) { # for each chunk    
+        ## save CSV file to upload
+        upload.file <- tempfile(pattern="processWithPraat.", fileext=".csv")
+        write.table(chunk, upload.file, sep=",", row.names=FALSE, col.names=TRUE)
+        download.file <- tempfile(pattern="praatOutput.", fileext=".csv")
+        
+        if (is.null(attributes)) {
+            attributes <- c(gender.attribute)
         }
-        Sys.sleep(1)
+        if (!is.element(gender.attribute, attributes)) {
+            attributes <- c(attributes, gender.attribute)
+        }
+
+        ## upload CSV
+        parameters <- list(
+            attributes=attributes,
+            transcriptColumn="0", participantColumn="1", startTimeColumn="2", endTimeColumn="3",
+            windowOffset=window.offset,
+            script=praat.script, passThroughData="false",
+            csv=httr::upload_file(upload.file))
+        resp <- http.post.multipart(labbcat.url, "api/praat", parameters, download.file)
+
+        ## tidily remove the uploaded file
+        file.remove(upload.file)
+
+        ## check response
+        if (is.null(resp)) return()
+        resp.content <- httr::content(resp, as="text", encoding="UTF-8")
+        if (httr::status_code(resp) != 200) { # 200 = OK
+            print(paste("ERROR: ", httr::http_status(resp)$message))
+            print(resp.content)
+            return()
+        }
+        resp.json <- jsonlite::fromJSON(resp.content)
+        for (error in resp.json$errors) print(error)
+
+        ## wait until the task is finished
+        threadId <- resp.json$model$threadId
         thread <- thread.get(labbcat.url, threadId)
         if (is.null(thread)) {
             return()
         }
-    } # poll until finished
-    if (!is.null(pb)) {
-        if (!is.null(thread$percentComplete)) {
-            setTxtProgressBar(pb, thread$percentComplete)
+        while (thread$running) {
+            if (!is.null(pb) && !is.null(thread$percentComplete)) {
+                setTxtProgressBar(pb, (chunksSoFar*100) + thread$percentComplete)
+            }
+            Sys.sleep(1)
+            thread <- thread.get(labbcat.url, threadId)
+            if (is.null(thread)) {
+                return()
+            }
+        } # poll until finished
+        ## download resulting CSV
+        resp <- httr::GET(thread$resultUrl,
+                          httr::write_disk(download.file, overwrite=TRUE),
+                          httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)))
+
+        ## R complains if the last line isn't blank...
+        write("\n",file=download.file,append=TRUE)
+    
+        ## load data into frame
+        ## (if we don't skip blank lines we get a row too many)
+        if (is.null(results)) { # first chunk
+            results <- read.csv(download.file, header=T, blank.lines.skip=T)
+        } else { # subsequent chunkd
+            results <- rbind(
+                results,
+                read.csv(download.file, header=T, blank.lines.skip=T)
+            )
         }
+        chunksSoFar <- chunksSoFar + 1
+        if (!is.null(pb) && !is.null(thread$percentComplete)) {
+            setTxtProgressBar(pb, chunksSoFar*100)
+        }
+
+        ## tidily remove the downloaded file
+        file.remove(download.file)
+        ## and release the server resources
+        thread.release(labbcat.url, threadId)
+    } # next chunk
+    if (!is.null(pb)) {
         close(pb)
         if (!is.null(thread$status)) {
             cat(paste(thread$status, "\n", sep=""))
         }
-    }
-
-    ## download resulting CSV
-    resp <- httr::GET(thread$resultUrl,
-                      httr::write_disk(download.file, overwrite=TRUE),
-                      httr::timeout(getOption("nzilbb.labbcat.timeout", default=180)))
-
-    ## R complains if the last line isn't blank...
-    write("\n",file=download.file,append=TRUE)
-    
-    ## load data into frame
-    ## (if we don't skip blank lines we get a row too many)
-    results <- read.csv(download.file, header=T, blank.lines.skip=T)
-
-    ## tidily remove the downloaded file
-    file.remove(download.file)
-    ## and release the server resources
-    thread.release(labbcat.url, threadId)
-    
+    }    
     return(results)
 
 }

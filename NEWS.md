@@ -1,3 +1,14 @@
+# nzilbb.labbcat 1.6-0
+
+Minimum LaBB-CAT version *20250430.1502* (preferred: *20250819.1454*)
+
+- Introduce *page.length* parameter for tuning request sizes for
+  + *processWithPraat*
+  + *appendFromPraat*
+- Introduce *participant.ids* parameter for *processWithPraat*, so that 
+  processing can be done with lists of transcripts/participants as well as
+  search results.
+
 # nzilbb.labbcat 1.5-1
 
 Ensure that URL parameters containing ampersands are appropriately encoded.

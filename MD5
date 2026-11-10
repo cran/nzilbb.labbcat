@@ -1,10 +1,10 @@
-fee746e260da6fb4b5ba9c8f2dc07f63 *DESCRIPTION
+e534f8362488817868a4c3e063d13596 *DESCRIPTION
 a6818c3d166a90bd3cc6346819e4b055 *NAMESPACE
-ebc2048455c16d6434cd66d2af271b7e *NEWS.md
+ea2c7b3fb8e2aac1257337d7466ccadb *NEWS.md
 7088a39d7674878063afd2255ca1e25f *R/addDictionaryEntry.R
 d37244907f0b54b89641bc862e92cc5b *R/addLayerDictionaryEntry.R
 0d8f897dfa5b2effb337acf6016d949f *R/annotatorExt.R
-c01d0e23417d2e0cd474acf09d87a50e *R/appendFromPraat.R
+8e7f1f312614c4e5b72695f9aa537ddb *R/appendFromPraat.R
 193e3ea2d38c000d4d7af6e4d2410d21 *R/appendLabels.R
 f99ccb9e8af3d90f132a27ab1b76f829 *R/appendOffsets.R
 6a56b814224d68183484b929a3ee300b *R/countAnnotations.R
@@ -79,7 +79,7 @@ d1671cf501cf2bda90bec41ca92d2628 *R/praatScriptFastTrack.R
 205cd35a939265f2f9b4b14901ac61ac *R/praatScriptFormants.R
 65ce0931626b66ad191ddad9fd187ea4 *R/praatScriptIntensity.R
 615aa0becd4db0623e44543b9ba35cd1 *R/praatScriptPitch.R
-ea0b234bce0088e26e4590a320663102 *R/processWithPraat.R
+760c2f46ab413cf797c954297da6b1cf *R/processWithPraat.R
 071cbc1d98645e96f854a18373ea0e79 *R/removeDictionaryEntry.R
 5bbc035613c73dd62c5e61ce889f845f *R/removeLayerDictionaryEntry.R
 049573b964a462413d69afc5c7ae489c *R/renameParticipants.R
@@ -91,11 +91,11 @@ b05636f642d2d4bd7a1271541abaa27f *R/transcriptUploadDelete.R
 c396e018cff5d4b1300892089749733d *R/transcriptUploadParameters.R
 b7ffc606e29cf2ec6dd14fbc3e69b770 *R/updateFragment.R
 076a2f3b9ab58acb639966f8aff2c7b2 *R/updateTranscript.R
-e0963e41ad66db44916a51e8206a556c *build/partial.rdb
+de078f1363a7a1823a5d432580bc1b72 *build/partial.rdb
 a441ae2c03aa17186def9aea50f54148 *man/addDictionaryEntry.Rd
 8d6610bbec5ce4a30f3ac4f70a4719a3 *man/addLayerDictionaryEntry.Rd
 1cd5a10afd62ddab02085c7c36afa1d3 *man/annotatorExt.Rd
-2ecff7cf0dff04ae2af3eb75dbc3b753 *man/appendFromPraat.Rd
+2dee5342056ca360ee2d23000841b454 *man/appendFromPraat.Rd
 578305d6dae7cd8fb71dedd8f81b4354 *man/appendLabels.Rd
 507a3a68307151be73660144740d7160 *man/appendOffsets.Rd
 7e2015f58d894315d0beb48ab0c7e2ef *man/countAnnotations.Rd
@@ -170,7 +170,7 @@ d433c7f6014a0cfc942cb6481fe8b125 *man/praatScriptCentreOfGravity.Rd
 43b3a7476a238fb43b7b15388bc8f635 *man/praatScriptFormants.Rd
 82ad0f50c4d4863369ab8c58f5b74752 *man/praatScriptIntensity.Rd
 0820e6ccf0395b1f8864222afeb65ae6 *man/praatScriptPitch.Rd
-d5135261da1facfd502d8e1261c2b37f *man/processWithPraat.Rd
+290041141c34ef4fcb40416db3003bc9 *man/processWithPraat.Rd
 78976ce12778ddde162baadcba03ef33 *man/removeDictionaryEntry.Rd
 408402551e755a4c6f24fda79a25a8bb *man/removeLayerDictionaryEntry.Rd
 302bf8be7efc0605dda2cc9193a1383e *man/renameParticipants.Rd
@@ -190,7 +190,7 @@ bec10531865fedfbd8cd7d0e4b4aa67c *tests/testthat/labbcat-R.test.wav
 2f27fec6835a9a9b3a6e83828dfe058b *tests/testthat/test-appendLabels.R
 bf11bbc396416d4843d3b67b653a91a6 *tests/testthat/test-appendOffsets.R
 8549e9e7be8e982b4e66d10354a06f59 *tests/testthat/test-countAnnotations.R
-494a02d10f499aa15235f6aaf0c73589 *tests/testthat/test-countMatchingAnnotations.R
+020e1c71594ee2725acba2455b6f5b61 *tests/testthat/test-countMatchingAnnotations.R
 425f91687d405c274e417029f4499e9f *tests/testthat/test-expressionFromAttribute.R
 5c77d861433379e5e90a2259bd95c7bd *tests/testthat/test-expressionFromIds.R
 cb9277ad32c21e885e9f0af00770e69c *tests/testthat/test-expressionFromTranscriptTypes.R
@@ -240,6 +240,6 @@ a51e2455fac249aa49fbc9e61155339b *tests/testthat/test-getUserInfo.R
 b82db5725e7c6e7fd421d88211419bca *tests/testthat/test-praatScriptFormants.R
 530f86f24578be6b09f96ca1bb60a800 *tests/testthat/test-praatScriptIntensity.R
 817576ab585d57ac69010f2659284d5a *tests/testthat/test-praatScriptPitch.R
-95a8bef06fc56487835a134c768d25d8 *tests/testthat/test-processWithPraat.R
+0650b281f6e05e9a4be909ec4d2ab0c4 *tests/testthat/test-processWithPraat.R
 9a63cd4f0b125ffab9720999c5c1c040 *tests/testthat/test-saveGetDeleteMedia.R
 d8347c04081a62c67a2a82de7395566b *tests/testthat/test-transcriptUploadParametersDelete.R

@@ -12,6 +12,7 @@ appendFromPraat(
   window.offset,
   gender.attribute = "participant_gender",
   attributes = NULL,
+  page.length = 1000,
   no.progress = FALSE,
   labbcat.url = NULL,
   column.prefix = NULL
@@ -48,6 +49,11 @@ example, if you want to use different acoustic parameters depending on what the
 gender of the speaker is, including the "participant_gender" attribute will make a
 variable called participant_gender$ available to the praat script, whose value will
 be the gender of the speaker of that segment.}
+
+\item{page.length}{In order to prevent timeouts when there are a large number of
+matches or the network connection is slow, rather than retrieving matches in one
+big request, they are retrieved using many smaller requests. This parameter
+controls the number of results retrieved per request.}
 
 \item{no.progress}{TRUE to suppress visual progress bar. Otherwise, progress bar will be
 shown when interactive().}
